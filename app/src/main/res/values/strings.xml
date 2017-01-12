@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">SeekRaces</string>
+
+    <!--Login-->
+    <string name="email">Email</string>
+    <string name="password">Contraseña</string>
+    <string name="login">Iniciar Sesión</string>
+    <string name="signin">Registrarse</string>
+    <!--Login-->
+    <!--SignIn-->
+    <string name="username">Nombre de usuario</string>
+    <!--SignIn-->
+</resources>
