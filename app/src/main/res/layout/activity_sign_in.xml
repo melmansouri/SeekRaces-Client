@@ -71,6 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/text_input_layout_username"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
             android:text="@string/signin"/>
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
