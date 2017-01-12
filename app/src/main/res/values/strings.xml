@@ -8,6 +8,7 @@
     <string name="signin">Registrarse</string>
     <!--Login-->
     <!--SignIn-->
-    <string name="username">Nombre de usuario</string>
+    <string name="username">Nombre</string>
+    <string name="repeat_password">Repita la contraseña</string>
     <!--SignIn-->
 </resources>

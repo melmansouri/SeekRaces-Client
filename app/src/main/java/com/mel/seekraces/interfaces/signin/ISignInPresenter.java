@@ -5,4 +5,5 @@ package com.mel.seekraces.interfaces.signin;
  */
 
 public interface ISignInPresenter {
+    void signIn();
 }
