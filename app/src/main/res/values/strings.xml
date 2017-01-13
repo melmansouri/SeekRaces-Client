@@ -10,5 +10,11 @@
     <!--SignIn-->
     <string name="username">Nombre</string>
     <string name="repeat_password">Repita la contraseña</string>
+    <string-array name="option_dialog_picture">
+        <item>Tomar foto</item>
+        <item>Elegir de galeria</item>
+        <item>Cancelar</item>
+    </string-array>
+    <string name="elige_opcion">Elige una opción</string>
     <!--SignIn-->
 </resources>

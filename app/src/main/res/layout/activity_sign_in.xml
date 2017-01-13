@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/coordinatorLayout">
 
     <RelativeLayout
         android:id="@+id/activity_sign_in"
@@ -39,7 +40,8 @@
             android:hint="@string/username"
             android:layout_below="@+id/imgProfileUser"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true">
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="15dp">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/edtUserName"
@@ -54,7 +56,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/email"
             android:layout_below="@id/text_input_layout_username"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="15dp">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/edtEmail"
@@ -71,7 +73,8 @@
             android:hint="@string/password"
             android:layout_below="@+id/text_input_layout_email"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true">
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="15dp">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/edtPassword"
@@ -87,7 +90,8 @@
             android:hint="@string/repeat_password"
             android:layout_below="@+id/text_input_layout_pass"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true">
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="15dp">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/edtRepeatPassword"
@@ -107,7 +111,12 @@
             android:layout_marginTop="50dp"
             android:text="@string/signin"/>
 
-
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerInParent="true"
+            android:visibility="gone"/>
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
 

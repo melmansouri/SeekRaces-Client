@@ -8,11 +8,14 @@ public interface ISignInView {
     void selectPictureProfile();
     void showProgress();
     void hideProgress();
-    void showMessageInfoSnackBar(String message);
-    void showMessageError(String message);
+    void showMessage(String message);
     void showErrorEmail(String message);
     void showErrorPwd(String message);
+    void showErrorPwdRpeat(String message);
     void showErrorUserName(String message);
     void returnToLoginScreen();
+    void fillImageView();
+    void openCamera();
+    void openGalery();
     void signIn();
 }

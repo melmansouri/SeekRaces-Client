@@ -1,10 +1,12 @@
 package com.mel.seekraces.activities.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 
 import com.mel.seekraces.R;
+import com.mel.seekraces.activities.signin.SignInActivity;
 import com.mel.seekraces.interfaces.login.ILoginPresenter;
 
 import butterknife.BindView;
@@ -25,5 +27,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         //loginPresenter=new LoginPresenterImpl(this);
+        Intent i=new Intent(this, SignInActivity.class);
+        startActivity(i);
     }
 }

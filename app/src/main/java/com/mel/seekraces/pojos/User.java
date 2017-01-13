@@ -7,10 +7,12 @@ package com.mel.seekraces.pojos;
 public class User {
     private String email;
     private String pwd;
+    private String pwd_repeat;
     private String username;
     private String photo_url;
     private String photoBase64;
     private String country;
+
     public String getEmail() {
         return email;
     }
@@ -25,6 +27,14 @@ public class User {
 
     public void setPwd(String pwd) {
         this.pwd = pwd;
+    }
+
+    public String getPwd_repeat() {
+        return pwd_repeat;
+    }
+
+    public void setPwd_repeat(String pwd_repeat) {
+        this.pwd_repeat = pwd_repeat;
     }
 
     public String getUsername() {
