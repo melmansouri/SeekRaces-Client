@@ -1,6 +1,7 @@
 package com.mel.seekraces.commons;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
@@ -25,10 +26,35 @@ public class Utils {
             InputStream imageStream = c.getContentResolver().openInputStream(imageUri);
             Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            selectedImage.compress(Bitmap.CompressFormat.JPEG,100,baos);
+            selectedImage.compress(Bitmap.CompressFormat.JPEG,40,baos);
             byte[] b = baos.toByteArray();
             encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return encodedImage;
+    }
+
+    public static Bitmap getBitmapFromUriImage(Context context,Uri uriImage){
+        Bitmap bitmap=null;
+        try {
+            InputStream imageStream = context.getContentResolver().openInputStream(uriImage);
+            bitmap = BitmapFactory.decodeStream(imageStream);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bitmap;
+    }
+
+    public static String convertUriImageToBase64(Bitmap bitmap){
+
+        String encodedImage="";
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG,40,baos);
+            byte[] b = baos.toByteArray();
+            encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return encodedImage;
@@ -40,5 +66,15 @@ public class Utils {
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null && activeNetwork.isConnected();
+    }
+
+    public static Object getSerializableObjectFromIntent(Intent intent,String name){
+        Object object=null;
+        try{
+            object=intent.getSerializableExtra(name);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return object;
     }
 }

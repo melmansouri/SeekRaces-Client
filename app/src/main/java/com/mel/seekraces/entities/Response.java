@@ -1,10 +1,12 @@
 package com.mel.seekraces.entities;
 
+import java.io.Serializable;
+
 /**
  * Created by void on 15/01/2017.
  */
 
-public class Response {
+public class Response implements Serializable{
     private String message;
     private String content;
     private boolean isOk;

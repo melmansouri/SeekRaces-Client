@@ -11,14 +11,16 @@ public interface ILoginView {
     void login();
 
     void showEmailError(String message);
+    void hideEmailError();
 
     void showPwdError(String message);
+    void hidePwdError();
 
-    void showErrorLogin();
+    void showMessage(String message);
 
     void showProgress();
 
-    void closeProgress();
+    void hideProgress();
 
     void goToMainScreen();
 

@@ -1,5 +1,7 @@
 package com.mel.seekraces.interfaces.signin;
 
+import com.mel.seekraces.entities.Response;
+
 /**
  * Created by moha on 10/01/17.
  */
@@ -18,7 +20,8 @@ public interface ISignInView {
     void showErrorUserName(String message);
     void hideErrorUserName();
     void returnToLoginScreen();
-    void fillImageView();
+    void fillImageViewFromCamera();
+    void fillImageViewFromGallery();
     void openCamera();
     void openGalery();
     void signIn();

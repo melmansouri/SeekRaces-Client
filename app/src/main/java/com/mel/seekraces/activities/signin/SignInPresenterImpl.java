@@ -62,9 +62,14 @@ public class SignInPresenterImpl implements ISignInPresenter, IListennerCallBack
 
 
     @Override
-    public void activityResult(int resultCode, int type_result) {
-        if (resultCode == type_result) {
-            view.fillImageView();
+    public void activityResult(int requestCode,int resultCode, int resultOk) {
+        if (resultCode == resultOk) {
+            if (requestCode==Constantes.REQUEST_IMAGE_CAPTURE_CAMERA){
+                view.fillImageViewFromCamera();
+            }else if(requestCode==Constantes.REQUEST_IMAGE_CAPTURE_GALLERY){
+                view.fillImageViewFromGallery();
+            }
+
         }
     }
 

@@ -2,6 +2,7 @@ package com.mel.seekraces.activities.signin;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -22,9 +23,11 @@ import android.widget.ProgressBar;
 import com.mel.seekraces.R;
 import com.mel.seekraces.commons.Utils;
 import com.mel.seekraces.commons.UtilsViews;
+import com.mel.seekraces.entities.Response;
 import com.mel.seekraces.interfaces.signin.ISignInPresenter;
 import com.mel.seekraces.interfaces.signin.ISignInView;
 import com.mel.seekraces.entities.User;
+import com.mel.seekraces.tasks.EncodeImageTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,20 +61,18 @@ public class SignInActivity extends AppCompatActivity implements ISignInView {
     TextInputLayout textInputLayoutRepeatPass;
     private Intent intentOnActivityResult;
     private ISignInPresenter presenter;
-    private String base64ImgProfile;
+    private Bitmap imageBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
         ButterKnife.bind(this);
-        UtilsViews.PermisosValidos(this);
         initialize();
 
     }
 
     private void initialize(){
-        base64ImgProfile="";
         presenter = new SignInPresenterImpl(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -100,7 +101,7 @@ public class SignInActivity extends AppCompatActivity implements ISignInView {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         intentOnActivityResult = data;
-        presenter.activityResult(resultCode, RESULT_OK);
+        presenter.activityResult(requestCode,resultCode, RESULT_OK);
     }
 
     @Override
@@ -120,8 +121,8 @@ public class SignInActivity extends AppCompatActivity implements ISignInView {
     @Override
     public void showProgress() {
         progressBar.setVisibility(View.VISIBLE);
-        /*UtilsViews.disableScreen(this);
-        UtilsViews.closeKeyBoard(this);*/
+        UtilsViews.disableScreen(this);
+        UtilsViews.closeKeyBoard(this);
     }
 
     @Override
@@ -186,13 +187,21 @@ public class SignInActivity extends AppCompatActivity implements ISignInView {
 
     @Override
     public void returnToLoginScreen() {
+        setResult(RESULT_OK);
         finish();
     }
 
     @Override
-    public void fillImageView() {
+    public void fillImageViewFromCamera() {
+        Bundle extras = intentOnActivityResult.getExtras();
+        imageBitmap = (Bitmap) extras.get("data");
+        imgProfileUser.setImageBitmap(imageBitmap);
+    }
+
+    @Override
+    public void fillImageViewFromGallery() {
         Uri uriImage = intentOnActivityResult.getData();
-        base64ImgProfile = Utils.convertUriImageToBase64(this, uriImage);
+        imageBitmap=Utils.getBitmapFromUriImage(this,uriImage);
         imgProfileUser.setImageURI(uriImage);
     }
 
@@ -211,14 +220,21 @@ public class SignInActivity extends AppCompatActivity implements ISignInView {
 
         showProgress();
 
-        User user = new User();
-        user.setEmail(edtEmail.getText().toString());
-        user.setPwd(edtPassword.getText().toString());
-        user.setPwd_repeat(edtRepeatPassword.getText().toString());
-        user.setUsername(edtUserName.getText().toString());
-        user.setPhotoBase64(base64ImgProfile);
+        final User user = new User();
+        new EncodeImageTask(this,imageBitmap){
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                user.setEmail(edtEmail.getText().toString());
+                user.setPwd(edtPassword.getText().toString());
+                user.setPwd_repeat(edtRepeatPassword.getText().toString());
+                user.setUsername(edtUserName.getText().toString());
+                user.setPhotoBase64(s);
 
-        presenter.signIn(user);
+                presenter.signIn(user);
+            }
+        }.execute();
+
     }
 
 

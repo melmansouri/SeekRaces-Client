@@ -34,14 +34,13 @@ public class SignInInteractorImpl implements ISignInInteractor{
         signInCall.enqueue(new Callback<Response>() {
             @Override
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                Response responsetmp=null;
+                Response responsetmp;
                 if (!response.isSuccessful()){
                     responsetmp=new Response();
                     responsetmp.setMessage(response.message());
                     responsetmp.setOk(false);
 
                 }else{
-
                     responsetmp=response.body();
                 }
 

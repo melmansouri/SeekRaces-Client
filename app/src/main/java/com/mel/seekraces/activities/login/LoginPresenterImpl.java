@@ -1,6 +1,8 @@
 package com.mel.seekraces.activities.login;
 
+import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.entities.Response;
+import com.mel.seekraces.entities.User;
 import com.mel.seekraces.interfaces.IListennerCallBack;
 import com.mel.seekraces.interfaces.login.ILoginInteractor;
 import com.mel.seekraces.interfaces.login.ILoginPresenter;
@@ -21,17 +23,24 @@ public class LoginPresenterImpl implements ILoginPresenter ,IListennerCallBack{
     }
 
     @Override
-    public void login() {
+    public void login(User user) {
 
     }
 
-    private void validateEmail(String email) {
-
+    @Override
+    public void activityResult(int requestCode, int resultCode, int resultOk) {
+        if (requestCode == Constantes.REQUEST_START_SIGNIN_FOR_RESULT) {
+            if (resultCode == resultOk) {
+                loginView.showMessage("Se le ha enviado un correo de confirmación.");
+            }
+        }
     }
 
-    private void validatePassword(String pwd) {
-
+    @Override
+    public void onDestroy() {
+        loginView=null;
     }
+
 
     @Override
     public void onSuccess(Response response) {

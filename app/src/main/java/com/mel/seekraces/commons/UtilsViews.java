@@ -37,13 +37,13 @@ public class UtilsViews {
 
     public static void openCamera(Activity activity) {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        activity.startActivityForResult(takePictureIntent, Constantes.REQUEST_IMAGE_CAPTURE);
+        activity.startActivityForResult(takePictureIntent, Constantes.REQUEST_IMAGE_CAPTURE_CAMERA);
     }
 
     public static void openGallery(Activity activity){
         Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*");
-        activity.startActivityForResult(intent.createChooser(intent, "Selecciona app de imagen"), 1);
+        activity.startActivityForResult(intent.createChooser(intent, "Selecciona app de imagen"), Constantes.REQUEST_IMAGE_CAPTURE_GALLERY);
     }
 
     @TargetApi(Build.VERSION_CODES.M)

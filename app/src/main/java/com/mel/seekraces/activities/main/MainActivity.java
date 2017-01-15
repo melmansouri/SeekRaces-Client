@@ -1,4 +1,4 @@
-package com.mel.seekraces.activities;
+package com.mel.seekraces.activities.main;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
