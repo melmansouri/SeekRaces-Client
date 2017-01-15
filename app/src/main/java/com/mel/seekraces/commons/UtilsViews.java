@@ -1,12 +1,22 @@
 package com.mel.seekraces.commons;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.provider.MediaStore;
+import android.provider.SyncStateContract;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 /**
  * Created by void on 12/01/2017.
@@ -21,7 +31,7 @@ public class UtilsViews {
     }
 
     public static void showSnackBar(CoordinatorLayout root,String message){
-        Snackbar snackbar= Snackbar.make(root,message,Snackbar.LENGTH_SHORT);
+        Snackbar snackbar= Snackbar.make(root,message,Snackbar.LENGTH_LONG);
         snackbar.show();
     }
 
@@ -35,4 +45,40 @@ public class UtilsViews {
         intent.setType("image/*");
         activity.startActivityForResult(intent.createChooser(intent, "Selecciona app de imagen"), 1);
     }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    public static boolean PermisosValidos(Activity activity) {
+
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+
+            int camera = ContextCompat.checkSelfPermission(activity,Manifest.permission.CAMERA);
+            int acceso_tarjeta_memoria = ContextCompat.checkSelfPermission(activity,Manifest.permission.READ_EXTERNAL_STORAGE);
+            int escritura_tarjeta_memoria = ContextCompat.checkSelfPermission(activity,Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if (camera != PackageManager.PERMISSION_GRANTED
+                    || acceso_tarjeta_memoria != PackageManager.PERMISSION_GRANTED
+                    || escritura_tarjeta_memoria != PackageManager.PERMISSION_GRANTED) {
+                activity.requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constantes.REQUEST_CODE_GENERIC_PERMISSION);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static void closeKeyBoard(Activity activity){
+        View view = activity.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
+    public static void disableScreen(Activity activity){
+        activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    public static void enableSreen(Activity activity){
+        activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
 }

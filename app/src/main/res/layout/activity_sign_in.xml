@@ -6,117 +6,123 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/coordinatorLayout">
-
-    <RelativeLayout
-        android:id="@+id/activity_sign_in"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        tools:context="com.mel.seekraces.activities.signin.SignInActivity">
-
-        <!--ImageView
-            android:id="@+id/imgProfileUser"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/ic_default_user"/-->
-        <de.hdodenhof.circleimageview.CircleImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/imgProfileUser"
-            android:layout_width="125dp"
-            android:layout_height="125dp"
-            android:src="@drawable/ic_user_default"
-            android:layout_centerHorizontal="true"
-            app:civ_border_width="2dp"
-            app:civ_border_color="@color/divider"/>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/text_input_layout_username"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:id="@+id/activity_sign_in"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/username"
-            android:layout_below="@+id/imgProfileUser"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="15dp">
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            tools:context="com.mel.seekraces.activities.signin.SignInActivity">
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/edtUserName"
+            <!--ImageView
+                android:id="@+id/imgProfileUser"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/ic_default_user"/-->
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/text_input_layout_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"/>
-        </android.support.design.widget.TextInputLayout>
+                android:hint="@string/username"
+                android:layout_below="@+id/imgProfileUser"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="15dp">
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/text_input_layout_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/email"
-            android:layout_below="@id/text_input_layout_username"
-            android:layout_marginTop="15dp">
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edtUserName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"/>
+            </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/edtEmail"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/text_input_layout_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"/>
+                android:hint="@string/email"
+                android:layout_below="@id/text_input_layout_username"
+                android:layout_marginTop="15dp">
 
-        </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edtEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"/>
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/text_input_layout_pass"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/password"
-            android:layout_below="@+id/text_input_layout_email"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="15dp">
+            </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/edtPassword"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/text_input_layout_pass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"/>
-        </android.support.design.widget.TextInputLayout>
+                android:hint="@string/password"
+                android:layout_below="@+id/text_input_layout_email"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="15dp">
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/text_input_layout_repeat_pass"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/repeat_password"
-            android:layout_below="@+id/text_input_layout_pass"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="15dp">
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edtPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"/>
+            </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/edtRepeatPassword"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/text_input_layout_repeat_pass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"/>
-        </android.support.design.widget.TextInputLayout>
+                android:hint="@string/repeat_password"
+                android:layout_below="@+id/text_input_layout_pass"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="15dp">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edtRepeatPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"/>
+            </android.support.design.widget.TextInputLayout>
 
 
 
-        <Button
-            android:id="@+id/btnSignIn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/text_input_layout_repeat_pass"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
-            android:text="@string/signin"/>
+            <!--Button
+                android:id="@+id/btnSignIn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_input_layout_repeat_pass"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="50dp"
+                android:text="@string/signin"/-->
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_centerInParent="true"
-            android:visibility="gone"/>
-    </RelativeLayout>
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerInParent="true"
+                android:visibility="gone"/>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imgProfileUser"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/ic_user_default"
+                app:civ_border_width="2dp"
+                app:civ_border_color="@color/divider"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
+        </RelativeLayout>
+    </ScrollView>
+
+
 </android.support.design.widget.CoordinatorLayout>
 

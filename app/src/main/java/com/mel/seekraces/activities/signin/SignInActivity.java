@@ -7,11 +7,15 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
-import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
@@ -20,11 +24,12 @@ import com.mel.seekraces.commons.Utils;
 import com.mel.seekraces.commons.UtilsViews;
 import com.mel.seekraces.interfaces.signin.ISignInPresenter;
 import com.mel.seekraces.interfaces.signin.ISignInView;
-import com.mel.seekraces.pojos.User;
+import com.mel.seekraces.entities.User;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 
 
 public class SignInActivity extends AppCompatActivity implements ISignInView {
@@ -60,60 +65,35 @@ public class SignInActivity extends AppCompatActivity implements ISignInView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
         ButterKnife.bind(this);
-        presenter = new SignInPresenterImpl(this);
+        UtilsViews.PermisosValidos(this);
         initialize();
 
     }
 
     private void initialize(){
-        edtEmail.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                textInputLayoutEmail.setErrorEnabled(false);
-            }
+        base64ImgProfile="";
+        presenter = new SignInPresenterImpl(this);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_signin, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-        edtPassword.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                textInputLayoutPass.setErrorEnabled(false);
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-        edtUserName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                textInputLayoutUsername.setErrorEnabled(false);
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+            case R.id.item_menu_signin_registrarse:
+                signIn();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -140,11 +120,14 @@ public class SignInActivity extends AppCompatActivity implements ISignInView {
     @Override
     public void showProgress() {
         progressBar.setVisibility(View.VISIBLE);
+        /*UtilsViews.disableScreen(this);
+        UtilsViews.closeKeyBoard(this);*/
     }
 
     @Override
     public void hideProgress() {
         progressBar.setVisibility(View.GONE);
+        UtilsViews.enableSreen(this);
     }
 
     @Override
@@ -158,18 +141,47 @@ public class SignInActivity extends AppCompatActivity implements ISignInView {
     }
 
     @Override
+    @OnTextChanged(value = R.id.edtEmail,callback = OnTextChanged.Callback.BEFORE_TEXT_CHANGED)
+    public void hideErrorEmail() {
+        textInputLayoutEmail.setErrorEnabled(false);
+    }
+
+    @Override
     public void showErrorPwd(String message) {
         textInputLayoutPass.setError(message);
     }
 
     @Override
-    public void showErrorPwdRpeat(String message) {
+    @OnTextChanged(value = R.id.edtPassword,callback = OnTextChanged.Callback.BEFORE_TEXT_CHANGED)
+    public void hideErrorPwd() {
+        textInputLayoutPass.setErrorEnabled(false);
+    }
+
+    @Override
+    public void showErrorPwdRepeat(String message) {
         textInputLayoutRepeatPass.setError(message);
+    }
+
+    @Override
+    public void hideErrorPwdRepeat() {
+        textInputLayoutRepeatPass.setErrorEnabled(false);
+    }
+
+    @OnTextChanged(value = R.id.edtRepeatPassword,
+            callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    public void afterTextChangedPwdRepeat(Editable editable){
+        presenter.validatePasswordRepeat(edtPassword.getText().toString(),editable.toString());
     }
 
     @Override
     public void showErrorUserName(String message) {
         textInputLayoutUsername.setError(message);
+    }
+
+    @Override
+    @OnTextChanged(value = R.id.edtUserName,callback = OnTextChanged.Callback.BEFORE_TEXT_CHANGED)
+    public void hideErrorUserName() {
+        textInputLayoutUsername.setErrorEnabled(false);
     }
 
     @Override
@@ -195,9 +207,10 @@ public class SignInActivity extends AppCompatActivity implements ISignInView {
     }
 
     @Override
-    @OnClick(R.id.btnSignIn)
     public void signIn() {
+
         showProgress();
+
         User user = new User();
         user.setEmail(edtEmail.getText().toString());
         user.setPwd(edtPassword.getText().toString());
@@ -206,5 +219,13 @@ public class SignInActivity extends AppCompatActivity implements ISignInView {
         user.setPhotoBase64(base64ImgProfile);
 
         presenter.signIn(user);
+    }
+
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.onDestroy();
     }
 }

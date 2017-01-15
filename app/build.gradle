@@ -30,8 +30,17 @@ dependencies {
 
     compile 'com.android.support:design:24.2.0'
 
+    //ButterKnife
     compile 'com.jakewharton:butterknife:8.4.0'
     apt "com.jakewharton:butterknife-compiler:8.4.0"
 
+    //View Libs
     compile 'de.hdodenhof:circleimageview:2.1.0'
+
+    //Retrofit
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+
+    //Generic Libs
+    compile 'com.google.code.gson:gson:2.6.2'
 }

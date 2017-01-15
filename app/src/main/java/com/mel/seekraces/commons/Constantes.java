@@ -13,4 +13,10 @@ public class Constantes {
 
     public static final int REQUEST_IMAGE_CAPTURE=0;
 
+    public static final int REQUEST_CODE_GENERIC_PERMISSION=0;
+
+    public static final int MIN_LENGTH_PASSWORD=1;
+
+
+
 }

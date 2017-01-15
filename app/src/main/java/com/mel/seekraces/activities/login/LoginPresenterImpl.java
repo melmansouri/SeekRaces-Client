@@ -1,5 +1,6 @@
 package com.mel.seekraces.activities.login;
 
+import com.mel.seekraces.entities.Response;
 import com.mel.seekraces.interfaces.IListennerCallBack;
 import com.mel.seekraces.interfaces.login.ILoginInteractor;
 import com.mel.seekraces.interfaces.login.ILoginPresenter;
@@ -33,12 +34,12 @@ public class LoginPresenterImpl implements ILoginPresenter ,IListennerCallBack{
     }
 
     @Override
-    public void onSuccess() {
+    public void onSuccess(Response response) {
 
     }
 
     @Override
-    public void onError() {
+    public void onError(Response response) {
 
     }
 }
