@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "854545676373",
+    "firebase_url": "https://seekraces-client.firebaseio.com",
+    "project_id": "seekraces-client",
+    "storage_bucket": "seekraces-client.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:854545676373:android:7ea63d8df5ee93fd",
+        "android_client_info": {
+          "package_name": "com.mel.seekraces"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "854545676373-92mfgjthbp0nl9uia1u9cuj4vc5tkd9c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mel.seekraces",
+            "certificate_hash": "A8761893563129DDF1CC769C34773F53BB385EF4"
+          }
+        },
+        {
+          "client_id": "854545676373-o1e4qrt5jjhiomt1qn51vcc4p78ee53d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmZRb02-RcKK3I080i5D7nqkMpfOJLHVU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "854545676373-o1e4qrt5jjhiomt1qn51vcc4p78ee53d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

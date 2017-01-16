@@ -4,13 +4,12 @@ import android.util.Log;
 
 import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.Utils;
-import com.mel.seekraces.commons.UtilsViews;
 import com.mel.seekraces.entities.Response;
+import com.mel.seekraces.entities.User;
 import com.mel.seekraces.interfaces.IListennerCallBack;
 import com.mel.seekraces.interfaces.signin.ISignInInteractor;
 import com.mel.seekraces.interfaces.signin.ISignInPresenter;
 import com.mel.seekraces.interfaces.signin.ISignInView;
-import com.mel.seekraces.entities.User;
 
 /**
  * Created by moha on 13/01/17.
@@ -42,6 +41,9 @@ public class SignInPresenterImpl implements ISignInPresenter, IListennerCallBack
         }
         if (user.getEmail().isEmpty()) {
             view.showErrorEmail("El email no puede estar vacio");
+            result = false;
+        }else if(!Utils.isValidEmail(user.getEmail())){
+            view.showErrorEmail("Introduzca un email válido");
             result = false;
         }
         if (user.getPwd().isEmpty()) {

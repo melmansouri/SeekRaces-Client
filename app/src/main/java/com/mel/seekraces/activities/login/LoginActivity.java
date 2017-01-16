@@ -10,11 +10,11 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.mel.seekraces.R;
+import com.mel.seekraces.activities.main.MainActivity;
 import com.mel.seekraces.activities.signin.SignInActivity;
 import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.Utils;
 import com.mel.seekraces.commons.UtilsViews;
-import com.mel.seekraces.entities.Response;
 import com.mel.seekraces.entities.User;
 import com.mel.seekraces.interfaces.login.ILoginPresenter;
 import com.mel.seekraces.interfaces.login.ILoginView;
@@ -22,6 +22,7 @@ import com.mel.seekraces.interfaces.login.ILoginView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 
 public class LoginActivity extends AppCompatActivity implements ILoginView {
 
@@ -69,6 +70,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
         User user=new User();
         user.setEmail(edtEmail.getText().toString());
         user.setPwd(edtPassword.getText().toString());
+        user.setToken_push(Utils.getStringSP(this,Constantes.FILE_SP,Constantes.KEY_TOKEN_PUSH));
         loginPresenter.login(user);
     }
 
@@ -78,6 +80,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
     }
 
     @Override
+    @OnTextChanged(value = R.id.edtEmail,callback = OnTextChanged.Callback.BEFORE_TEXT_CHANGED)
     public void hideEmailError() {
         textInputLayoutEmail.setErrorEnabled(false);
     }
@@ -88,6 +91,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
     }
 
     @Override
+    @OnTextChanged(value = R.id.edtPassword,callback = OnTextChanged.Callback.BEFORE_TEXT_CHANGED)
     public void hidePwdError() {
         textInputLayoutPass.setErrorEnabled(false);
     }
@@ -112,7 +116,8 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
 
     @Override
     public void goToMainScreen() {
-
+        Intent intent=new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     @Override

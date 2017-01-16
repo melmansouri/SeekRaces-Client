@@ -16,17 +16,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.mel.seekraces.R;
 import com.mel.seekraces.commons.Utils;
 import com.mel.seekraces.commons.UtilsViews;
-import com.mel.seekraces.entities.Response;
+import com.mel.seekraces.entities.User;
 import com.mel.seekraces.interfaces.signin.ISignInPresenter;
 import com.mel.seekraces.interfaces.signin.ISignInView;
-import com.mel.seekraces.entities.User;
 import com.mel.seekraces.tasks.EncodeImageTask;
 
 import butterknife.BindView;
@@ -194,6 +192,8 @@ public class SignInActivity extends AppCompatActivity implements ISignInView {
     @Override
     public void fillImageViewFromCamera() {
         Bundle extras = intentOnActivityResult.getExtras();
+        //Bitmap bitmaptmp=(Bitmap) extras.get("data");
+        //imageBitmap = Bitmap.createScaledBitmap(bitmaptmp,(int)(bitmaptmp.getWidth()*0.8), (int)(bitmaptmp.getHeight()*0.8), true);
         imageBitmap = (Bitmap) extras.get("data");
         imgProfileUser.setImageBitmap(imageBitmap);
     }
@@ -201,8 +201,10 @@ public class SignInActivity extends AppCompatActivity implements ISignInView {
     @Override
     public void fillImageViewFromGallery() {
         Uri uriImage = intentOnActivityResult.getData();
+        //Bitmap bitmaptmp=Utils.getBitmapFromUriImage(this,uriImage);
+        //imageBitmap = Bitmap.createScaledBitmap(bitmaptmp,(int)(bitmaptmp.getWidth()*0.8), (int)(bitmaptmp.getHeight()*0.8), true);
         imageBitmap=Utils.getBitmapFromUriImage(this,uriImage);
-        imgProfileUser.setImageURI(uriImage);
+        imgProfileUser.setImageBitmap(imageBitmap);
     }
 
     @Override
