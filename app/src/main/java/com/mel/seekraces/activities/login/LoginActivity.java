@@ -13,7 +13,7 @@ import com.mel.seekraces.R;
 import com.mel.seekraces.activities.main.MainActivity;
 import com.mel.seekraces.activities.signin.SignInActivity;
 import com.mel.seekraces.commons.Constantes;
-import com.mel.seekraces.commons.Utils;
+import com.mel.seekraces.commons.SharedPreferencesSingleton;
 import com.mel.seekraces.commons.UtilsViews;
 import com.mel.seekraces.entities.User;
 import com.mel.seekraces.interfaces.login.ILoginPresenter;
@@ -41,12 +41,15 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
 
     private ILoginPresenter loginPresenter;
 
+    private SharedPreferencesSingleton sharedPreferencesSingleton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        loginPresenter = new LoginPresenterImpl(this);
+        sharedPreferencesSingleton =SharedPreferencesSingleton.getInstance(this);
+        loginPresenter = new LoginPresenterImpl(this,sharedPreferencesSingleton);
         UtilsViews.PermisosValidos(this);
 
     }
@@ -70,7 +73,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
         User user=new User();
         user.setEmail(edtEmail.getText().toString());
         user.setPwd(edtPassword.getText().toString());
-        user.setToken_push(Utils.getStringSP(this,Constantes.FILE_SP,Constantes.KEY_TOKEN_PUSH));
+        user.setToken_push(sharedPreferencesSingleton.getStringSP(Constantes.KEY_TOKEN_PUSH));
         loginPresenter.login(user);
     }
 

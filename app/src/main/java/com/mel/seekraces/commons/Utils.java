@@ -2,7 +2,6 @@ package com.mel.seekraces.commons;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
@@ -11,6 +10,8 @@ import android.net.Uri;
 import android.util.Base64;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 
 
@@ -107,32 +108,32 @@ public class Utils {
         return object;
     }
 
+    public static boolean mkdir(String directory) {
+        boolean result=true;
+        File folder = new File(directory);
+        if (!folder.exists()) {
+            result=folder.mkdirs();
+        }
+        return result;
+    }
+    public static void saveImage(String base64, String pathImagen) {
+
+        try {
+            byte[] decodedString = Base64.decode(base64, Base64.DEFAULT);
+            Bitmap bmp = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            if (bmp != null) {
+                File imageFile = new File(pathImagen);
+                FileOutputStream out = new FileOutputStream(imageFile);
+                bmp.compress(Bitmap.CompressFormat.PNG, 100, out);
+                out.flush();
+                out.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static boolean isValidEmail(String email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
-    }
-
-    public static void saveStringSP(Context context, String file, String key,String value) {
-        SharedPreferences prefs = context.getSharedPreferences(file, Context.MODE_PRIVATE);
-        SharedPreferences.Editor ed = prefs.edit();
-        ed.putString(key, value);
-        ed.commit();
-    }
-
-    public static String getStringSP(Context context, String file, String key) {
-        String value="";
-        SharedPreferences prefs =
-                context.getSharedPreferences(file, Context.MODE_PRIVATE);
-        if (prefs.contains(key)){
-            value=prefs.getString(key,null);
-        }
-        return value;
-    }
-
-    public static void removeValueSP(Context context, String file, String key) {
-        SharedPreferences prefs =
-                context.getSharedPreferences(file, Context.MODE_PRIVATE);
-        SharedPreferences.Editor ed = prefs.edit();
-        ed.remove(key);
-        ed.commit();
     }
 }

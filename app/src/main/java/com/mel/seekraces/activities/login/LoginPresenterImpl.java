@@ -2,7 +2,9 @@ package com.mel.seekraces.activities.login;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.mel.seekraces.commons.Constantes;
+import com.mel.seekraces.commons.SharedPreferencesSingleton;
 import com.mel.seekraces.commons.Utils;
 import com.mel.seekraces.entities.Response;
 import com.mel.seekraces.entities.User;
@@ -19,10 +21,12 @@ public class LoginPresenterImpl implements ILoginPresenter ,IListennerCallBack{
 
     private ILoginView view;
     private ILoginInteractor loginInteractor;
+    private SharedPreferencesSingleton sharedPreferencesSingleton;
 
-    public LoginPresenterImpl(ILoginView loginView){
+    public LoginPresenterImpl(ILoginView loginView, SharedPreferencesSingleton sharedPreferencesSingleton){
         this.view=loginView;
         this.loginInteractor=new LoginInteractorImpl(this);
+        this.sharedPreferencesSingleton=sharedPreferencesSingleton;
     }
 
     @Override
@@ -70,6 +74,16 @@ public class LoginPresenterImpl implements ILoginPresenter ,IListennerCallBack{
     public void onSuccess(Response response) {
         view.hideProgress();
         Log.e("tag",response.toString());
+        User user=new Gson().fromJson(response.getContent(),User.class);
+        if ((user.getPhotoBase64()!=null && !user.getPhotoBase64().isEmpty()) && (user.getPhoto_url() !=null&&!user.getPhoto_url().isEmpty())){
+            if (Utils.mkdir(Constantes.RUTA_IMAGENES)){
+                Utils.saveImage(user.getPhotoBase64(),Constantes.RUTA_IMAGENES+"/"+user.getPhoto_url());
+                user.setPhotoBase64("");
+            }
+        }
+        sharedPreferencesSingleton.removeValueSP(Constantes.KEY_TOKEN_PUSH);
+        sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USER,new Gson().toJson(user));
+
         view.goToMainScreen();
     }
 

@@ -11,8 +11,8 @@ public class Constantes {
 
     //Paths
     public static final String RUTA_IMAGENES = Environment.getExternalStorageDirectory().getPath() + "/NOTIFICACIONES/IMAGENES/";
-    public static final String TYPE_IMAGE_PROILE = "profile";
-    public static final String TYPE_IMAGE_EVENT = "event";
+    public static final String TYPE_IMAGE_PROILE = "PROFILE";
+    public static final String TYPE_IMAGE_EVENT = "EVENTS";
 
     //Request Start Activities
     public static final int REQUEST_IMAGE_CAPTURE_CAMERA=100;
@@ -25,5 +25,6 @@ public class Constantes {
     //SharedPreferences
     public static final String FILE_SP="seekraces_preferences";
     public static final String KEY_TOKEN_PUSH="token_push";
+    public static final String KEY_USER="token_push";
 
 }
