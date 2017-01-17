@@ -2,6 +2,8 @@ package com.mel.seekraces.commons;
 
 import android.os.Environment;
 
+import java.io.File;
+
 /**
  * Created by void on 12/01/2017.
  */
@@ -10,7 +12,7 @@ public class Constantes {
     public static final int MIN_LENGTH_PASSWORD=1;
 
     //Paths
-    public static final String RUTA_IMAGENES = Environment.getExternalStorageDirectory().getPath() + "/NOTIFICACIONES/IMAGENES/";
+    public static final String RUTA_IMAGENES = Environment.getExternalStorageDirectory()+ File.separator + "Seekraces"+File.separator+"pictures"+File.separator;
     public static final String TYPE_IMAGE_PROILE = "PROFILE";
     public static final String TYPE_IMAGE_EVENT = "EVENTS";
 

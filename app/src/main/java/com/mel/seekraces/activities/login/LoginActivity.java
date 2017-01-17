@@ -51,7 +51,6 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
         sharedPreferencesSingleton =SharedPreferencesSingleton.getInstance(this);
         loginPresenter = new LoginPresenterImpl(this,sharedPreferencesSingleton);
         UtilsViews.PermisosValidos(this);
-
     }
 
     @Override

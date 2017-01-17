@@ -16,5 +16,18 @@
         <item>Cancelar</item>
     </string-array>
     <string name="elige_opcion">Elige una opción</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
     <!--SignIn-->
+    <!--Navigation Drawer elements-->
+    <string name="item_carreras">Carreras</string>
+    <string name="item_carreras_ingresadas">Mis Carreras Ingresadas</string>
+    <string name="item_carreras_favoritas">Favoritas</string>
+    <string name="item_carreras_anteriores">Carreras Anteriores</string>
+    <!--string name="item_carreras">Carreras</string-->
+    <!--Navigation Drawer elements-->
 </resources>

@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "854545676373-qicdothjf53nspfj1fkd64ahesl4uc0j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mel.seekraces",
+            "certificate_hash": "496D51A705BC382411A80F76DDC69AEEDB9085BE"
+          }
+        },
+        {
           "client_id": "854545676373-92mfgjthbp0nl9uia1u9cuj4vc5tkd9c.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

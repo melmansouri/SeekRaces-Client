@@ -124,7 +124,7 @@ public class Utils {
             if (bmp != null) {
                 File imageFile = new File(pathImagen);
                 FileOutputStream out = new FileOutputStream(imageFile);
-                bmp.compress(Bitmap.CompressFormat.PNG, 100, out);
+                bmp.compress(Bitmap.CompressFormat.JPEG, 60, out);
                 out.flush();
                 out.close();
             }

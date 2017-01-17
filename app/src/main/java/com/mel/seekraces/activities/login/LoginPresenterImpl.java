@@ -1,5 +1,6 @@
 package com.mel.seekraces.activities.login;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -77,7 +78,7 @@ public class LoginPresenterImpl implements ILoginPresenter ,IListennerCallBack{
         User user=new Gson().fromJson(response.getContent(),User.class);
         if ((user.getPhotoBase64()!=null && !user.getPhotoBase64().isEmpty()) && (user.getPhoto_url() !=null&&!user.getPhoto_url().isEmpty())){
             if (Utils.mkdir(Constantes.RUTA_IMAGENES)){
-                Utils.saveImage(user.getPhotoBase64(),Constantes.RUTA_IMAGENES+"/"+user.getPhoto_url());
+                Utils.saveImage(user.getPhotoBase64(),Constantes.RUTA_IMAGENES+user.getPhoto_url());
                 user.setPhotoBase64("");
             }
         }
