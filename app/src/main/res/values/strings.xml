@@ -24,8 +24,8 @@
     <string name="action_settings">Settings</string>
     <!--SignIn-->
     <!--Navigation Drawer elements-->
-    <string name="item_carreras">Carreras</string>
-    <string name="item_carreras_ingresadas">Mis Carreras Ingresadas</string>
+    <string name="item_carreras_publicadas">Carreras Publicadas</string>
+    <string name="item_mis_carreras_publicadas">Mis Carreras Publicadas</string>
     <string name="item_carreras_favoritas">Favoritas</string>
     <string name="item_carreras_anteriores">Carreras Anteriores</string>
     <!--string name="item_carreras">Carreras</string-->

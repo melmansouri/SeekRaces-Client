@@ -23,7 +23,7 @@
         </activity>
         <activity
             android:name=".activities.signin.SignInActivity"
-            android:parentActivityName=".activities.login.LoginActivity"></activity>
+            android:parentActivityName=".activities.login.LoginActivity"/>
 
         <service android:name=".services.FirebaseInstanceIDService">
             <intent-filter>
@@ -38,7 +38,7 @@
 
         <activity
             android:name=".activities.main.MainActivity"
-            android:label="@string/title_activity_main2"
+            android:label="@string/item_carreras_publicadas"
             android:parentActivityName=".activities.login.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data

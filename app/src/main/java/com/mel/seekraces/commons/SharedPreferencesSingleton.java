@@ -29,7 +29,7 @@ public class SharedPreferencesSingleton {
         ed.commit();
     }
 
-    public  String getStringSP(String key) {
+    public String getStringSP(String key) {
         String value="";
         if (sharedPreferences.contains(key)){
             value=sharedPreferences.getString(key,null);
@@ -37,7 +37,10 @@ public class SharedPreferencesSingleton {
         return value;
     }
 
-    public  void removeValueSP(String key) {
+    public void removeValueSP(String key) {
+        if(sharedPreferences.contains(key)){
+            return;
+        }
         SharedPreferences.Editor ed = sharedPreferences.edit();
         ed.remove(key);
         ed.commit();

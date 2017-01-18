@@ -3,12 +3,12 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/listEvents"
+            android:id="@+id/listEventsPublished"
             android:icon="@drawable/ic_run"
-            android:title="@string/item_carreras" />
-        <item
-            android:id="@+id/listEventPublished"
             android:title="@string/item_carreras_publicadas" />
+        <item
+            android:id="@+id/listMyEventsPublished"
+            android:title="@string/item_mis_carreras_publicadas" />
         <item
             android:id="@+id/listEventsFavorites"
             android:title="@string/item_carreras_favoritas" />

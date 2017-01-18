@@ -1,10 +1,10 @@
 package com.mel.seekraces.activities.main;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,63 +12,82 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.mel.seekraces.R;
+import com.mel.seekraces.commons.SharedPreferencesSingleton;
+import com.mel.seekraces.interfaces.main.IMainPresenter;
+import com.mel.seekraces.interfaces.main.IMainView;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,IMainView {
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.fabNewEvent)
+    FloatingActionButton fabNewEvent;
+    @BindView(R.id.nav_view)
+    NavigationView navView;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
+
+    private IMainPresenter presenter;
+    private TextView txtUserName;
+    private CircleImageView imgProfileUser;
+    private SharedPreferencesSingleton sharedPreferencesSingleton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabNewEvent);
-        fab.setOnClickListener(new View.OnClickListener() {
+        fabNewEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
+        sharedPreferencesSingleton=SharedPreferencesSingleton.getInstance(this);
+        presenter=new MainPresenterImpl(this,sharedPreferencesSingleton);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        setupNavigationDrawer();
+
+        presenter.fillDataHeaderView();
+    }
+
+    private void setupNavigationDrawer(){
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        navView.setNavigationItemSelectedListener(this);
+        View view =navView.getHeaderView(0);
+        txtUserName=(TextView) view.findViewById(R.id.txtUserName);
+        imgProfileUser=(CircleImageView)view.findViewById(R.id.imgProfileUser);
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+        presenter.onBackPressed();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -79,25 +98,53 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
-
-        /*if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }*/
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        presenter.onNavigationItemSelected(id);
         return true;
+    }
+
+    @Override
+    public void closeDrawerLayout() {
+        drawerLayout.closeDrawer(GravityCompat.START);
+    }
+
+    @Override
+    public void fillNavHeaderTxtUserName(String username) {
+        txtUserName.setText(username);
+    }
+
+    @Override
+    public void fillNavHeaderImgProfile(Uri uri) {
+        imgProfileUser.setImageURI(uri);
+    }
+
+    @Override
+    public void returnBack() {
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean isDrawerOpen() {
+        return drawerLayout.isDrawerOpen(GravityCompat.START);
+    }
+
+    @Override
+    public void chargeFragmentRacesPublished() {
+
+    }
+
+    @Override
+    public void chargeFragmentMyRacesPublished() {
+
+    }
+
+    @Override
+    public void chargeFragmentRacesFavorites() {
+
+    }
+
+    @Override
+    public void chargeFragmentRacesPrevious() {
+
     }
 }

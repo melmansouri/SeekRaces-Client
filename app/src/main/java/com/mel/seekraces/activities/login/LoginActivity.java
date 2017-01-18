@@ -73,6 +73,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
         user.setEmail(edtEmail.getText().toString());
         user.setPwd(edtPassword.getText().toString());
         user.setToken_push(sharedPreferencesSingleton.getStringSP(Constantes.KEY_TOKEN_PUSH));
+        sharedPreferencesSingleton.removeValueSP(Constantes.KEY_TOKEN_PUSH);
         loginPresenter.login(user);
     }
 

@@ -27,6 +27,6 @@ public class Constantes {
     //SharedPreferences
     public static final String FILE_SP="seekraces_preferences";
     public static final String KEY_TOKEN_PUSH="token_push";
-    public static final String KEY_USER="token_push";
+    public static final String KEY_USER="user";
 
 }

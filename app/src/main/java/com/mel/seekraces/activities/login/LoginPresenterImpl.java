@@ -1,6 +1,5 @@
 package com.mel.seekraces.activities.login;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -82,7 +81,6 @@ public class LoginPresenterImpl implements ILoginPresenter ,IListennerCallBack{
                 user.setPhotoBase64("");
             }
         }
-        sharedPreferencesSingleton.removeValueSP(Constantes.KEY_TOKEN_PUSH);
         sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USER,new Gson().toJson(user));
 
         view.goToMainScreen();
