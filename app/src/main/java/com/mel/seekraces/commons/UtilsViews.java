@@ -3,13 +3,12 @@ package com.mel.seekraces.commons;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.provider.MediaStore;
-import android.provider.SyncStateContract;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -28,6 +27,15 @@ public class UtilsViews {
         AlertDialog.Builder builder = new AlertDialog.Builder(c);
         builder.setTitle(title);
         return builder;
+    }
+
+    public static ProgressDialog showProgressDialog(Context context,String message){
+        ProgressDialog progressDialog=new ProgressDialog(context);
+        progressDialog.setMessage(message);
+        progressDialog.setIndeterminate(true);
+        progressDialog.show();
+
+        return progressDialog;
     }
 
     public static void showSnackBar(CoordinatorLayout root,String message){

@@ -9,5 +9,13 @@ public interface IMainPresenter {
 
     void onNavigationItemSelected(int itemSelectd);
 
+    void getDataRacesPublished();
+
+    void fillDataMyRacesPublished();
+
+    void fillDataRacesFavorites();
+
+    void fillDataRacesPrevious();
+
     void onBackPressed();
 }

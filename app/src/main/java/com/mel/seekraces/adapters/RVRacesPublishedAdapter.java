@@ -1,4 +1,4 @@
-package com.mel.seekraces.fragments;
+package com.mel.seekraces.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;

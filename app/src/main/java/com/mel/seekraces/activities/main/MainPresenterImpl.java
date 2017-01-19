@@ -59,6 +59,11 @@ public class MainPresenterImpl implements IMainPresenter {
     }
 
     @Override
+    public void fillDataRacesPublished() {
+
+    }
+
+    @Override
     public void onBackPressed() {
         if (view.isDrawerOpen()) {
             view.closeDrawerLayout();

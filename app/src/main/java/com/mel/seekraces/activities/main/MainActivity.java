@@ -2,9 +2,7 @@ package com.mel.seekraces.activities.main;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -29,8 +27,6 @@ public class MainActivity extends AppCompatActivity
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.fabNewEvent)
-    FloatingActionButton fabNewEvent;
     @BindView(R.id.nav_view)
     NavigationView navView;
     @BindView(R.id.drawer_layout)
@@ -47,14 +43,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-
-        fabNewEvent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
         sharedPreferencesSingleton=SharedPreferencesSingleton.getInstance(this);
         presenter=new MainPresenterImpl(this,sharedPreferencesSingleton);
 
@@ -72,6 +60,7 @@ public class MainActivity extends AppCompatActivity
         View view =navView.getHeaderView(0);
         txtUserName=(TextView) view.findViewById(R.id.txtUserName);
         imgProfileUser=(CircleImageView)view.findViewById(R.id.imgProfileUser);
+        navView.setCheckedItem(0);
     }
 
     @Override
