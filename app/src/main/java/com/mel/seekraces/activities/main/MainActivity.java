@@ -1,20 +1,24 @@
 package com.mel.seekraces.activities.main;
 
+import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mel.seekraces.R;
 import com.mel.seekraces.commons.SharedPreferencesSingleton;
+import com.mel.seekraces.commons.UtilsViews;
 import com.mel.seekraces.interfaces.main.IMainPresenter;
 import com.mel.seekraces.interfaces.main.IMainView;
 
@@ -36,6 +40,8 @@ public class MainActivity extends AppCompatActivity
     private TextView txtUserName;
     private CircleImageView imgProfileUser;
     private SharedPreferencesSingleton sharedPreferencesSingleton;
+    private AlertDialog alertDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +53,6 @@ public class MainActivity extends AppCompatActivity
         presenter=new MainPresenterImpl(this,sharedPreferencesSingleton);
 
         setupNavigationDrawer();
-
-        presenter.fillDataHeaderView();
     }
 
     private void setupNavigationDrawer(){
@@ -60,7 +64,8 @@ public class MainActivity extends AppCompatActivity
         View view =navView.getHeaderView(0);
         txtUserName=(TextView) view.findViewById(R.id.txtUserName);
         imgProfileUser=(CircleImageView)view.findViewById(R.id.imgProfileUser);
-        navView.setCheckedItem(0);
+        presenter.fillDataHeaderView();
+        navView.getMenu().performIdentifierAction(R.id.listEventsPublished, 0);
     }
 
     @Override
@@ -77,9 +82,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        /*if (id == R.id.action_settings) {
             return true;
-        }
+        }*/
 
         return super.onOptionsItemSelected(item);
     }
@@ -103,8 +108,14 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void fillNavHeaderImgProfile(Uri uri) {
-        imgProfileUser.setImageURI(uri);
+    public void fillNavHeaderImgProfile(final Uri uri) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                imgProfileUser.setImageURI(uri);
+            }
+        });
+
     }
 
     @Override
@@ -118,8 +129,19 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void chargeFragmentRacesPublished() {
+    public void showProgressDialog() {
+        alertDialog = UtilsViews.createAlertDialog(this,null);
+        alertDialog.show();
+    }
 
+    @Override
+    public void hideProgressDialog() {
+        alertDialog.hide();
+    }
+
+    @Override
+    public void chargeFragmentRacesPublished() {
+        Toast.makeText(this, "sdfsdfsdf", Toast.LENGTH_SHORT).show();
     }
 
     @Override

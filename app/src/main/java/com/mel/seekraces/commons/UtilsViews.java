@@ -13,6 +13,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -25,7 +26,9 @@ public class UtilsViews {
 
     public static AlertDialog.Builder createAlertDialog(Context c, String title) {
         AlertDialog.Builder builder = new AlertDialog.Builder(c);
-        builder.setTitle(title);
+        if (title !=null) {
+            builder.setTitle(title);
+        }
         return builder;
     }
 

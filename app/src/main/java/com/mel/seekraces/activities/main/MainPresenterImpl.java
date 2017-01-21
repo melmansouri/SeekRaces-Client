@@ -7,7 +7,9 @@ import com.google.gson.Gson;
 import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.RMapped;
 import com.mel.seekraces.commons.SharedPreferencesSingleton;
+import com.mel.seekraces.entities.Response;
 import com.mel.seekraces.entities.User;
+import com.mel.seekraces.interfaces.IListennerCallBack;
 import com.mel.seekraces.interfaces.main.IMainPresenter;
 import com.mel.seekraces.interfaces.main.IMainView;
 
@@ -17,7 +19,7 @@ import java.io.File;
  * Created by moha on 18/01/17.
  */
 
-public class MainPresenterImpl implements IMainPresenter {
+public class MainPresenterImpl implements IMainPresenter, IListennerCallBack{
 
     private IMainView view;
     private SharedPreferencesSingleton sharedPreferencesSingleton;
@@ -31,15 +33,21 @@ public class MainPresenterImpl implements IMainPresenter {
     public void fillDataHeaderView() {
         String userJson = sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER);
         if (!TextUtils.isEmpty(userJson)) {
-            User user = new Gson().fromJson(userJson, User.class);
+            final User user = new Gson().fromJson(userJson, User.class);
             view.fillNavHeaderTxtUserName(user.getUsername());
-            File file = new File(Constantes.RUTA_IMAGENES + user.getPhoto_url());
-            if (file.exists()) {
-                Uri uri = Uri.fromFile(file);
-                if (uri != null) {
-                    view.fillNavHeaderImgProfile(uri);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    File file = new File(Constantes.RUTA_IMAGENES + user.getPhoto_url());
+                    if (file.exists()) {
+                        Uri uri = Uri.fromFile(file);
+                        if (uri != null) {
+
+                            view.fillNavHeaderImgProfile(uri);
+                        }
+                    }
                 }
-            }
+            }).start();
         }
     }
 
@@ -70,5 +78,15 @@ public class MainPresenterImpl implements IMainPresenter {
             return;
         }
         view.returnBack();
+    }
+
+    @Override
+    public void onSuccess(Response response) {
+
+    }
+
+    @Override
+    public void onError(Response response) {
+
     }
 }

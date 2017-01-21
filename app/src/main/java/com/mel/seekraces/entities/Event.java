@@ -1,6 +1,8 @@
 package com.mel.seekraces.entities;
 
 import android.graphics.Bitmap;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.util.Date;
 
@@ -8,7 +10,7 @@ import java.util.Date;
  * Created by void on 18/01/2017.
  */
 
-public class Event {
+public class Event implements Parcelable{
     private int id;
     private String user;
     private String name;
@@ -18,11 +20,43 @@ public class Event {
     private int distance;
     private String country;
     private String city;
-    private Date date_time_init;
+    private String date_time_init;
     private String web;
     private int num_reviews;
     private int total_scores;
     private int rating;
+
+    public Event(){
+    }
+
+    protected Event(Parcel in) {
+        id = in.readInt();
+        user = in.readString();
+        name = in.readString();
+        description = in.readString();
+        bitmap = in.readParcelable(Bitmap.class.getClassLoader());
+        imageBase64 = in.readString();
+        distance = in.readInt();
+        country = in.readString();
+        city = in.readString();
+        date_time_init=in.readString();
+        web = in.readString();
+        num_reviews = in.readInt();
+        total_scores = in.readInt();
+        rating = in.readInt();
+    }
+
+    public static final Creator<Event> CREATOR = new Creator<Event>() {
+        @Override
+        public Event createFromParcel(Parcel in) {
+            return new Event(in);
+        }
+
+        @Override
+        public Event[] newArray(int size) {
+            return new Event[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -96,11 +130,11 @@ public class Event {
         this.city = city;
     }
 
-    public Date getDate_time_init() {
+    public String getDate_time_init() {
         return date_time_init;
     }
 
-    public void setDate_time_init(Date date_time_init) {
+    public void setDate_time_init(String date_time_init) {
         this.date_time_init = date_time_init;
     }
 
@@ -134,5 +168,44 @@ public class Event {
 
     public void setRating(int rating) {
         this.rating = rating;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(user);
+        dest.writeString(name);
+        dest.writeString(description);
+        dest.writeParcelable(bitmap, flags);
+        dest.writeString(imageBase64);
+        dest.writeInt(distance);
+        dest.writeString(country);
+        dest.writeString(city);
+        dest.writeString(date_time_init);
+        dest.writeString(web);
+        dest.writeInt(num_reviews);
+        dest.writeInt(total_scores);
+        dest.writeInt(rating);
+    }
+
+    private void readFromParcel(Parcel in) {
+        id = in.readInt();
+        user = in.readString();
+        description = in.readString();
+        bitmap = in.readParcelable(Bitmap.class.getClassLoader());
+        imageBase64 = in.readString();
+        distance = in.readInt();
+        country = in.readString();
+        city = in.readString();
+        date_time_init = in.readString();
+        web = in.readString();
+        num_reviews = in.readInt();
+        total_scores = in.readInt();
+        rating = in.readInt();
     }
 }

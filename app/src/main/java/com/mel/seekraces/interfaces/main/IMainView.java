@@ -17,6 +17,10 @@ public interface IMainView {
 
     boolean isDrawerOpen();
 
+    void showProgressDialog();
+
+    void hideProgressDialog();
+
     void chargeFragmentRacesPublished();
 
     void chargeFragmentMyRacesPublished();
