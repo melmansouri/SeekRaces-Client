@@ -13,6 +13,7 @@ import java.util.Date;
 public class Event implements Parcelable{
     private int id;
     private String user;
+    private String userName;
     private String name;
     private String description;
     private Bitmap bitmap;
@@ -25,6 +26,7 @@ public class Event implements Parcelable{
     private int num_reviews;
     private int total_scores;
     private int rating;
+    private boolean isFavorite;
 
     public Event(){
     }
@@ -44,6 +46,7 @@ public class Event implements Parcelable{
         num_reviews = in.readInt();
         total_scores = in.readInt();
         rating = in.readInt();
+        isFavorite=in.readByte() != 0;
     }
 
     public static final Creator<Event> CREATOR = new Creator<Event>() {
@@ -72,6 +75,14 @@ public class Event implements Parcelable{
 
     public void setUser(String user) {
         this.user = user;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getName() {
@@ -170,6 +181,14 @@ public class Event implements Parcelable{
         this.rating = rating;
     }
 
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -179,6 +198,7 @@ public class Event implements Parcelable{
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
         dest.writeString(user);
+        dest.writeString(userName);
         dest.writeString(name);
         dest.writeString(description);
         dest.writeParcelable(bitmap, flags);
@@ -191,6 +211,7 @@ public class Event implements Parcelable{
         dest.writeInt(num_reviews);
         dest.writeInt(total_scores);
         dest.writeInt(rating);
+        dest.writeByte((byte) (isFavorite ? 1 : 0));
     }
 
     private void readFromParcel(Parcel in) {
@@ -207,5 +228,6 @@ public class Event implements Parcelable{
         num_reviews = in.readInt();
         total_scores = in.readInt();
         rating = in.readInt();
+        isFavorite = in.readByte() != 0;
     }
 }

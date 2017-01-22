@@ -32,11 +32,10 @@ public class UtilsViews {
         return builder;
     }
 
-    public static ProgressDialog showProgressDialog(Context context,String message){
+    public static ProgressDialog createProgressDialog(Context context, String message){
         ProgressDialog progressDialog=new ProgressDialog(context);
         progressDialog.setMessage(message);
         progressDialog.setIndeterminate(true);
-        progressDialog.show();
 
         return progressDialog;
     }

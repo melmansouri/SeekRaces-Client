@@ -1,4 +1,4 @@
-package com.mel.seekraces.interfaces.fragment_racespublished;
+package com.mel.seekraces.interfaces;
 
 import com.mel.seekraces.entities.Event;
 

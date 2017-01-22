@@ -1,20 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:textAppearance="?attr/textAppearanceListItem" />
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    card_view:cardCornerRadius="4dp"
+    card_view:cardElevation="4dp"
+    card_view:cardUseCompatPadding="true">
 
-    <TextView
-        android:id="@+id/content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:textAppearance="?attr/textAppearanceListItem" />
-</LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imgRace"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginBottom="5dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:scaleType="fitXY" />
+
+        <TextView
+            android:id="@+id/txtNameRace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imgRace"
+            android:layout_marginBottom="6dp"
+            android:layout_marginLeft="10dp"
+            android:text="Nombre Carrera"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:id="@+id/txtDistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/imgRace"
+            android:layout_alignRight="@+id/txtCountryCity"
+            android:layout_below="@+id/txtNameRace"
+            android:layout_marginRight="10dp"
+            android:text="distancia"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/txtCountryCity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/txtNameRace"
+            android:layout_below="@+id/txtNameRace"
+            android:layout_marginBottom="6dp"
+            android:text="Pais, Ciudad"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/txtDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/txtNameRace"
+            android:layout_below="@+id/txtCountryCity"
+            android:layout_marginBottom="10dp"
+            android:text="Fecha"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/txtPublicadoPor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/txtNameRace"
+            android:layout_below="@+id/txtDate"
+            android:text="Publicado por Manolo"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <ImageButton
+            android:id="@+id/imgBtnLikeRace"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_not_favorite"
+            android:layout_below="@+id/txtPublicadoPor"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            style="?android:attr/borderlessButtonStyle" />
+
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

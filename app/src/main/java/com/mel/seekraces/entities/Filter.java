@@ -12,6 +12,7 @@ import java.util.Date;
  */
 
 public class Filter implements Parcelable{
+    private String user;
     private String country;
     private String city;
     private int distance;
@@ -23,6 +24,7 @@ public class Filter implements Parcelable{
     }
 
     protected Filter(Parcel in) {
+        user=in.readString();
         country = in.readString();
         city = in.readString();
         distance = in.readInt();
@@ -41,6 +43,14 @@ public class Filter implements Parcelable{
             return new Filter[size];
         }
     };
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
 
     public String getCountry() {
         return country;
@@ -85,6 +95,7 @@ public class Filter implements Parcelable{
     @Override
     public String toString() {
         return "Filter{" +
+                "user='" + user + '\'' +
                 "country='" + country + '\'' +
                 ", city='" + city + '\'' +
                 ", distance='" + distance + '\'' +
@@ -100,6 +111,7 @@ public class Filter implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(user);
         dest.writeString(country);
         dest.writeString(city);
         dest.writeInt(distance);
@@ -108,6 +120,7 @@ public class Filter implements Parcelable{
     }
 
     private void readFromParcel(Parcel in) {
+        user = in.readString();
         country = in.readString();
         city = in.readString();
         distance = in.readInt();

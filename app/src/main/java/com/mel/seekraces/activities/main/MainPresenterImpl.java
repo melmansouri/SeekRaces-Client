@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.RMapped;
 import com.mel.seekraces.commons.SharedPreferencesSingleton;
+import com.mel.seekraces.entities.Filter;
 import com.mel.seekraces.entities.Response;
 import com.mel.seekraces.entities.User;
 import com.mel.seekraces.interfaces.IListennerCallBack;
@@ -55,7 +56,7 @@ public class MainPresenterImpl implements IMainPresenter, IListennerCallBack{
     public void onNavigationItemSelected(int itemSelectd) {
 
         if (itemSelectd == RMapped.ITEM_RACES_PUBLISHED.getValue()) {
-            view.chargeFragmentRacesPublished();
+            view.chargeFragmentRacesPublished(new Filter());
         } else if (itemSelectd == RMapped.ITEM_RACES_MY_PUBLISHED.getValue()) {
             view.chargeFragmentMyRacesPublished();
         } else if (itemSelectd == RMapped.ITEM_RACES_FAVORITES.getValue()) {
@@ -64,11 +65,6 @@ public class MainPresenterImpl implements IMainPresenter, IListennerCallBack{
             view.chargeFragmentRacesPrevious();
         }
         view.closeDrawerLayout();
-    }
-
-    @Override
-    public void fillDataRacesPublished() {
-
     }
 
     @Override

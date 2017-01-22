@@ -2,6 +2,8 @@ package com.mel.seekraces.interfaces.main;
 
 import android.net.Uri;
 
+import com.mel.seekraces.entities.Filter;
+
 /**
  * Created by moha on 18/01/17.
  */
@@ -21,7 +23,7 @@ public interface IMainView {
 
     void hideProgressDialog();
 
-    void chargeFragmentRacesPublished();
+    void chargeFragmentRacesPublished(Filter filter);
 
     void chargeFragmentMyRacesPublished();
 

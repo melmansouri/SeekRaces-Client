@@ -7,18 +7,18 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mel.seekraces.R;
 import com.mel.seekraces.commons.SharedPreferencesSingleton;
 import com.mel.seekraces.commons.UtilsViews;
+import com.mel.seekraces.entities.Filter;
+import com.mel.seekraces.fragments.fragment_racespublished.ListRacesPublishedFragment;
 import com.mel.seekraces.interfaces.main.IMainPresenter;
 import com.mel.seekraces.interfaces.main.IMainView;
 
@@ -40,7 +40,8 @@ public class MainActivity extends AppCompatActivity
     private TextView txtUserName;
     private CircleImageView imgProfileUser;
     private SharedPreferencesSingleton sharedPreferencesSingleton;
-    private AlertDialog alertDialog;
+    private ProgressDialog progressDialog;
+    private ListRacesPublishedFragment fragment;
 
 
     @Override
@@ -51,7 +52,6 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         sharedPreferencesSingleton=SharedPreferencesSingleton.getInstance(this);
         presenter=new MainPresenterImpl(this,sharedPreferencesSingleton);
-
         setupNavigationDrawer();
     }
 
@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity
         txtUserName=(TextView) view.findViewById(R.id.txtUserName);
         imgProfileUser=(CircleImageView)view.findViewById(R.id.imgProfileUser);
         presenter.fillDataHeaderView();
+        navView.getMenu().getItem(0).setChecked(true);
         navView.getMenu().performIdentifierAction(R.id.listEventsPublished, 0);
     }
 
@@ -82,9 +83,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        /*if (id == R.id.action_settings) {
-            return true;
-        }*/
 
         return super.onOptionsItemSelected(item);
     }
@@ -130,18 +128,22 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void showProgressDialog() {
-        alertDialog = UtilsViews.createAlertDialog(this,null);
-        alertDialog.show();
+        progressDialog = UtilsViews.createProgressDialog(this,"Cargando ...");
+        progressDialog.show();
     }
 
     @Override
     public void hideProgressDialog() {
-        alertDialog.hide();
+        progressDialog.dismiss();
     }
 
     @Override
-    public void chargeFragmentRacesPublished() {
-        Toast.makeText(this, "sdfsdfsdf", Toast.LENGTH_SHORT).show();
+    public void chargeFragmentRacesPublished(Filter filter) {
+        fragment=new ListRacesPublishedFragment();
+        Bundle bundle=new Bundle();
+        bundle.putParcelable("filter",filter);
+        fragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction().add(R.id.frameLayout,fragment);
     }
 
     @Override

@@ -4,13 +4,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mel.seekraces.R;
 import com.mel.seekraces.entities.Event;
-import com.mel.seekraces.interfaces.fragment_racespublished.OnListFragmentInteractionListener;
+import com.mel.seekraces.interfaces.OnListFragmentInteractionListener;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
+
+import butterknife.BindView;
 
 public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublishedAdapter.ViewHolder> {
 
@@ -32,8 +38,20 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        /*holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);*/
+        holder.imgRace.setImageBitmap(holder.mItem.getBitmap());
+        holder.txtNameRace.setText(holder.mItem.getName());
+        holder.txtCountryCity.setText(holder.mItem.getCountry()+", "+holder.mItem.getCity());
+        SimpleDateFormat formato =
+                new SimpleDateFormat("EEEE d 'de' MMMM 'de' yyyy", new Locale("es_ES"));
+        String fecha = formato.format(holder.mItem.getDate_time_init());
+        holder.txtDate.setText(fecha);
+        holder.txtPublicadoPor.setText(holder.mItem.getUserName());
+
+        if (holder.mItem.isFavorite()){
+            holder.imgBtnLikeRace.setImageResource(R.drawable.ic_favorite);
+        }else{
+            holder.imgBtnLikeRace.setImageResource(R.drawable.ic_not_favorite);
+        }
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,20 +72,25 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
+        @BindView(R.id.imgRace)
+        ImageView imgRace;
+        @BindView(R.id.txtNameRace)
+        TextView txtNameRace;
+        @BindView(R.id.txtDistance)
+        TextView txtDistance;
+        @BindView(R.id.txtCountryCity)
+        TextView txtCountryCity;
+        @BindView(R.id.txtDate)
+        TextView txtDate;
+        @BindView(R.id.txtPublicadoPor)
+        TextView txtPublicadoPor;
+        @BindView(R.id.imgBtnLikeRace)
+        ImageButton imgBtnLikeRace;
         public Event mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.id);
-            mContentView = (TextView) view.findViewById(R.id.content);
-        }
-
-        @Override
-        public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
         }
     }
 }

@@ -1,10 +1,12 @@
 package com.mel.seekraces.entities;
 
+import android.os.Parcelable;
+
 /**
  * Created by moha on 10/01/17.
  */
 
-public class User {
+public class User{
     private String email;
     private String pwd;
     private String pwd_repeat;
