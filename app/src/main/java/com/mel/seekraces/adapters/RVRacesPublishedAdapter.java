@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublishedAdapter.ViewHolder> {
 
@@ -46,6 +47,7 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
         String fecha = formato.format(holder.mItem.getDate_time_init());
         holder.txtDate.setText(fecha);
         holder.txtPublicadoPor.setText(holder.mItem.getUserName());
+        holder.txtDistance.setText(holder.mItem.getDistance());
 
         if (holder.mItem.isFavorite()){
             holder.imgBtnLikeRace.setImageResource(R.drawable.ic_favorite);
@@ -90,6 +92,7 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
 
         public ViewHolder(View view) {
             super(view);
+            ButterKnife.bind(this,view);
             mView = view;
         }
     }
