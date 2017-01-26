@@ -18,7 +18,7 @@ import com.mel.seekraces.R;
 import com.mel.seekraces.commons.SharedPreferencesSingleton;
 import com.mel.seekraces.commons.UtilsViews;
 import com.mel.seekraces.entities.Filter;
-import com.mel.seekraces.fragments.fragment_racespublished.ListRacesPublishedFragment;
+import com.mel.seekraces.fragments.racespublished.ListRacesPublishedFragment;
 import com.mel.seekraces.interfaces.main.IMainPresenter;
 import com.mel.seekraces.interfaces.main.IMainView;
 
@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity
         Bundle bundle=new Bundle();
         bundle.putParcelable("filter",filter);
         fragment.setArguments(bundle);
-        getSupportFragmentManager().beginTransaction().add(R.id.frameLayout,fragment);
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,fragment).commit();
     }
 
     @Override

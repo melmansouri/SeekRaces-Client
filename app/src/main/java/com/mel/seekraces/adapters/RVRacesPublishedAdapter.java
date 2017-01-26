@@ -12,7 +12,9 @@ import com.mel.seekraces.R;
 import com.mel.seekraces.entities.Event;
 import com.mel.seekraces.interfaces.OnListFragmentInteractionListener;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -43,11 +45,19 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
         holder.txtNameRace.setText(holder.mItem.getName());
         holder.txtCountryCity.setText(holder.mItem.getCountry()+", "+holder.mItem.getCity());
         SimpleDateFormat formato =
-                new SimpleDateFormat("EEEE d 'de' MMMM 'de' yyyy", new Locale("es_ES"));
-        String fecha = formato.format(holder.mItem.getDate_time_init());
+                new SimpleDateFormat("EEEE d 'de' MMMM 'de' yyyy", Locale.getDefault());
+        SimpleDateFormat sdf =
+                new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date= null;
+        try {
+            date = sdf.parse(holder.mItem.getDate_time_init());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String fecha = formato.format(date);
         holder.txtDate.setText(fecha);
-        holder.txtPublicadoPor.setText(holder.mItem.getUserName());
-        holder.txtDistance.setText(holder.mItem.getDistance());
+        holder.txtPublicadoPor.setText("Publicado por "+holder.mItem.getUserName());
+        holder.txtDistance.setText(holder.mItem.getDistance()+"KM");
 
         if (holder.mItem.isFavorite()){
             holder.imgBtnLikeRace.setImageResource(R.drawable.ic_favorite);

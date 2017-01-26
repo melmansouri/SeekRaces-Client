@@ -17,11 +17,9 @@
         android:name="com.mel.seekraces.fragments.ListRacesPublishedFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
         android:visibility="gone"
-        tools:context="com.mel.seekraces.fragments.fragment_racespublished.ListRacesPublishedFragment"
+        tools:context="com.mel.seekraces.fragments.racespublished.ListRacesPublishedFragment"
         tools:listitem="@layout/item_list_racespublished"
         android:padding="3dp"/>
 

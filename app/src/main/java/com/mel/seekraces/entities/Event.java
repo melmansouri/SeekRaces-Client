@@ -4,6 +4,9 @@ import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.JsonElement;
+
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -25,7 +28,7 @@ public class Event implements Parcelable{
     private String web;
     private int num_reviews;
     private int total_scores;
-    private int rating;
+    private double rating;
     private boolean isFavorite;
 
     public Event(){
@@ -45,7 +48,7 @@ public class Event implements Parcelable{
         web = in.readString();
         num_reviews = in.readInt();
         total_scores = in.readInt();
-        rating = in.readInt();
+        rating = in.readDouble();
         isFavorite=in.readByte() != 0;
     }
 
@@ -173,11 +176,11 @@ public class Event implements Parcelable{
         this.total_scores = total_scores;
     }
 
-    public int getRating() {
+    public double getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 
@@ -210,7 +213,7 @@ public class Event implements Parcelable{
         dest.writeString(web);
         dest.writeInt(num_reviews);
         dest.writeInt(total_scores);
-        dest.writeInt(rating);
+        dest.writeDouble(rating);
         dest.writeByte((byte) (isFavorite ? 1 : 0));
     }
 
@@ -227,7 +230,7 @@ public class Event implements Parcelable{
         web = in.readString();
         num_reviews = in.readInt();
         total_scores = in.readInt();
-        rating = in.readInt();
+        rating = in.readDouble();
         isFavorite = in.readByte() != 0;
     }
 }

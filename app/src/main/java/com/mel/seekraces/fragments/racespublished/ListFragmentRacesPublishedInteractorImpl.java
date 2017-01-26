@@ -1,4 +1,4 @@
-package com.mel.seekraces.fragments.fragment_racespublished;
+package com.mel.seekraces.fragments.racespublished;
 
 import com.mel.seekraces.connection.RetrofitSingleton;
 import com.mel.seekraces.entities.Filter;
@@ -28,7 +28,7 @@ public class ListFragmentRacesPublishedInteractorImpl implements IListFragmentRa
         Retrofit retrofit= RetrofitSingleton.getInstance().getRetrofit();
         networkConnectionApi=retrofit.create(INetworkConnectionApi.class);
 
-        Call<Response> signInCall=networkConnectionApi.getRacesPublished(filter);
+        Call<Response> signInCall=networkConnectionApi.getRacesPublished(filter.getUser(),filter.getCountry(),filter.getCity(),filter.getDistance(),filter.getDate_interval_init(),filter.getDate_interval_end());
         signInCall.enqueue(new Callback<Response>() {
             @Override
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {

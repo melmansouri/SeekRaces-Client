@@ -72,7 +72,7 @@ public class LoginPresenterImpl implements ILoginPresenter ,IListennerCallBack{
 
     @Override
     public void onSuccess(Response response) {
-        view.hideProgress();
+
         Log.e("tag",response.toString());
         User user=new Gson().fromJson(response.getContent(),User.class);
         if ((user.getPhotoBase64()!=null && !user.getPhotoBase64().isEmpty()) && (user.getPhoto_url() !=null&&!user.getPhoto_url().isEmpty())){
@@ -81,8 +81,10 @@ public class LoginPresenterImpl implements ILoginPresenter ,IListennerCallBack{
                 user.setPhotoBase64("");
             }
         }
-        sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USER,new Gson().toJson(user));
-
+        sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USER,user.getEmail());
+        sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USER_NAME_PICTURE,user.getPhoto_url());
+        sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USERNAME,user.getUsername());
+        view.hideProgress();
         view.goToMainScreen();
     }
 

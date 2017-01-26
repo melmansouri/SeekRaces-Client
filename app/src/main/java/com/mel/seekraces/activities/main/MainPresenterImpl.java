@@ -34,16 +34,16 @@ public class MainPresenterImpl implements IMainPresenter, IListennerCallBack{
     public void fillDataHeaderView() {
         String userJson = sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER);
         if (!TextUtils.isEmpty(userJson)) {
-            final User user = new Gson().fromJson(userJson, User.class);
-            view.fillNavHeaderTxtUserName(user.getUsername());
+            final String user_picture_name=sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER_NAME_PICTURE);
+            String userName=sharedPreferencesSingleton.getStringSP(Constantes.KEY_USERNAME);
+            view.fillNavHeaderTxtUserName(userName);
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    File file = new File(Constantes.RUTA_IMAGENES + user.getPhoto_url());
+                    File file = new File(Constantes.RUTA_IMAGENES + user_picture_name);
                     if (file.exists()) {
                         Uri uri = Uri.fromFile(file);
                         if (uri != null) {
-
                             view.fillNavHeaderImgProfile(uri);
                         }
                     }
@@ -56,7 +56,10 @@ public class MainPresenterImpl implements IMainPresenter, IListennerCallBack{
     public void onNavigationItemSelected(int itemSelectd) {
 
         if (itemSelectd == RMapped.ITEM_RACES_PUBLISHED.getValue()) {
-            view.chargeFragmentRacesPublished(new Filter());
+            Filter filter=new Filter();
+            filter.setUser(sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER));
+            filter.setCountry("spain");
+            view.chargeFragmentRacesPublished(filter);
         } else if (itemSelectd == RMapped.ITEM_RACES_MY_PUBLISHED.getValue()) {
             view.chargeFragmentMyRacesPublished();
         } else if (itemSelectd == RMapped.ITEM_RACES_FAVORITES.getValue()) {

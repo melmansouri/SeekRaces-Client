@@ -1,6 +1,7 @@
-package com.mel.seekraces.fragments.fragment_racespublished;
+package com.mel.seekraces.fragments.racespublished;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,13 +29,13 @@ public class ListRacesPublishedFragment extends Fragment implements IListFragmen
     ProgressBar progressBar;
     private RVRacesPublishedAdapter adapter;
     private IListFragmentRacesPublishedPresenter presenter;
+    private Filter filter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Filter filter=getArguments().getParcelable("filter");
+        filter=getArguments().getParcelable("filter");
         presenter=new ListFragmentRacesPublishedPresenterImpl(this);
-        presenter.getRacesPublished(filter);
     }
 
     @Override
@@ -44,6 +45,12 @@ public class ListRacesPublishedFragment extends Fragment implements IListFragmen
         ButterKnife.bind(this, view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        presenter.getRacesPublished(filter);
     }
 
     @Override
