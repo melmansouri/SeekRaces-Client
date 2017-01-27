@@ -1,20 +1,15 @@
 package com.mel.seekraces.activities.main;
 
-import android.net.Uri;
 import android.text.TextUtils;
 
-import com.google.gson.Gson;
 import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.RMapped;
 import com.mel.seekraces.commons.SharedPreferencesSingleton;
 import com.mel.seekraces.entities.Filter;
 import com.mel.seekraces.entities.Response;
-import com.mel.seekraces.entities.User;
 import com.mel.seekraces.interfaces.IListennerCallBack;
 import com.mel.seekraces.interfaces.main.IMainPresenter;
 import com.mel.seekraces.interfaces.main.IMainView;
-
-import java.io.File;
 
 /**
  * Created by moha on 18/01/17.
@@ -32,7 +27,7 @@ public class MainPresenterImpl implements IMainPresenter, IListennerCallBack{
 
     @Override
     public void fillDataHeaderView() {
-        String userJson = sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER);
+        /*String userJson = sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER);
         if (!TextUtils.isEmpty(userJson)) {
             final String user_picture_name=sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER_NAME_PICTURE);
             String userName=sharedPreferencesSingleton.getStringSP(Constantes.KEY_USERNAME);
@@ -49,7 +44,14 @@ public class MainPresenterImpl implements IMainPresenter, IListennerCallBack{
                     }
                 }
             }).start();
+        }*/
+        String username=sharedPreferencesSingleton.getStringSP(Constantes.KEY_USERNAME);
+        String userNamePicture=sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER_NAME_PICTURE);
+        view.fillNavHeaderTxtUserName(username);
+        if (!TextUtils.isEmpty(userNamePicture)){
+            view.fillNavHeaderImgProfile(userNamePicture);
         }
+
     }
 
     @Override

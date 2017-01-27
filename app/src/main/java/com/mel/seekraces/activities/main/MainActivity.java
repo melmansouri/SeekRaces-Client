@@ -1,6 +1,7 @@
 package com.mel.seekraces.activities.main;
 
 import android.app.ProgressDialog;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -14,11 +15,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.mel.seekraces.R;
 import com.mel.seekraces.commons.SharedPreferencesSingleton;
 import com.mel.seekraces.commons.UtilsViews;
 import com.mel.seekraces.entities.Filter;
 import com.mel.seekraces.fragments.racespublished.ListRacesPublishedFragment;
+import com.mel.seekraces.interfaces.INetworkConnectionApi;
 import com.mel.seekraces.interfaces.main.IMainPresenter;
 import com.mel.seekraces.interfaces.main.IMainView;
 
@@ -113,6 +116,17 @@ public class MainActivity extends AppCompatActivity
                 imgProfileUser.setImageURI(uri);
             }
         });
+
+    }
+
+    @Override
+    public void fillNavHeaderImgProfile(Bitmap bitmap) {
+        imgProfileUser.setImageBitmap(bitmap);
+    }
+
+    @Override
+    public void fillNavHeaderImgProfile(String namePicture) {
+        Glide.with(getApplicationContext()).load(INetworkConnectionApi.BASE_URL_PICTURES+namePicture).into(imgProfileUser);
 
     }
 

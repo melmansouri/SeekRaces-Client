@@ -2,7 +2,6 @@ package com.mel.seekraces.activities.login;
 
 import android.util.Log;
 
-import com.google.gson.Gson;
 import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.SharedPreferencesSingleton;
 import com.mel.seekraces.commons.Utils;
@@ -12,6 +11,7 @@ import com.mel.seekraces.interfaces.IListennerCallBack;
 import com.mel.seekraces.interfaces.login.ILoginInteractor;
 import com.mel.seekraces.interfaces.login.ILoginPresenter;
 import com.mel.seekraces.interfaces.login.ILoginView;
+import com.mel.seekraces.tasks.SaveUserLoginTask;
 
 /**
  * Created by moha on 10/01/17.
@@ -74,16 +74,15 @@ public class LoginPresenterImpl implements ILoginPresenter ,IListennerCallBack{
     public void onSuccess(Response response) {
 
         Log.e("tag",response.toString());
-        User user=new Gson().fromJson(response.getContent(),User.class);
-        if ((user.getPhotoBase64()!=null && !user.getPhotoBase64().isEmpty()) && (user.getPhoto_url() !=null&&!user.getPhoto_url().isEmpty())){
-            if (Utils.mkdir(Constantes.RUTA_IMAGENES)){
-                Utils.saveImage(user.getPhotoBase64(),Constantes.RUTA_IMAGENES+user.getPhoto_url());
-                user.setPhotoBase64("");
+        new SaveUserLoginTask(response.getContent(),sharedPreferencesSingleton){
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                view.hideProgress();
+                view.goToMainScreen();
             }
-        }
-        sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USER,user.getEmail());
-        sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USER_NAME_PICTURE,user.getPhoto_url());
-        sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USERNAME,user.getUsername());
+        }.execute();
+
         view.hideProgress();
         view.goToMainScreen();
     }
