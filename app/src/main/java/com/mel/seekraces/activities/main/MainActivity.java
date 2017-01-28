@@ -133,6 +133,12 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void returnBack() {
         super.onBackPressed();
+        finish();
+    }
+
+    @Override
+    public void setResult() {
+        setResult(RESULT_OK);
     }
 
     @Override
@@ -174,4 +180,6 @@ public class MainActivity extends AppCompatActivity
     public void chargeFragmentRacesPrevious() {
 
     }
+
+
 }

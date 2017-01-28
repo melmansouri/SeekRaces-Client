@@ -7,10 +7,15 @@ import com.mel.seekraces.R;
  */
 
 public enum RMapped {
+    //NAvigation Drawer
     ITEM_RACES_PUBLISHED(R.id.listEventsPublished),
     ITEM_RACES_MY_PUBLISHED(R.id.listMyEventsPublished),
     ITEM_RACES_FAVORITES(R.id.listEventsFavorites),
-    ITEM_RACES_PREVIOUS(R.id.listPreviousEvents);
+    ITEM_RACES_PREVIOUS(R.id.listPreviousEvents),
+    ITEM_EXIT(R.id.exit),
+
+    //Menus
+    ITEM_FILTER(R.id.filter);
 
     private int resource_id;
 

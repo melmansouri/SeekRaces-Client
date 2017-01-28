@@ -20,8 +20,6 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
-    <string name="action_settings">Settings</string>
     <!--SignIn-->
     <!--Navigation Drawer elements-->
     <string name="item_carreras_publicadas">Carreras Publicadas</string>
@@ -30,4 +28,8 @@
     <string name="item_carreras_anteriores">Carreras Anteriores</string>
     <!--string name="item_carreras">Carreras</string-->
     <!--Navigation Drawer elements-->
+
+    <!--Menus-->
+    <string name="filter">Filtrar</string>
+    <!--Menus-->
 </resources>

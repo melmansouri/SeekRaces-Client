@@ -19,6 +19,8 @@ public interface ISignInView {
     void hideErrorPwdRepeat();
     void showErrorUserName(String message);
     void hideErrorUserName();
+    void showComponents();
+    void hideComponents();
     void returnToLoginScreen();
     void fillImageViewFromCamera();
     void fillImageViewFromGallery();

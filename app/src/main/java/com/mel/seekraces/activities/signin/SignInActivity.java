@@ -119,13 +119,15 @@ public class SignInActivity extends AppCompatActivity implements ISignInView {
     @Override
     public void showProgress() {
         progressBar.setVisibility(View.VISIBLE);
-        UtilsViews.disableScreen(this);
         UtilsViews.closeKeyBoard(this);
+        hideComponents();
+        UtilsViews.disableScreen(this);
     }
 
     @Override
     public void hideProgress() {
         progressBar.setVisibility(View.GONE);
+        showComponents();
         UtilsViews.enableSreen(this);
     }
 
@@ -181,6 +183,24 @@ public class SignInActivity extends AppCompatActivity implements ISignInView {
     @OnTextChanged(value = R.id.edtUserName,callback = OnTextChanged.Callback.BEFORE_TEXT_CHANGED)
     public void hideErrorUserName() {
         textInputLayoutUsername.setErrorEnabled(false);
+    }
+
+    @Override
+    public void showComponents() {
+        textInputLayoutRepeatPass.setVisibility(View.VISIBLE);
+        textInputLayoutEmail.setVisibility(View.VISIBLE);
+        textInputLayoutUsername.setVisibility(View.VISIBLE);
+        textInputLayoutPass.setVisibility(View.VISIBLE);
+        imgProfileUser.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideComponents() {
+        textInputLayoutRepeatPass.setVisibility(View.GONE);
+        textInputLayoutEmail.setVisibility(View.GONE);
+        textInputLayoutUsername.setVisibility(View.GONE);
+        textInputLayoutPass.setVisibility(View.GONE);
+        imgProfileUser.setVisibility(View.GONE);
     }
 
     @Override

@@ -21,7 +21,7 @@ public class UserDeserializer implements JsonDeserializer<User>{
         user.setEmail(jsonObject.get("email").getAsString());
         user.setUsername(jsonObject.get("username").getAsString());
         user.setPhoto_url(jsonObject.get("photo_url").getAsString());
-        String base64=jsonObject.get("photoBase64").getAsString();
+        //String base64=jsonObject.get("photoBase64").getAsString();
         /*if (!TextUtils.isEmpty(base64)){
             user.setPhoto(Utils.base64ToBitmap(base64));
         }*/

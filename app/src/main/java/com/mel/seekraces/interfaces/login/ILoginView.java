@@ -8,6 +8,8 @@ public interface ILoginView {
 
     void goToSignIn();
 
+    void startActivitySignIn();
+
     void login();
 
     void showEmailError(String message);
@@ -22,9 +24,15 @@ public interface ILoginView {
 
     void hideProgress();
 
+    void showComponentScreen();
+
+    void hideComponentScreen();
+
     void goToMainScreen();
 
     void loginFacebook();
 
     void fogotPassword();
+
+    void finishActivity();
 }

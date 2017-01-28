@@ -68,6 +68,9 @@ public class MainPresenterImpl implements IMainPresenter, IListennerCallBack{
             view.chargeFragmentRacesFavorites();
         } else if (itemSelectd == RMapped.ITEM_RACES_PREVIOUS.getValue()) {
             view.chargeFragmentRacesPrevious();
+        }else if(itemSelectd == RMapped.ITEM_EXIT.getValue()){
+            sharedPreferencesSingleton.clearAllSharedPreferences();
+            view.returnBack();
         }
         view.closeDrawerLayout();
     }
@@ -78,6 +81,7 @@ public class MainPresenterImpl implements IMainPresenter, IListennerCallBack{
             view.closeDrawerLayout();
             return;
         }
+        view.setResult();
         view.returnBack();
     }
 

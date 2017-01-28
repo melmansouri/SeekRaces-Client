@@ -1,5 +1,6 @@
 package com.mel.seekraces.interfaces;
 
+import com.mel.seekraces.entities.Event;
 import com.mel.seekraces.entities.Response;
 import com.mel.seekraces.entities.User;
 
@@ -17,9 +18,10 @@ public interface INetworkConnectionApi {
     // TODO: Cambiar host por "10.0.0.2" para Genymotion.
     // TODO: Cambiar host por "10.0.0.3" para AVD.
     // TODO: Cambiar host por IP de tu PC para dispositivo real.
-    //String BASE_URL = "http://192.168.0.105:8080/SeekRaces/api/";
-    String BASE_URL = "http://192.168.105.18/SeekRaces/api/";
-    String BASE_URL_PICTURES = "http://192.168.105.18/SeekRaces/pictures/";
+    String BASE_URL = "http://192.168.0.105:8080/SeekRaces/api/";
+    String BASE_URL_PICTURES = "http://192.168.0.105:8080/SeekRaces/pictures/";
+    //String BASE_URL = "http://192.168.105.18/SeekRaces/api/";
+    //String BASE_URL_PICTURES = "http://192.168.105.18/SeekRaces/pictures/";
 
     @POST("user/signIn")
     Call<Response> signIn(@Body User user);
@@ -34,5 +36,8 @@ public interface INetworkConnectionApi {
                                      @Query("distance") String distance,
                                      @Query("date_interval_init") String date_interval_init,
                                      @Query("date_interval_end") String date_interval_end);
+
+    @POST("event")
+    Call<Response> addRaces(@Body Event event);
 
 }

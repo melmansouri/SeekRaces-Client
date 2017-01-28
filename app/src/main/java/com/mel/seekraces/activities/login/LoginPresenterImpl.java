@@ -17,34 +17,50 @@ import com.mel.seekraces.tasks.SaveUserLoginTask;
  * Created by moha on 10/01/17.
  */
 
-public class LoginPresenterImpl implements ILoginPresenter ,IListennerCallBack{
+public class LoginPresenterImpl implements ILoginPresenter, IListennerCallBack {
 
     private ILoginView view;
     private ILoginInteractor loginInteractor;
     private SharedPreferencesSingleton sharedPreferencesSingleton;
 
-    public LoginPresenterImpl(ILoginView loginView, SharedPreferencesSingleton sharedPreferencesSingleton){
-        this.view=loginView;
-        this.loginInteractor=new LoginInteractorImpl(this);
-        this.sharedPreferencesSingleton=sharedPreferencesSingleton;
+    public LoginPresenterImpl(ILoginView loginView, SharedPreferencesSingleton sharedPreferencesSingleton) {
+        this.view = loginView;
+        this.loginInteractor = new LoginInteractorImpl(this);
+        this.sharedPreferencesSingleton = sharedPreferencesSingleton;
     }
 
     @Override
-    public void login(User user) {
-        view.showProgress();
-        if (!validateDataLogin(user)){
-            view.hideProgress();
-            return;
+    public void login(boolean havePermission,User user) {
+        if (havePermission) {
+            view.showProgress();
+            if (!validateDataLogin(user)) {
+                view.hideProgress();
+                return;
+            }
+            loginInteractor.login(user);
         }
-        loginInteractor.login(user);
     }
 
-    private boolean validateDataLogin(User user){
+    @Override
+    public void checkSession() {
+        if (sharedPreferencesSingleton.containValue(Constantes.KEY_USER)){
+            view.goToMainScreen();
+        }
+    }
+
+    @Override
+    public void startActivitySignIn(boolean havePermission) {
+        if (havePermission){
+            view.startActivitySignIn();
+        }
+    }
+
+    private boolean validateDataLogin(User user) {
         boolean result = true;
         if (user.getEmail().isEmpty()) {
             view.showEmailError("El email no puede estar vacio");
             result = false;
-        }else if(!Utils.isValidEmail(user.getEmail())){
+        } else if (!Utils.isValidEmail(user.getEmail())) {
             view.showEmailError("Introduzca un email válido");
             result = false;
         }
@@ -57,24 +73,26 @@ public class LoginPresenterImpl implements ILoginPresenter ,IListennerCallBack{
 
     @Override
     public void activityResult(int requestCode, int resultCode, int resultOk) {
-        if (requestCode == Constantes.REQUEST_START_SIGNIN_FOR_RESULT) {
-            if (resultCode == resultOk) {
+        if (resultCode == resultOk) {
+            if (requestCode == Constantes.REQUEST_START_SIGNIN_FOR_RESULT) {
                 view.showMessage("Se le ha enviado un correo de confirmación.");
+            }else if (requestCode == Constantes.REQUEST_START_MAIN_FOR_RESULT) {
+                view.finishActivity();
             }
         }
     }
 
     @Override
     public void onDestroy() {
-        view=null;
+        view = null;
     }
 
 
     @Override
     public void onSuccess(Response response) {
 
-        Log.e("tag",response.toString());
-        new SaveUserLoginTask(response.getContent(),sharedPreferencesSingleton){
+        Log.e("tag", response.toString());
+        new SaveUserLoginTask(response.getContent(), sharedPreferencesSingleton) {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
@@ -82,15 +100,12 @@ public class LoginPresenterImpl implements ILoginPresenter ,IListennerCallBack{
                 view.goToMainScreen();
             }
         }.execute();
-
-        view.hideProgress();
-        view.goToMainScreen();
     }
 
     @Override
     public void onError(Response response) {
         view.hideProgress();
         view.showMessage(response.getMessage());
-        Log.e("tag",response.toString());
+        Log.e("tag", response.toString());
     }
 }

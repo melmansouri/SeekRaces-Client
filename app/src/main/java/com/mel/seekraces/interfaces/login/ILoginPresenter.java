@@ -8,7 +8,9 @@ import com.mel.seekraces.entities.User;
  */
 
 public interface ILoginPresenter {
-    void login(User user);
+    void login(boolean havePermission,User user);
+    void checkSession();
+    void startActivitySignIn(boolean havePermission);
     void activityResult(int requestCode, int resultCode, int resultOk);
     void onDestroy();
 

@@ -37,12 +37,22 @@ public class SharedPreferencesSingleton {
         return value;
     }
 
+    public boolean containValue(String key){
+        return sharedPreferences.contains(key);
+    }
+
     public void removeValueSP(String key) {
         if(sharedPreferences.contains(key)){
             return;
         }
         SharedPreferences.Editor ed = sharedPreferences.edit();
         ed.remove(key);
+        ed.commit();
+    }
+
+    public void clearAllSharedPreferences(){
+        SharedPreferences.Editor ed = sharedPreferences.edit();
+        ed.clear();
         ed.commit();
     }
 

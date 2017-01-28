@@ -20,6 +20,8 @@ public interface IMainView {
 
     void returnBack();
 
+    void setResult();
+
     boolean isDrawerOpen();
 
     void showProgressDialog();

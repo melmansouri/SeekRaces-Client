@@ -17,6 +17,11 @@
             android:title="@string/item_carreras_anteriores" />
     </group>
 
+    <item
+    android:id="@+id/exit"
+    android:icon="@drawable/ic_exit"
+    android:title="Salir" />
+
     <!--item android:title="Communicate">
         <menu>
             <item

@@ -7,6 +7,7 @@ import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 
 import com.mel.seekraces.R;
@@ -38,6 +39,10 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
     ProgressBar progressBar;
     @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.btnLogin)
+    Button btnLogin;
+    @BindView(R.id.btnSignIn)
+    Button btnSignIn;
 
     private ILoginPresenter loginPresenter;
 
@@ -48,9 +53,9 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        sharedPreferencesSingleton =SharedPreferencesSingleton.getInstance(this);
-        loginPresenter = new LoginPresenterImpl(this,sharedPreferencesSingleton);
-        UtilsViews.PermisosValidos(this);
+        sharedPreferencesSingleton = SharedPreferencesSingleton.getInstance(this);
+        loginPresenter = new LoginPresenterImpl(this, sharedPreferencesSingleton);
+        loginPresenter.checkSession();
     }
 
     @Override
@@ -62,6 +67,11 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
     @Override
     @OnClick(R.id.btnSignIn)
     public void goToSignIn() {
+        loginPresenter.startActivitySignIn(UtilsViews.PermisosValidos(this));
+    }
+
+    @Override
+    public void startActivitySignIn() {
         Intent i = new Intent(this, SignInActivity.class);
         startActivityForResult(i, Constantes.REQUEST_START_SIGNIN_FOR_RESULT);
     }
@@ -69,12 +79,12 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
     @Override
     @OnClick(R.id.btnLogin)
     public void login() {
-        User user=new User();
+        User user = new User();
         user.setEmail(edtEmail.getText().toString());
         user.setPwd(edtPassword.getText().toString());
         user.setToken_push(sharedPreferencesSingleton.getStringSP(Constantes.KEY_TOKEN_PUSH));
         sharedPreferencesSingleton.removeValueSP(Constantes.KEY_TOKEN_PUSH);
-        loginPresenter.login(user);
+        loginPresenter.login(UtilsViews.PermisosValidos(this),user);
     }
 
     @Override
@@ -83,7 +93,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
     }
 
     @Override
-    @OnTextChanged(value = R.id.edtEmail,callback = OnTextChanged.Callback.BEFORE_TEXT_CHANGED)
+    @OnTextChanged(value = R.id.edtEmail, callback = OnTextChanged.Callback.BEFORE_TEXT_CHANGED)
     public void hideEmailError() {
         textInputLayoutEmail.setErrorEnabled(false);
     }
@@ -94,33 +104,51 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
     }
 
     @Override
-    @OnTextChanged(value = R.id.edtPassword,callback = OnTextChanged.Callback.BEFORE_TEXT_CHANGED)
+    @OnTextChanged(value = R.id.edtPassword, callback = OnTextChanged.Callback.BEFORE_TEXT_CHANGED)
     public void hidePwdError() {
         textInputLayoutPass.setErrorEnabled(false);
     }
 
     @Override
     public void showMessage(String message) {
-        UtilsViews.showSnackBar(coordinatorLayout,message);
+        UtilsViews.showSnackBar(coordinatorLayout, message);
     }
 
     @Override
     public void showProgress() {
         progressBar.setVisibility(View.VISIBLE);
-        UtilsViews.disableScreen(this);
         UtilsViews.closeKeyBoard(this);
+        hideComponentScreen();
+        //UtilsViews.disableScreen(this);
     }
 
     @Override
     public void hideProgress() {
         progressBar.setVisibility(View.GONE);
-        UtilsViews.enableSreen(this);
+        showComponentScreen();
+        //UtilsViews.enableSreen(this);
+    }
+
+    @Override
+    public void showComponentScreen() {
+        btnLogin.setVisibility(View.VISIBLE);
+        btnSignIn.setVisibility(View.VISIBLE);
+        textInputLayoutEmail.setVisibility(View.VISIBLE);
+        textInputLayoutPass.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideComponentScreen() {
+        btnLogin.setVisibility(View.GONE);
+        btnSignIn.setVisibility(View.GONE);
+        textInputLayoutEmail.setVisibility(View.GONE);
+        textInputLayoutPass.setVisibility(View.GONE);
     }
 
     @Override
     public void goToMainScreen() {
-        Intent intent=new Intent(this, MainActivity.class);
-        startActivity(intent);
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivityForResult(intent, Constantes.REQUEST_START_MAIN_FOR_RESULT);
     }
 
     @Override
@@ -134,8 +162,15 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
     }
 
     @Override
+    public void finishActivity() {
+        finish();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         loginPresenter.onDestroy();
     }
+
+
 }

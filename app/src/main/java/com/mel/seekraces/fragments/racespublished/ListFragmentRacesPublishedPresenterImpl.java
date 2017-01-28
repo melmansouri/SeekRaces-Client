@@ -40,7 +40,6 @@ public class ListFragmentRacesPublishedPresenterImpl implements IListFragmentRac
 
     @Override
     public void onSuccess(Response response) {
-        Log.e("Fragment",response.toString());
         view.hideProgressBar();
         GsonBuilder gsonBuilder = new GsonBuilder()
                 .setLenient();

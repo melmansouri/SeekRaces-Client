@@ -23,7 +23,7 @@
         </activity>
         <activity
             android:name=".activities.signin.SignInActivity"
-            android:parentActivityName=".activities.login.LoginActivity"/>
+            android:parentActivityName=".activities.login.LoginActivity" />
 
         <service android:name=".services.FirebaseInstanceIDService">
             <intent-filter>
