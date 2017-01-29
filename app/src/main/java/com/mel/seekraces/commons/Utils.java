@@ -13,6 +13,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 /**
@@ -140,5 +142,19 @@ public class Utils {
 
     public static boolean isValidEmail(String email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    public String convertDateSpanishToEnglish(String dateStringSpanish){
+        String dateStringEnglish="";
+        try{
+            SimpleDateFormat sdfSpanish=new SimpleDateFormat("dd-MM-yyyy");
+            Date dateSpanish=sdfSpanish.parse(dateStringSpanish);
+            SimpleDateFormat sdfEnglish=new SimpleDateFormat("yyyy-MM-dd");
+            dateStringEnglish=sdfEnglish.format(dateSpanish);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return dateStringEnglish;
     }
 }

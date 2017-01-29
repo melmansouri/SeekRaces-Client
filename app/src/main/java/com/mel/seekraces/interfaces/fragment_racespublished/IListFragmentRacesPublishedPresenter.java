@@ -8,4 +8,5 @@ import com.mel.seekraces.entities.Filter;
 
 public interface IListFragmentRacesPublishedPresenter {
     void getRacesPublished(Filter filter);
+    void onOptionsItemSelected(int itemSelected);
 }

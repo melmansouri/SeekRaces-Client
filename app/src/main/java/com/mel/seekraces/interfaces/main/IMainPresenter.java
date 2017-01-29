@@ -9,5 +9,7 @@ public interface IMainPresenter {
 
     void onNavigationItemSelected(int itemSelectd);
 
+    void activityResult(int requestCode,int resultCode);
+
     void onBackPressed();
 }

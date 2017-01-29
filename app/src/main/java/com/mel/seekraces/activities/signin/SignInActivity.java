@@ -99,7 +99,7 @@ public class SignInActivity extends AppCompatActivity implements ISignInView {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         intentOnActivityResult = data;
-        presenter.activityResult(requestCode,resultCode, RESULT_OK);
+        presenter.activityResult(requestCode,resultCode);
     }
 
     @Override
@@ -118,10 +118,11 @@ public class SignInActivity extends AppCompatActivity implements ISignInView {
 
     @Override
     public void showProgress() {
-        progressBar.setVisibility(View.VISIBLE);
         UtilsViews.closeKeyBoard(this);
-        hideComponents();
         UtilsViews.disableScreen(this);
+        progressBar.setVisibility(View.VISIBLE);
+        hideComponents();
+
     }
 
     @Override
@@ -252,8 +253,7 @@ public class SignInActivity extends AppCompatActivity implements ISignInView {
                 user.setPwd_repeat(edtRepeatPassword.getText().toString());
                 user.setUsername(edtUserName.getText().toString());
                 user.setPhotoBase64(s);
-
-                presenter.signIn(user);
+                presenter.signIn(Utils.isOnline(SignInActivity.this),user);
             }
         }.execute();
 

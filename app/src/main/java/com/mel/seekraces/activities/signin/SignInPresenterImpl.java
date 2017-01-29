@@ -3,6 +3,7 @@ package com.mel.seekraces.activities.signin;
 import android.util.Log;
 
 import com.mel.seekraces.commons.Constantes;
+import com.mel.seekraces.commons.RMapped;
 import com.mel.seekraces.commons.Utils;
 import com.mel.seekraces.entities.Response;
 import com.mel.seekraces.entities.User;
@@ -25,12 +26,16 @@ public class SignInPresenterImpl implements ISignInPresenter, IListennerCallBack
     }
 
     @Override
-    public void signIn(User user) {
+    public void signIn(boolean isOnline,User user) {
+        if (!isOnline){
+            view.showMessage("Comprueba tu conexión");
+            return;
+        }
         if (!verifyDataUser(user)) {
             view.hideProgress();
             return;
         }
-        interactor.login(user);
+        interactor.signIn(user);
     }
 
     private boolean verifyDataUser(User user) {
@@ -64,8 +69,8 @@ public class SignInPresenterImpl implements ISignInPresenter, IListennerCallBack
 
 
     @Override
-    public void activityResult(int requestCode,int resultCode, int resultOk) {
-        if (resultCode == resultOk) {
+    public void activityResult(int requestCode,int resultCode) {
+        if (resultCode == RMapped.RESULT_OK.getValue()) {
             if (requestCode==Constantes.REQUEST_IMAGE_CAPTURE_CAMERA){
                 view.fillImageViewFromCamera();
             }else if(requestCode==Constantes.REQUEST_IMAGE_CAPTURE_GALLERY){

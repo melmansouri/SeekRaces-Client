@@ -24,6 +24,7 @@ public class Constantes {
 
     public static final int REQUEST_START_SIGNIN_FOR_RESULT=200;
     public static final int REQUEST_START_MAIN_FOR_RESULT = 201;
+    public static final int REQUEST_START_FILTERS_FOR_RESULT = 202;
 
     //SharedPreferences
     public static final String FILE_SP="seekraces_preferences";
@@ -31,4 +32,5 @@ public class Constantes {
     public static final String KEY_USER="user";
     public static final String KEY_USERNAME="username";
     public static final String KEY_USER_NAME_PICTURE="picture";
+
 }

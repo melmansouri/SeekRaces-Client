@@ -13,9 +13,6 @@ public interface IMainView {
     void closeDrawerLayout();
 
     void fillNavHeaderTxtUserName(String username);
-
-    void fillNavHeaderImgProfile(Uri uri);
-    void fillNavHeaderImgProfile(Bitmap bitmap);
     void fillNavHeaderImgProfile(String namePicture);
 
     void returnBack();
@@ -23,10 +20,6 @@ public interface IMainView {
     void setResult();
 
     boolean isDrawerOpen();
-
-    void showProgressDialog();
-
-    void hideProgressDialog();
 
     void chargeFragmentRacesPublished(Filter filter);
 

@@ -42,7 +42,7 @@ public class SharedPreferencesSingleton {
     }
 
     public void removeValueSP(String key) {
-        if(sharedPreferences.contains(key)){
+        if(!sharedPreferences.contains(key)){
             return;
         }
         SharedPreferences.Editor ed = sharedPreferences.edit();
@@ -50,10 +50,10 @@ public class SharedPreferencesSingleton {
         ed.commit();
     }
 
-    public void clearAllSharedPreferences(){
-        SharedPreferences.Editor ed = sharedPreferences.edit();
-        ed.clear();
-        ed.commit();
+    public void clearAllUserSharedPreferences(){
+        removeValueSP(Constantes.KEY_USER);
+        removeValueSP(Constantes.KEY_USERNAME);
+        removeValueSP(Constantes.KEY_USER_NAME_PICTURE);
     }
 
 }

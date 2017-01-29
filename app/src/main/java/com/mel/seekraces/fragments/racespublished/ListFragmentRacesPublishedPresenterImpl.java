@@ -5,6 +5,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.mel.seekraces.commons.RMapped;
 import com.mel.seekraces.deserializers.EventDeserializer;
 import com.mel.seekraces.entities.Event;
 import com.mel.seekraces.entities.Filter;
@@ -35,7 +36,15 @@ public class ListFragmentRacesPublishedPresenterImpl implements IListFragmentRac
     @Override
     public void getRacesPublished(Filter filter) {
         view.showProgressBar();
+        //view.showList();
         interactor.getRacesPublished(filter);
+    }
+
+    @Override
+    public void onOptionsItemSelected(int itemSelected) {
+        if (itemSelected== RMapped.ITEM_FILTER.getValue()){
+            view.startScreenFilter();
+        }
     }
 
     @Override

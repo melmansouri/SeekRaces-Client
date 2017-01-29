@@ -6,19 +6,29 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.mel.seekraces.R;
 import com.mel.seekraces.activities.main.MainActivity;
 import com.mel.seekraces.activities.signin.SignInActivity;
 import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.SharedPreferencesSingleton;
+import com.mel.seekraces.commons.Utils;
 import com.mel.seekraces.commons.UtilsViews;
 import com.mel.seekraces.entities.User;
 import com.mel.seekraces.interfaces.login.ILoginPresenter;
 import com.mel.seekraces.interfaces.login.ILoginView;
+
+import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,10 +53,15 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
     Button btnLogin;
     @BindView(R.id.btnSignIn)
     Button btnSignIn;
+    @BindView(R.id.activity_login)
+    RelativeLayout activityLogin;
 
     private ILoginPresenter loginPresenter;
 
     private SharedPreferencesSingleton sharedPreferencesSingleton;
+
+    private LoginManager loginManagerFacebook;
+    private CallbackManager callbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,13 +70,30 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
         ButterKnife.bind(this);
         sharedPreferencesSingleton = SharedPreferencesSingleton.getInstance(this);
         loginPresenter = new LoginPresenterImpl(this, sharedPreferencesSingleton);
+        loginManagerFacebook=LoginManager.getInstance();
+        callbackManager=CallbackManager.Factory.create();
+        loginManagerFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Log.e("LoginFacebook",loginResult.getAccessToken().toString());
+            }
+
+            @Override
+            public void onCancel() {
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+            }
+        });
         loginPresenter.checkSession();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        loginPresenter.activityResult(requestCode, resultCode, RESULT_OK);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+        loginPresenter.activityResult(requestCode, resultCode);
     }
 
     @Override
@@ -79,12 +111,13 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
     @Override
     @OnClick(R.id.btnLogin)
     public void login() {
+        UtilsViews.closeKeyBoard(this);
         User user = new User();
         user.setEmail(edtEmail.getText().toString());
         user.setPwd(edtPassword.getText().toString());
         user.setToken_push(sharedPreferencesSingleton.getStringSP(Constantes.KEY_TOKEN_PUSH));
         sharedPreferencesSingleton.removeValueSP(Constantes.KEY_TOKEN_PUSH);
-        loginPresenter.login(UtilsViews.PermisosValidos(this),user);
+        loginPresenter.login(Utils.isOnline(this), UtilsViews.PermisosValidos(this), user);
     }
 
     @Override
@@ -117,7 +150,6 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
     @Override
     public void showProgress() {
         progressBar.setVisibility(View.VISIBLE);
-        UtilsViews.closeKeyBoard(this);
         hideComponentScreen();
         //UtilsViews.disableScreen(this);
     }
@@ -152,8 +184,9 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
     }
 
     @Override
+    @OnClick(R.id.btnLoginFacebook)
     public void loginFacebook() {
-
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile","email"));
     }
 
     @Override

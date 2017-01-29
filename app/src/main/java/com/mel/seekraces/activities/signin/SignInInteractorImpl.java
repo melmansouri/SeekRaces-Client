@@ -26,7 +26,7 @@ public class SignInInteractorImpl implements ISignInInteractor{
     }
 
     @Override
-    public void login(User user) {
+    public void signIn(User user) {
         Retrofit retrofit= RetrofitSingleton.getInstance().getRetrofit();
         networkConnectionApi=retrofit.create(INetworkConnectionApi.class);
 

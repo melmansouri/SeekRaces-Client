@@ -27,24 +27,6 @@ public class MainPresenterImpl implements IMainPresenter, IListennerCallBack{
 
     @Override
     public void fillDataHeaderView() {
-        /*String userJson = sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER);
-        if (!TextUtils.isEmpty(userJson)) {
-            final String user_picture_name=sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER_NAME_PICTURE);
-            String userName=sharedPreferencesSingleton.getStringSP(Constantes.KEY_USERNAME);
-            view.fillNavHeaderTxtUserName(userName);
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    File file = new File(Constantes.RUTA_IMAGENES + user_picture_name);
-                    if (file.exists()) {
-                        Uri uri = Uri.fromFile(file);
-                        if (uri != null) {
-                            view.fillNavHeaderImgProfile(uri);
-                        }
-                    }
-                }
-            }).start();
-        }*/
         String username=sharedPreferencesSingleton.getStringSP(Constantes.KEY_USERNAME);
         String userNamePicture=sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER_NAME_PICTURE);
         view.fillNavHeaderTxtUserName(username);
@@ -69,10 +51,19 @@ public class MainPresenterImpl implements IMainPresenter, IListennerCallBack{
         } else if (itemSelectd == RMapped.ITEM_RACES_PREVIOUS.getValue()) {
             view.chargeFragmentRacesPrevious();
         }else if(itemSelectd == RMapped.ITEM_EXIT.getValue()){
-            sharedPreferencesSingleton.clearAllSharedPreferences();
+            sharedPreferencesSingleton.clearAllUserSharedPreferences();
             view.returnBack();
         }
         view.closeDrawerLayout();
+    }
+
+    @Override
+    public void activityResult(int requestCode, int resultCode) {
+        if (resultCode == RMapped.RESULT_OK.getValue()) {
+            if (requestCode==Constantes.REQUEST_START_FILTERS_FOR_RESULT){
+                view.
+            }
+        }
     }
 
     @Override

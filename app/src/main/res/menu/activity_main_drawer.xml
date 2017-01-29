@@ -3,18 +3,18 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/listEventsPublished"
+            android:id="@+id/itemListEventsPublished"
             android:icon="@drawable/ic_run"
-            android:title="@string/item_carreras_publicadas" />
+            android:title="@string/title_carreras_publicadas" />
         <item
-            android:id="@+id/listMyEventsPublished"
-            android:title="@string/item_mis_carreras_publicadas" />
+            android:id="@+id/itemListMyEventsPublished"
+            android:title="@string/title_mis_carreras_publicadas" />
         <item
-            android:id="@+id/listEventsFavorites"
-            android:title="@string/item_carreras_favoritas" />
+            android:id="@+id/itemListEventsFavorites"
+            android:title="@string/title_carreras_favoritas" />
         <item
-            android:id="@+id/listPreviousEvents"
-            android:title="@string/item_carreras_anteriores" />
+            android:id="@+id/itemListPreviousEvents"
+            android:title="@string/title_carreras_anteriores" />
     </group>
 
     <item

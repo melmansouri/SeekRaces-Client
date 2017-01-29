@@ -3,6 +3,7 @@ package com.mel.seekraces.commons;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.os.Build;
 import android.provider.MediaStore;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -18,11 +20,18 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
+import com.mel.seekraces.fragments.DatePickerFragment;
+
 /**
  * Created by void on 12/01/2017.
  */
 
 public class UtilsViews {
+
+    public void showDateDialogPicker(Activity activity,DatePickerDialog.OnDateSetListener onDateSetListener){
+        /*DialogFragment datePickerFragment= new DatePickerFragment(onDateSetListener);
+        datePickerFragment.show(activity.getSupportFragmentManager(), "datePicker");*/
+    }
 
     public static AlertDialog.Builder createAlertDialog(Context c, String title) {
         AlertDialog.Builder builder = new AlertDialog.Builder(c);

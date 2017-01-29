@@ -3,6 +3,7 @@ package com.mel.seekraces.activities.login;
 import android.util.Log;
 
 import com.mel.seekraces.commons.Constantes;
+import com.mel.seekraces.commons.RMapped;
 import com.mel.seekraces.commons.SharedPreferencesSingleton;
 import com.mel.seekraces.commons.Utils;
 import com.mel.seekraces.entities.Response;
@@ -30,7 +31,11 @@ public class LoginPresenterImpl implements ILoginPresenter, IListennerCallBack {
     }
 
     @Override
-    public void login(boolean havePermission,User user) {
+    public void login(boolean isOnline,boolean havePermission,User user) {
+        if (!isOnline){
+            view.showMessage("Comprueba tu conexión");
+            return;
+        }
         if (havePermission) {
             view.showProgress();
             if (!validateDataLogin(user)) {
@@ -72,8 +77,8 @@ public class LoginPresenterImpl implements ILoginPresenter, IListennerCallBack {
     }
 
     @Override
-    public void activityResult(int requestCode, int resultCode, int resultOk) {
-        if (resultCode == resultOk) {
+    public void activityResult(int requestCode, int resultCode) {
+        if (resultCode == RMapped.RESULT_OK.getValue()) {
             if (requestCode == Constantes.REQUEST_START_SIGNIN_FOR_RESULT) {
                 view.showMessage("Se le ha enviado un correo de confirmación.");
             }else if (requestCode == Constantes.REQUEST_START_MAIN_FOR_RESULT) {

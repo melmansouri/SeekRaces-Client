@@ -1,19 +1,25 @@
 package com.mel.seekraces.fragments.racespublished;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.mel.seekraces.R;
 import com.mel.seekraces.adapters.RVRacesPublishedAdapter;
+import com.mel.seekraces.commons.RMapped;
 import com.mel.seekraces.entities.Event;
 import com.mel.seekraces.entities.Filter;
+import com.mel.seekraces.interfaces.OnFragmentInteractionListener;
 import com.mel.seekraces.interfaces.fragment_racespublished.IListFragmentRacesPublishedPresenter;
 import com.mel.seekraces.interfaces.fragment_racespublished.IListFragmentRacesPublishedView;
 
@@ -27,23 +33,40 @@ public class ListRacesPublishedFragment extends Fragment implements IListFragmen
     RecyclerView recyclerView;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
+    @BindView(R.id.swipeRefresh)
+    SwipeRefreshLayout swipeRefresh;
     private RVRacesPublishedAdapter adapter;
     private IListFragmentRacesPublishedPresenter presenter;
     private Filter filter;
+    private OnFragmentInteractionListener mListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        filter=getArguments().getParcelable("filter");
-        presenter=new ListFragmentRacesPublishedPresenterImpl(this);
+        filter = getArguments().getParcelable("filter");
+        presenter = new ListFragmentRacesPublishedPresenterImpl(this);
+        mListener.changeTitleActionBar(RMapped.TITLE_CARRERAS_PUBLICADAS.getValue());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.list_racespublished, container, false);
+        View view = inflater.inflate(R.layout.fragment_list_racespublished, container, false);
         ButterKnife.bind(this, view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        //recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        swipeRefresh.setColorSchemeResources(
+                R.color.s1,
+                R.color.s2,
+                R.color.s3,
+                R.color.s4
+        );
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                presenter.getRacesPublished(filter);
+            }
+        });
+        setHasOptionsMenu(true);
         return view;
     }
 
@@ -54,19 +77,34 @@ public class ListRacesPublishedFragment extends Fragment implements IListFragmen
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        inflater.inflate(R.menu.menu_fragment_list_races_published, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        presenter.onOptionsItemSelected(id);
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void fillAdapterList(List<Event> races) {
-        adapter=new RVRacesPublishedAdapter(races,null);
+        hideProgressBar();
+        adapter = new RVRacesPublishedAdapter(races, null);
         recyclerView.setAdapter(adapter);
     }
 
     @Override
     public void showProgressBar() {
-        progressBar.setVisibility(View.VISIBLE);
+        swipeRefresh.setRefreshing(true);
     }
 
     @Override
     public void hideProgressBar() {
-        progressBar.setVisibility(View.GONE);
+        swipeRefresh.setRefreshing(false);
     }
 
     @Override
@@ -79,15 +117,19 @@ public class ListRacesPublishedFragment extends Fragment implements IListFragmen
         recyclerView.setVisibility(View.GONE);
     }
 
+    @Override
+    public void startScreenFilter() {
+        mListener.startActivityFilters();
+    }
 
-    /*@Override
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
+        try {
+            mListener = (OnFragmentInteractionListener) context;
+        } catch (ClassCastException e) {
+            e.printStackTrace();
         }
     }
 
@@ -95,7 +137,7 @@ public class ListRacesPublishedFragment extends Fragment implements IListFragmen
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }*/
+    }
 
 
 }

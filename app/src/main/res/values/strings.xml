@@ -1,10 +1,13 @@
 <resources>
     <string name="app_name">SeekRaces</string>
+    <string name="facebook_app_id">1836417983299341</string>
+    <string name="fb_login_protocol_scheme">fb1836417983299341</string>
 
     <!--Login-->
     <string name="email">Email</string>
     <string name="password">Contraseña</string>
     <string name="login">Iniciar Sesión</string>
+    <string name="login_facebook">Iniciar sesión con Facebook</string>
     <string name="signin">Registrarse</string>
     <!--Login-->
     <!--SignIn-->
@@ -16,18 +19,27 @@
         <item>Cancelar</item>
     </string-array>
     <string name="elige_opcion">Elige una opción</string>
-    <string name="title_activity_main2">Main2Activity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <!--SignIn-->
     <!--Navigation Drawer elements-->
-    <string name="item_carreras_publicadas">Carreras Publicadas</string>
-    <string name="item_mis_carreras_publicadas">Mis Carreras Publicadas</string>
-    <string name="item_carreras_favoritas">Favoritas</string>
-    <string name="item_carreras_anteriores">Carreras Anteriores</string>
+    <string name="title_carreras_publicadas">Carreras Publicadas</string>
+    <string name="title_mis_carreras_publicadas">Mis Carreras Publicadas</string>
+    <string name="title_carreras_favoritas">Carreras Favoritas</string>
+    <string name="title_carreras_anteriores">Carreras Anteriores</string>
     <!--string name="item_carreras">Carreras</string-->
     <!--Navigation Drawer elements-->
+
+    <!--Filter-->
+    <string name="title_filtros">Filtros</string>
+    <string name="pais">País</string>
+    <string name="ciudad">Ciudad</string>
+    <string name="distancia">Distancia</string>
+    <string name="fecha_desde">Desde</string>
+    <string name="fecha_hasta">Hasta</string>
+    <string name="fecha_hasta_default">No especificado</string>
+    <!--Filter-->
 
     <!--Menus-->
     <string name="filter">Filtrar</string>

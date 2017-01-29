@@ -66,6 +66,19 @@
             android:textColor="@color/colorPrimaryText"
             android:textStyle="bold"
             android:backgroundTint="@color/colorPrimaryLight"/>
+
+        <Button
+            android:id="@+id/btnLoginFacebook"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/login_facebook"
+            android:layout_below="@+id/btnSignIn"
+            style="?android:textAppearanceSmall"
+            android:textColor="@color/color_text_button_facebook"
+            android:drawableLeft="@drawable/ic_facebook"
+            android:textStyle="bold"
+            android:backgroundTint="@color/color_button_facebook"/>
+
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="100dp"

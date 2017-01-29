@@ -14,4 +14,6 @@ public interface IListFragmentRacesPublishedView {
     void hideProgressBar();
     void showList();
     void hideList();
+
+    void startScreenFilter();
 }

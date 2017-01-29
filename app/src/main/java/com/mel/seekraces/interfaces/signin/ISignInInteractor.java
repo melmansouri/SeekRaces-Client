@@ -7,5 +7,5 @@ import com.mel.seekraces.entities.User;
  */
 
 public interface ISignInInteractor {
-    void login(User user);
+    void signIn(User user);
 }

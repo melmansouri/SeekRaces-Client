@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.mel.seekraces.R;
 import com.mel.seekraces.entities.Event;
-import com.mel.seekraces.interfaces.OnListFragmentInteractionListener;
+import com.mel.seekraces.interfaces.OnFragmentInteractionListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,9 +24,9 @@ import butterknife.ButterKnife;
 public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublishedAdapter.ViewHolder> {
 
     private final List<Event> mValues;
-    private final OnListFragmentInteractionListener mListener;
+    private final OnFragmentInteractionListener mListener;
 
-    public RVRacesPublishedAdapter(List<Event> items, OnListFragmentInteractionListener listener) {
+    public RVRacesPublishedAdapter(List<Event> items, OnFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
