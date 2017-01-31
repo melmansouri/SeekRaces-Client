@@ -18,6 +18,8 @@ public enum RMapped {
 
     //Menus
     ITEM_FILTER(R.id.filter),
+    ITEM_HOME_BACK(android.R.id.home),
+    ITEM_SIGNIN(R.id.item_menu_signin_registrarse),
 
     //Strings
     TITLE_CARRERAS_PUBLICADAS(R.string.title_carreras_publicadas),

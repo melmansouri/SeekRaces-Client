@@ -9,6 +9,7 @@ import com.mel.seekraces.entities.User;
 public interface ISignInPresenter {
     void signIn(boolean isOnline,User user);
     void activityResult(int requestCode,int resultCode);
+    void onOptionsItemSelected(int idSelected);
     void selectOptionDialogPicture(String[] options,int selected);
     void validatePasswordRepeat(String pwd,String pwdRepeat);
     void onDestroy();

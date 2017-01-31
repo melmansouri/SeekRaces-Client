@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 
@@ -144,7 +145,7 @@ public class Utils {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
-    public String convertDateSpanishToEnglish(String dateStringSpanish){
+    public static String convertDateSpanishToEnglish(String dateStringSpanish){
         String dateStringEnglish="";
         try{
             SimpleDateFormat sdfSpanish=new SimpleDateFormat("dd-MM-yyyy");
@@ -156,5 +157,27 @@ public class Utils {
         }
 
         return dateStringEnglish;
+    }
+
+    public static String getCurrentDateSpanish(){
+        Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month =  c.get(Calendar.MONTH);
+        int day =  c.get(Calendar.DAY_OF_MONTH);
+
+        return getCorrectFormatDateSpanish(day,month,year);
+    }
+
+    public static String getCorrectFormatDateSpanish(int day,int month,int year){
+        StringBuilder fecha=new StringBuilder();
+        String anno = String.valueOf(year);
+        String mes =  String.valueOf(month+1);
+        String dia =  String.valueOf(day);
+        mes=(mes.length()>1) ? mes: "0".concat(mes);
+        dia=(dia.length()>1) ? dia: "0".concat(dia);
+
+        fecha.append(dia).append("-").append(mes).append("-").append(anno);
+
+        return fecha.toString();
     }
 }

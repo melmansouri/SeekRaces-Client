@@ -84,14 +84,7 @@ public class SignInActivity extends AppCompatActivity implements ISignInView {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
-                return true;
-            case R.id.item_menu_signin_registrarse:
-                signIn();
-                return true;
-        }
+        presenter.onOptionsItemSelected(item.getItemId());
         return super.onOptionsItemSelected(item);
     }
 
@@ -236,6 +229,11 @@ public class SignInActivity extends AppCompatActivity implements ISignInView {
     @Override
     public void openGalery() {
         UtilsViews.openGallery(this);
+    }
+
+    @Override
+    public void navigateUpFromSameTask() {
+        NavUtils.navigateUpFromSameTask(this);
     }
 
     @Override

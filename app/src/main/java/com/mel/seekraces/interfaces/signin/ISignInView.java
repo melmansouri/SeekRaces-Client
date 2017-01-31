@@ -26,5 +26,6 @@ public interface ISignInView {
     void fillImageViewFromGallery();
     void openCamera();
     void openGalery();
+    void navigateUpFromSameTask();
     void signIn();
 }

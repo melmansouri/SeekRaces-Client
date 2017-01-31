@@ -4,8 +4,10 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,11 +17,14 @@ import android.widget.TextView;
 import com.mel.seekraces.R;
 import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.SharedPreferencesSingleton;
+import com.mel.seekraces.commons.Utils;
 import com.mel.seekraces.entities.Filter;
 import com.mel.seekraces.fragments.DatePickerFragment;
+import com.mel.seekraces.interfaces.filters.IFiltersPresenter;
 import com.mel.seekraces.interfaces.filters.IFiltersView;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -38,12 +43,16 @@ public class FiltersActivity extends AppCompatActivity implements IFiltersView {
     @BindView(R.id.edtDistancia)
     TextInputEditText edtDistancia;
     private SharedPreferencesSingleton sharedPreferencesSingleton;
+    private IFiltersPresenter presenter;
 
     @Override
-    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filters);
+        ButterKnife.bind(this);
         sharedPreferencesSingleton=SharedPreferencesSingleton.getInstance(this);
+        presenter=new FilterPresenterImpl(this);
+        dtpFechaDesde.setText(Utils.getCurrentDateSpanish());
     }
 
     @Override
@@ -54,7 +63,7 @@ public class FiltersActivity extends AppCompatActivity implements IFiltersView {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        backToListRacesPublished();
+        presenter.onOptionsItemSelected(item.getItemId());
         return super.onOptionsItemSelected(item);
     }
 
@@ -71,12 +80,18 @@ public class FiltersActivity extends AppCompatActivity implements IFiltersView {
     }
 
     @Override
+    public void navigateUpFromSameTask() {
+        NavUtils.navigateUpFromSameTask(this);
+    }
+
+    @Override
     @OnClick(R.id.dtpFechaDesde)
     public void showDialogDateFrom() {
         DatePickerDialog.OnDateSetListener onDateSetListener=new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                dtpFechaDesde.setText(dayOfMonth+"-"+month+"-"+year+"-");
+                dtpFechaDesde.setText(Utils.getCorrectFormatDateSpanish(dayOfMonth,month,year));
+                dtpFechaDesde.setText(Utils.getCorrectFormatDateSpanish(dayOfMonth,month,year));
             }
         };
         showDatePickerDialog(onDateSetListener);
@@ -88,7 +103,7 @@ public class FiltersActivity extends AppCompatActivity implements IFiltersView {
         DatePickerDialog.OnDateSetListener onDateSetListener=new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                dtpFechaHasta.setText(dayOfMonth+"-"+month+"-"+year+"-");
+                dtpFechaHasta.setText(Utils.getCorrectFormatDateSpanish(dayOfMonth,month,year));
             }
         };
         showDatePickerDialog(onDateSetListener);

@@ -48,6 +48,10 @@
         </activity>
 
         <activity
+            android:name=".activities.filters.FiltersActivity"
+            android:parentActivityName=".activities.main.MainActivity" />
+
+        <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
             <intent-filter>

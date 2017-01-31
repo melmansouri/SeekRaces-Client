@@ -2,6 +2,7 @@ package com.mel.seekraces.activities.signin;
 
 import android.util.Log;
 
+import com.mel.seekraces.R;
 import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.RMapped;
 import com.mel.seekraces.commons.Utils;
@@ -77,6 +78,15 @@ public class SignInPresenterImpl implements ISignInPresenter, IListennerCallBack
                 view.fillImageViewFromGallery();
             }
 
+        }
+    }
+
+    @Override
+    public void onOptionsItemSelected(int idSelected) {
+        if(idSelected==RMapped.ITEM_HOME_BACK.getValue()) {
+            view.navigateUpFromSameTask();
+        }else if(idSelected==RMapped.ITEM_SIGNIN.getValue()){
+            view.signIn();
         }
     }
 

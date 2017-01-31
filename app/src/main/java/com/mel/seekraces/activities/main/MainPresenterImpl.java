@@ -61,7 +61,7 @@ public class MainPresenterImpl implements IMainPresenter, IListennerCallBack{
     public void activityResult(int requestCode, int resultCode) {
         if (resultCode == RMapped.RESULT_OK.getValue()) {
             if (requestCode==Constantes.REQUEST_START_FILTERS_FOR_RESULT){
-                view.
+
             }
         }
     }
