@@ -8,6 +8,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity
     private CircleImageView imgProfileUser;
     private SharedPreferencesSingleton sharedPreferencesSingleton;
     private ListRacesPublishedFragment fragment;
-
+    private Intent intentActivityResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,6 +152,11 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    @Override
+    public Intent getIntentActivityResult() {
+        return intentActivityResult;
+    }
+
 
     @Override
     public void onListFragmentInteraction(Event item) {
@@ -159,6 +165,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        intentActivityResult=data;
         presenter.activityResult(requestCode,resultCode);
     }
 }

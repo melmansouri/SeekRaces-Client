@@ -42,7 +42,6 @@ public class MainPresenterImpl implements IMainPresenter, IListennerCallBack{
         if (itemSelectd == RMapped.ITEM_RACES_PUBLISHED.getValue()) {
             Filter filter=new Filter();
             filter.setUser(sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER));
-            filter.setCountry("spain");
             view.chargeFragmentRacesPublished(filter);
         } else if (itemSelectd == RMapped.ITEM_RACES_MY_PUBLISHED.getValue()) {
             view.chargeFragmentMyRacesPublished();
@@ -61,7 +60,10 @@ public class MainPresenterImpl implements IMainPresenter, IListennerCallBack{
     public void activityResult(int requestCode, int resultCode) {
         if (resultCode == RMapped.RESULT_OK.getValue()) {
             if (requestCode==Constantes.REQUEST_START_FILTERS_FOR_RESULT){
-
+                if (view.getIntentActivityResult()!=null){
+                    Filter filter=view.getIntentActivityResult().getParcelableExtra("filter");
+                    view.chargeFragmentRacesPublished(filter);
+                }
             }
         }
     }

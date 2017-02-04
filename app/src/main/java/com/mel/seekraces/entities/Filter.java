@@ -15,7 +15,7 @@ public class Filter implements Parcelable{
     private String user;
     private String country;
     private String city;
-    private String distance;
+    private int distance;
     private String date_interval_init;
     private String date_interval_end;
 
@@ -27,7 +27,7 @@ public class Filter implements Parcelable{
         user=in.readString();
         country = in.readString();
         city = in.readString();
-        distance = in.readString();
+        distance = in.readInt();
         date_interval_init = in.readString();
         date_interval_end = in.readString();
     }
@@ -68,11 +68,11 @@ public class Filter implements Parcelable{
         this.city = city;
     }
 
-    public String getDistance() {
+    public int getDistance() {
         return distance;
     }
 
-    public void setDistance(String distance) {
+    public void setDistance(int distance) {
         this.distance = distance;
     }
 
@@ -114,7 +114,7 @@ public class Filter implements Parcelable{
         dest.writeString(user);
         dest.writeString(country);
         dest.writeString(city);
-        dest.writeString(distance);
+        dest.writeInt(distance);
         dest.writeString(date_interval_init);
         dest.writeString(date_interval_end);
     }
@@ -123,7 +123,7 @@ public class Filter implements Parcelable{
         user = in.readString();
         country = in.readString();
         city = in.readString();
-        distance = in.readString();
+        distance = in.readInt();
         date_interval_init = in.readString();
         date_interval_end = in.readString();
     }

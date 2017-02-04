@@ -11,9 +11,9 @@ import com.mel.seekraces.entities.Event;
 import com.mel.seekraces.entities.Filter;
 import com.mel.seekraces.entities.Response;
 import com.mel.seekraces.interfaces.IListennerCallBack;
-import com.mel.seekraces.interfaces.fragment_racespublished.IListFragmentRacesPublishedInteractor;
-import com.mel.seekraces.interfaces.fragment_racespublished.IListFragmentRacesPublishedPresenter;
-import com.mel.seekraces.interfaces.fragment_racespublished.IListFragmentRacesPublishedView;
+import com.mel.seekraces.interfaces.fragmentRacesPublished.IListFragmentRacesPublishedInteractor;
+import com.mel.seekraces.interfaces.fragmentRacesPublished.IListFragmentRacesPublishedPresenter;
+import com.mel.seekraces.interfaces.fragmentRacesPublished.IListFragmentRacesPublishedView;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -64,6 +64,7 @@ public class ListFragmentRacesPublishedPresenterImpl implements IListFragmentRac
     public void onError(Response response) {
         view.hideProgressBar();
         //view.hideList();
+        view.showMessage(response.getMessage());
         Log.e("Fragment",response.toString());
     }
 }

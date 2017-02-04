@@ -5,7 +5,12 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.text.TextUtils;
 import android.widget.DatePicker;
+
+import com.mel.seekraces.commons.Utils;
+
+import org.w3c.dom.Text;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -16,6 +21,7 @@ import java.util.Date;
 
 public class DatePickerFragment extends DialogFragment{
     private DatePickerDialog.OnDateSetListener onDateSetListener;
+    private String dateFrom="";
 
     public DatePickerFragment(){
     }
@@ -23,16 +29,32 @@ public class DatePickerFragment extends DialogFragment{
         this.onDateSetListener=onDateSetListener;
     }
 
+    public DatePickerFragment(DatePickerDialog.OnDateSetListener onDateSetListener,String dateFrom){
+        this.onDateSetListener=onDateSetListener;
+        this.dateFrom=dateFrom;
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Calendar c;
+        long currentTimeMillis=0;
+        if (TextUtils.isEmpty(dateFrom)){
+            c = Calendar.getInstance();
+        }else{
+            c= Utils.getCalendarFromDateSpanish(dateFrom);
+            currentTimeMillis=c.getTimeInMillis();
+        }
 
-        final Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
         DatePickerDialog datePickerDialog=new DatePickerDialog(getActivity(), onDateSetListener, year, month, day);
-        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+
+        if (currentTimeMillis==0){
+            currentTimeMillis=c.getTimeInMillis();
+        }
+        datePickerDialog.getDatePicker().setMinDate(currentTimeMillis);
         return datePickerDialog;
     }
 }

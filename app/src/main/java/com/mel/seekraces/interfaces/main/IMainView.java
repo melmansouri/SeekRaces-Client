@@ -1,5 +1,6 @@
 package com.mel.seekraces.interfaces.main;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
@@ -28,5 +29,7 @@ public interface IMainView {
     void chargeFragmentRacesFavorites();
 
     void chargeFragmentRacesPrevious();
+
+    Intent getIntentActivityResult();
 
 }

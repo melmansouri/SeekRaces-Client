@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/item_menu_fragment_filter_filtar"
+        android:id="@+id/item_menu_filters_filtrar"
         android:title="@string/filter"
         app:showAsAction="always" />
 </menu>

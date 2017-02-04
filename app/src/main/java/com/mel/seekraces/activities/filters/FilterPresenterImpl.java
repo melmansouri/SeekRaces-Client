@@ -17,11 +17,14 @@ public class FilterPresenterImpl implements IFiltersPresenter {
     }
 
     @Override
-    public void onOptionsItemSelected(int idSelected) {
+    public boolean onOptionsItemSelected(int idSelected) {
         if(idSelected== RMapped.ITEM_HOME_BACK.getValue()) {
-            view.navigateUpFromSameTask();
-        }else if(idSelected==RMapped.ITEM_FILTER.getValue()){
+            view.finishActivity();
+            return true;
+        }else if(idSelected==RMapped.ITEM_ACTIVITY_FILTERS_FILTRAR.getValue()){
             view.backToListRacesPublished();
+            return true;
         }
+        return view.retunSuperOnOptionsItemSelected();
     }
 }

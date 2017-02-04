@@ -9,6 +9,8 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.DatePicker;
@@ -44,6 +46,9 @@ public class FiltersActivity extends AppCompatActivity implements IFiltersView {
     TextInputEditText edtDistancia;
     private SharedPreferencesSingleton sharedPreferencesSingleton;
     private IFiltersPresenter presenter;
+    private DialogFragment datePickerFragment;
+    private MenuItem item;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,6 +58,7 @@ public class FiltersActivity extends AppCompatActivity implements IFiltersView {
         sharedPreferencesSingleton=SharedPreferencesSingleton.getInstance(this);
         presenter=new FilterPresenterImpl(this);
         dtpFechaDesde.setText(Utils.getCurrentDateSpanish());
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -63,8 +69,8 @@ public class FiltersActivity extends AppCompatActivity implements IFiltersView {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        presenter.onOptionsItemSelected(item.getItemId());
-        return super.onOptionsItemSelected(item);
+        this.item=item;
+       return presenter.onOptionsItemSelected(item.getItemId());
     }
 
     @Override
@@ -73,15 +79,22 @@ public class FiltersActivity extends AppCompatActivity implements IFiltersView {
         filter.setUser(sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER));
         filter.setCountry(edtCiudad.getText().toString());
         filter.setCity(edtPais.getText().toString());
-        filter.setDistance(edtDistancia.getText().toString());
+        String distance=edtDistancia.getText().toString();
+        filter.setDistance(TextUtils.isEmpty(distance)?0:Integer.valueOf(distance));
+        String fechaDesde=Utils.convertDateSpanishToEnglish(dtpFechaDesde.getText().toString());
+        filter.setDate_interval_init(fechaDesde);
+        String fechaHasta=Utils.convertDateSpanishToEnglish(dtpFechaHasta.getText().toString());
+        filter.setDate_interval_end(fechaHasta);
         Intent intent=new Intent();
         intent.putExtra("filter",filter);
-        setResult(RESULT_OK);
+        setResult(RESULT_OK,intent);
+        finish();
     }
 
     @Override
-    public void navigateUpFromSameTask() {
-        NavUtils.navigateUpFromSameTask(this);
+    public void finishActivity() {
+        //NavUtils.navigateUpFromSameTask(this);
+        finish();
     }
 
     @Override
@@ -91,10 +104,10 @@ public class FiltersActivity extends AppCompatActivity implements IFiltersView {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 dtpFechaDesde.setText(Utils.getCorrectFormatDateSpanish(dayOfMonth,month,year));
-                dtpFechaDesde.setText(Utils.getCorrectFormatDateSpanish(dayOfMonth,month,year));
             }
         };
-        showDatePickerDialog(onDateSetListener);
+        datePickerFragment= new DatePickerFragment(onDateSetListener);
+        showDatePickerDialog();
     }
 
     @Override
@@ -106,11 +119,16 @@ public class FiltersActivity extends AppCompatActivity implements IFiltersView {
                 dtpFechaHasta.setText(Utils.getCorrectFormatDateSpanish(dayOfMonth,month,year));
             }
         };
-        showDatePickerDialog(onDateSetListener);
+        datePickerFragment= new DatePickerFragment(onDateSetListener,dtpFechaDesde.getText().toString());
+        showDatePickerDialog();
     }
 
-    private void showDatePickerDialog(DatePickerDialog.OnDateSetListener onDateSetListener){
-        DialogFragment datePickerFragment= new DatePickerFragment(onDateSetListener);
+    @Override
+    public boolean retunSuperOnOptionsItemSelected() {
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showDatePickerDialog(){
         datePickerFragment.show(getSupportFragmentManager(), "datePicker");
     }
 }

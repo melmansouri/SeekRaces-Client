@@ -5,5 +5,5 @@ package com.mel.seekraces.interfaces.filters;
  */
 
 public interface IFiltersPresenter {
-    void onOptionsItemSelected(int idSelected);
+    boolean onOptionsItemSelected(int idSelected);
 }

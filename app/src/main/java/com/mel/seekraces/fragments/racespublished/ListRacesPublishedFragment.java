@@ -3,6 +3,7 @@ package com.mel.seekraces.fragments.racespublished;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
@@ -12,16 +13,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import com.mel.seekraces.R;
 import com.mel.seekraces.adapters.RVRacesPublishedAdapter;
 import com.mel.seekraces.commons.RMapped;
+import com.mel.seekraces.commons.UtilsViews;
+import com.mel.seekraces.customsViews.SwipeRefreshLayoutWithEmpty;
 import com.mel.seekraces.entities.Event;
 import com.mel.seekraces.entities.Filter;
 import com.mel.seekraces.interfaces.OnFragmentInteractionListener;
-import com.mel.seekraces.interfaces.fragment_racespublished.IListFragmentRacesPublishedPresenter;
-import com.mel.seekraces.interfaces.fragment_racespublished.IListFragmentRacesPublishedView;
+import com.mel.seekraces.interfaces.fragmentRacesPublished.IListFragmentRacesPublishedPresenter;
+import com.mel.seekraces.interfaces.fragmentRacesPublished.IListFragmentRacesPublishedView;
 
 import java.util.List;
 
@@ -31,10 +33,10 @@ import butterknife.ButterKnife;
 public class ListRacesPublishedFragment extends Fragment implements IListFragmentRacesPublishedView {
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
-    @BindView(R.id.progressBar)
-    ProgressBar progressBar;
     @BindView(R.id.swipeRefresh)
-    SwipeRefreshLayout swipeRefresh;
+    SwipeRefreshLayoutWithEmpty swipeRefresh;
+    @BindView(R.id.coordinatorLayout)
+    CoordinatorLayout coordinatorLayout;
     private RVRacesPublishedAdapter adapter;
     private IListFragmentRacesPublishedPresenter presenter;
     private Filter filter;
@@ -115,6 +117,11 @@ public class ListRacesPublishedFragment extends Fragment implements IListFragmen
     @Override
     public void hideList() {
         recyclerView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showMessage(String message) {
+        UtilsViews.showSnackBar(coordinatorLayout,message);
     }
 
     @Override

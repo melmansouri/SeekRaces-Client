@@ -6,7 +6,8 @@ package com.mel.seekraces.interfaces.filters;
 
 public interface IFiltersView {
     void backToListRacesPublished();
-    void navigateUpFromSameTask();
+    void finishActivity();
     void showDialogDateFrom();
     void showDialogDateUntil();
+    boolean retunSuperOnOptionsItemSelected();
 }

@@ -180,4 +180,16 @@ public class Utils {
 
         return fecha.toString();
     }
+
+    public static Calendar getCalendarFromDateSpanish(String dateFrom) {
+        Calendar calendar=Calendar.getInstance();
+        try{
+            SimpleDateFormat dateFormat =new SimpleDateFormat("dd-MM-yyyy");
+            calendar.setTime(dateFormat.parse(dateFrom));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return calendar;
+    }
 }

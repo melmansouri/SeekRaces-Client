@@ -1,4 +1,4 @@
-package com.mel.seekraces.interfaces.fragment_racespublished;
+package com.mel.seekraces.interfaces.fragmentRacesPublished;
 
 import com.mel.seekraces.entities.Filter;
 

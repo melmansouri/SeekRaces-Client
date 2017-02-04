@@ -18,6 +18,7 @@ public enum RMapped {
 
     //Menus
     ITEM_FILTER(R.id.filter),
+    ITEM_ACTIVITY_FILTERS_FILTRAR(R.id.item_menu_filters_filtrar),
     ITEM_HOME_BACK(android.R.id.home),
     ITEM_SIGNIN(R.id.item_menu_signin_registrarse),
 

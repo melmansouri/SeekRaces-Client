@@ -1,4 +1,4 @@
-package com.mel.seekraces.interfaces.fragment_racespublished;
+package com.mel.seekraces.interfaces.fragmentRacesPublished;
 
 import com.mel.seekraces.entities.Event;
 
@@ -14,6 +14,7 @@ public interface IListFragmentRacesPublishedView {
     void hideProgressBar();
     void showList();
     void hideList();
+    void showMessage(String message);
 
     void startScreenFilter();
 }

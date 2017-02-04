@@ -73,6 +73,7 @@
             android:layout_height="wrap_content"
             android:text="@string/login_facebook"
             android:layout_below="@+id/btnSignIn"
+            android:visibility="gone"
             style="?android:textAppearanceSmall"
             android:textColor="@color/color_text_button_facebook"
             android:drawableLeft="@drawable/ic_facebook"

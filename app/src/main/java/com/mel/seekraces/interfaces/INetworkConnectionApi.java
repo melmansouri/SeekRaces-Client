@@ -33,7 +33,7 @@ public interface INetworkConnectionApi {
     Call<Response> getRacesPublished(@Query("user") String user,
                                      @Query("country") String country,
                                      @Query("city") String city,
-                                     @Query("distance") String distance,
+                                     @Query("distance") int distance,
                                      @Query("date_interval_init") String date_interval_init,
                                      @Query("date_interval_end") String date_interval_end);
 

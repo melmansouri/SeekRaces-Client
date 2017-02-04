@@ -5,7 +5,7 @@ import com.mel.seekraces.entities.Filter;
 import com.mel.seekraces.entities.Response;
 import com.mel.seekraces.interfaces.IListennerCallBack;
 import com.mel.seekraces.interfaces.INetworkConnectionApi;
-import com.mel.seekraces.interfaces.fragment_racespublished.IListFragmentRacesPublishedInteractor;
+import com.mel.seekraces.interfaces.fragmentRacesPublished.IListFragmentRacesPublishedInteractor;
 
 import retrofit2.Call;
 import retrofit2.Callback;
