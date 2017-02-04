@@ -1,5 +1,6 @@
 package com.mel.seekraces.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mel.seekraces.R;
+import com.mel.seekraces.commons.Constantes;
+import com.mel.seekraces.commons.SharedPreferencesSingleton;
 import com.mel.seekraces.entities.Event;
 import com.mel.seekraces.interfaces.OnFragmentInteractionListener;
 
@@ -25,10 +28,17 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
 
     private final List<Event> mValues;
     private final OnFragmentInteractionListener mListener;
+    private Context c;
 
     public RVRacesPublishedAdapter(List<Event> items, OnFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
+    }
+
+    public RVRacesPublishedAdapter(Context context,List<Event> items, OnFragmentInteractionListener listener) {
+        mValues = items;
+        mListener = listener;
+        c=context;
     }
 
     @Override
@@ -59,11 +69,17 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
         holder.txtPublicadoPor.setText("Publicado por "+holder.mItem.getUserName());
         holder.txtDistance.setText(holder.mItem.getDistance()+"KM");
 
-        if (holder.mItem.isFavorite()){
-            holder.imgBtnLikeRace.setImageResource(R.drawable.ic_favorite);
+        if (!SharedPreferencesSingleton.getInstance(c).getStringSP(Constantes.KEY_USER).equals(holder.mItem.getUser())){
+            holder.imgBtnLikeRace.setVisibility(View.VISIBLE);
+            if (holder.mItem.isFavorite()){
+                holder.imgBtnLikeRace.setImageResource(R.drawable.ic_favorite);
+            }else{
+                holder.imgBtnLikeRace.setImageResource(R.drawable.ic_not_favorite);
+            }
         }else{
-            holder.imgBtnLikeRace.setImageResource(R.drawable.ic_not_favorite);
+            holder.imgBtnLikeRace.setVisibility(View.INVISIBLE);
         }
+
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -77,9 +77,9 @@ public class FiltersActivity extends AppCompatActivity implements IFiltersView {
     public void backToListRacesPublished() {
         Filter filter= new Filter();
         filter.setUser(sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER));
-        filter.setCountry(edtCiudad.getText().toString());
-        filter.setCity(edtPais.getText().toString());
-        String distance=edtDistancia.getText().toString();
+        filter.setCountry(edtPais.getText().toString().trim());
+        filter.setCity(edtCiudad.getText().toString().trim());
+        String distance=edtDistancia.getText().toString().trim();
         filter.setDistance(TextUtils.isEmpty(distance)?0:Integer.valueOf(distance));
         String fechaDesde=Utils.convertDateSpanishToEnglish(dtpFechaDesde.getText().toString());
         filter.setDate_interval_init(fechaDesde);

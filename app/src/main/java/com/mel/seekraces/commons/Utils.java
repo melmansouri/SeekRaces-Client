@@ -146,7 +146,7 @@ public class Utils {
     }
 
     public static String convertDateSpanishToEnglish(String dateStringSpanish){
-        String dateStringEnglish="";
+        String dateStringEnglish=null;
         try{
             SimpleDateFormat sdfSpanish=new SimpleDateFormat("dd-MM-yyyy");
             Date dateSpanish=sdfSpanish.parse(dateStringSpanish);

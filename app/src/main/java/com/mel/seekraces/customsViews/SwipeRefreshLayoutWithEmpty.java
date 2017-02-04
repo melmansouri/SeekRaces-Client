@@ -31,13 +31,16 @@ public class SwipeRefreshLayoutWithEmpty extends SwipeRefreshLayout {
 
         // The container has 2 children; the empty view and the scrollable view.
         if (container.getChildCount() != 2) {
-            throw new RuntimeException("Container must have an empty view and content view");
+            return false;
         }
 
         // Use whichever one is visible and test that it can scroll
         View view = container.getChildAt(0);
         if (view.getVisibility() != View.VISIBLE) {
             view = container.getChildAt(1);
+            view.setVisibility(View.VISIBLE);
+        }else{
+            container.getChildAt(1).setVisibility(View.GONE);
         }
 
         return ViewCompat.canScrollVertically(view, -1);

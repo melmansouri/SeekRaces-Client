@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
-        <activity android:name=".activities.login.LoginActivity">
+        <activity android:name=".activities.login.LoginActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,7 +25,8 @@
         </activity>
         <activity
             android:name=".activities.signin.SignInActivity"
-            android:parentActivityName=".activities.login.LoginActivity" >
+            android:parentActivityName=".activities.login.LoginActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mel.seekraces.activities.login.LoginActivity" />
@@ -44,12 +46,14 @@
         <activity
             android:name=".activities.main.MainActivity"
             android:label="@string/title_carreras_publicadas"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
         </activity>
 
         <activity
             android:name=".activities.filters.FiltersActivity"
-            android:parentActivityName=".activities.main.MainActivity" >
+            android:parentActivityName=".activities.main.MainActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mel.seekraces.activities.main.MainActivity" />

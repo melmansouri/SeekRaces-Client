@@ -8,7 +8,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -20,7 +19,8 @@ import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.SharedPreferencesSingleton;
 import com.mel.seekraces.entities.Event;
 import com.mel.seekraces.entities.Filter;
-import com.mel.seekraces.fragments.racespublished.ListRacesPublishedFragment;
+import com.mel.seekraces.fragments.ownRacesPublished.ListOwnRacesPublishedFragment;
+import com.mel.seekraces.fragments.racesPublished.ListRacesPublishedFragment;
 import com.mel.seekraces.interfaces.INetworkConnectionApi;
 import com.mel.seekraces.interfaces.OnFragmentInteractionListener;
 import com.mel.seekraces.interfaces.main.IMainPresenter;
@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity
     private TextView txtUserName;
     private CircleImageView imgProfileUser;
     private SharedPreferencesSingleton sharedPreferencesSingleton;
-    private ListRacesPublishedFragment fragment;
     private Intent intentActivityResult;
 
     @Override
@@ -130,6 +129,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void chargeFragmentRacesPublished(Filter filter) {
+        ListRacesPublishedFragment fragment;
         fragment=new ListRacesPublishedFragment();
         Bundle bundle=new Bundle();
         bundle.putParcelable("filter",filter);
@@ -139,7 +139,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void chargeFragmentMyRacesPublished() {
-
+        ListOwnRacesPublishedFragment fragment=new ListOwnRacesPublishedFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,fragment).commit();
     }
 
     @Override
