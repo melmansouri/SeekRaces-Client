@@ -1,4 +1,4 @@
-package com.mel.seekraces.fragments.ownRacesPublished;
+package com.mel.seekraces.fragments.racesPublishedFavorites;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -21,19 +20,18 @@ import com.mel.seekraces.commons.SharedPreferencesSingleton;
 import com.mel.seekraces.commons.UtilsViews;
 import com.mel.seekraces.customsViews.SwipeRefreshLayoutWithEmpty;
 import com.mel.seekraces.entities.Event;
-import com.mel.seekraces.entities.Filter;
 import com.mel.seekraces.interfaces.OnFragmentInteractionListener;
 import com.mel.seekraces.interfaces.fragmentOwnRacesPublished.IListFragmentOwnRacesPublishedPresenter;
 import com.mel.seekraces.interfaces.fragmentOwnRacesPublished.IListFragmentOwnRacesPublishedView;
-import com.mel.seekraces.interfaces.fragmentRacesPublished.IListFragmentRacesPublishedPresenter;
-import com.mel.seekraces.interfaces.fragmentRacesPublished.IListFragmentRacesPublishedView;
+import com.mel.seekraces.interfaces.fragmentRacesPublishedFavorites.IListFragmentRacesPublishedFavoritesPresenter;
+import com.mel.seekraces.interfaces.fragmentRacesPublishedFavorites.IListFragmentRacesPublishedFavoritesView;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ListOwnRacesPublishedFragment extends Fragment implements IListFragmentOwnRacesPublishedView{
+public class ListRacesPublishedFavoritesFragment extends Fragment implements IListFragmentRacesPublishedFavoritesView{
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.swipeRefresh)
@@ -41,7 +39,7 @@ public class ListOwnRacesPublishedFragment extends Fragment implements IListFrag
     @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
     private RVRacesPublishedAdapter adapter;
-    private IListFragmentOwnRacesPublishedPresenter presenter;
+    private IListFragmentRacesPublishedFavoritesPresenter presenter;
     private OnFragmentInteractionListener mListener;
     private SharedPreferencesSingleton sharedPreferencesSingleton;
 
@@ -49,8 +47,8 @@ public class ListOwnRacesPublishedFragment extends Fragment implements IListFrag
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sharedPreferencesSingleton=SharedPreferencesSingleton.getInstance(getActivity());
-        presenter = new ListFragmentOwnRacesPublishedPresenterImpl(this,sharedPreferencesSingleton);
-        mListener.changeTitleActionBar(RMapped.TITLE_MIS_CARRERAS_PUBLICADAS.getValue());
+        presenter = new ListFragmentRacesPublishedFavoritesPresenterImpl(this,sharedPreferencesSingleton);
+        mListener.changeTitleActionBar(RMapped.TITLE_CARRERAS_FAVORITAS.getValue());
     }
 
     @Override
@@ -67,7 +65,7 @@ public class ListOwnRacesPublishedFragment extends Fragment implements IListFrag
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                presenter.getOwnRacesPublished();
+                presenter.getRacesPublishedFavorites();
             }
         });
         setHasOptionsMenu(true);
@@ -77,7 +75,7 @@ public class ListOwnRacesPublishedFragment extends Fragment implements IListFrag
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        presenter.getOwnRacesPublished();
+        presenter.getRacesPublishedFavorites();
     }
 
     @Override

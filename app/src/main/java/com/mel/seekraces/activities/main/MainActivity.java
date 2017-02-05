@@ -21,6 +21,7 @@ import com.mel.seekraces.entities.Event;
 import com.mel.seekraces.entities.Filter;
 import com.mel.seekraces.fragments.ownRacesPublished.ListOwnRacesPublishedFragment;
 import com.mel.seekraces.fragments.racesPublished.ListRacesPublishedFragment;
+import com.mel.seekraces.fragments.racesPublishedFavorites.ListRacesPublishedFavoritesFragment;
 import com.mel.seekraces.interfaces.INetworkConnectionApi;
 import com.mel.seekraces.interfaces.OnFragmentInteractionListener;
 import com.mel.seekraces.interfaces.main.IMainPresenter;
@@ -145,7 +146,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void chargeFragmentRacesFavorites() {
-
+        ListRacesPublishedFavoritesFragment fragment=new ListRacesPublishedFavoritesFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,fragment).commit();
     }
 
     @Override

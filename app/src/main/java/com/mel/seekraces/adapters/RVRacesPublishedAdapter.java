@@ -81,6 +81,8 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
         }
 
 
+
+
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

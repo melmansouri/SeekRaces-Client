@@ -41,7 +41,14 @@
     <string name="fecha_hasta_default">No especificado</string>
     <!--Filter-->
 
+    <!--New Race-->
+    <string name="name_race">Nombre</string>
+    <string name="web">Web</string>
+    <string name="descripcion">Descripción</string>
+    <!--New Race-->
+
     <!--Menus-->
     <string name="filter">Filtrar</string>
+    <string name="addRace">Añadir Carrera</string>
     <!--Menus-->
 </resources>
