@@ -1,15 +1,294 @@
 package com.mel.seekraces.activities.newRace;
 
-import android.support.v7.app.AppCompatActivity;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.DatePicker;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.mel.seekraces.R;
+import com.mel.seekraces.commons.Constantes;
+import com.mel.seekraces.commons.SharedPreferencesSingleton;
+import com.mel.seekraces.commons.Utils;
+import com.mel.seekraces.commons.UtilsViews;
+import com.mel.seekraces.entities.Event;
+import com.mel.seekraces.entities.Response;
+import com.mel.seekraces.fragments.DatePickerFragment;
+import com.mel.seekraces.fragments.TimePickerFragment;
+import com.mel.seekraces.interfaces.newRace.IAddNewRacePresenter;
+import com.mel.seekraces.interfaces.newRace.IAddNewRaceView;
+import com.mel.seekraces.tasks.EncodeImageTask;
 
-public class AddNewRace extends AppCompatActivity {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.OnTextChanged;
+
+public class AddNewRace extends AppCompatActivity implements IAddNewRaceView {
+
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
+    @BindView(R.id.imgRace)
+    ImageView imgRace;
+    @BindView(R.id.edtNameRace)
+    TextInputEditText edtNameRace;
+    @BindView(R.id.text_input_layout_name_race)
+    TextInputLayout textInputLayoutNameRace;
+    @BindView(R.id.edtDistancia)
+    TextInputEditText edtDistancia;
+    @BindView(R.id.text_input_layout_distancia)
+    TextInputLayout textInputLayoutDistancia;
+    @BindView(R.id.edtPais)
+    TextInputEditText edtPais;
+    @BindView(R.id.text_input_layout_pais)
+    TextInputLayout textInputLayoutPais;
+    @BindView(R.id.edtCiudad)
+    TextInputEditText edtCiudad;
+    @BindView(R.id.text_input_layout_ciudad)
+    TextInputLayout textInputLayoutCiudad;
+    @BindView(R.id.lncityCountry)
+    LinearLayout lncityCountry;
+    @BindView(R.id.txtFechaDesde)
+    TextView txtFechaDesde;
+    @BindView(R.id.dtpFechaDesde)
+    TextView dtpFechaDesde;
+    @BindView(R.id.lnFechaIniCarrera)
+    LinearLayout lnFechaIniCarrera;
+    @BindView(R.id.edtWeb)
+    TextInputEditText edtWeb;
+    @BindView(R.id.text_input_layout_web)
+    TextInputLayout textInputLayoutWeb;
+    @BindView(R.id.edtDescription)
+    TextInputEditText edtDescription;
+    @BindView(R.id.text_input_layout_description)
+    TextInputLayout textInputLayoutDescription;
+    @BindView(R.id.lnDataRace)
+    LinearLayout lnDataRace;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
+    @BindView(R.id.coordinatorLayout)
+    CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.tipHora)
+    TextView tipHora;
+
+    private Intent intentOnActivityResult;
+    private Bitmap imageBitmap;
+    private IAddNewRacePresenter presenter;
+    private SharedPreferencesSingleton sharedPreferencesSingleton;
+    private MenuItem item;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_race);
+        ButterKnife.bind(this);
+        presenter = new AddNewRacePresenterImpl(this);
+        sharedPreferencesSingleton = SharedPreferencesSingleton.getInstance(this);
+        dtpFechaDesde.setText(Utils.getCurrentDateSpanishString());
+        tipHora.setText(Utils.getCurrentTimeString());
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_new_race, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        this.item=item;
+        return presenter.onOptionsItemSelected(item.getItemId());
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        intentOnActivityResult = data;
+        presenter.activityResult(requestCode, resultCode);
+    }
+
+    @Override
+    @OnClick(R.id.fab)
+    public void selectPictureRace() {
+        AlertDialog.Builder builder = UtilsViews.createAlertDialog(this, getString(R.string.elige_opcion));
+        builder.setItems(R.array.option_dialog_picture, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                presenter.selectOptionDialogPicture(getResources().getStringArray(R.array.option_dialog_picture), i);
+            }
+        });
+
+        builder.show();
+    }
+
+    @Override
+    public void showProgress() {
+        UtilsViews.closeKeyBoard(this);
+        UtilsViews.disableScreen(this);
+        progressBar.setVisibility(View.VISIBLE);
+        hideComponents();
+    }
+
+    @Override
+    public void hideProgress() {
+        progressBar.setVisibility(View.GONE);
+        showComponents();
+        UtilsViews.enableSreen(this);
+    }
+
+    @Override
+    public void showMessage(String message) {
+        UtilsViews.showSnackBar(coordinatorLayout, message);
+    }
+
+    @Override
+    public void showErrorName(String message) {
+        textInputLayoutNameRace.setError(message);
+    }
+
+    @Override
+    @OnTextChanged(value = R.id.edtNameRace, callback = OnTextChanged.Callback.BEFORE_TEXT_CHANGED)
+    public void hideErrorName() {
+        textInputLayoutNameRace.setErrorEnabled(false);
+    }
+
+    @Override
+    public void showErrorDistance(String message) {
+        textInputLayoutDistancia.setError(message);
+    }
+
+    @Override
+    @OnTextChanged(value = R.id.edtDistancia, callback = OnTextChanged.Callback.BEFORE_TEXT_CHANGED)
+    public void hideErrorDistance() {
+        textInputLayoutDistancia.setErrorEnabled(false);
+    }
+
+    @Override
+    public void showComponents() {
+        lnDataRace.setVisibility(View.VISIBLE);
+        fab.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideComponents() {
+        lnDataRace.setVisibility(View.GONE);
+        fab.setVisibility(View.GONE);
+    }
+
+    @Override
+    @OnClick(R.id.dtpFechaDesde)
+    public void showDialogDate() {
+        DatePickerDialog.OnDateSetListener onDateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                dtpFechaDesde.setText(Utils.getCorrectFormatDateSpanish(dayOfMonth, month, year));
+            }
+        };
+        DialogFragment datePickerFragment = new DatePickerFragment(onDateSetListener);
+        datePickerFragment.show(getSupportFragmentManager(), "datePicker");
+    }
+
+    @Override
+    @OnClick(R.id.tipHora)
+    public void showDialogTime() {
+        TimePickerDialog.OnTimeSetListener onTimeSetListener=new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                tipHora.setText(Utils.getCorrectFormatTime(hourOfDay,minute));
+            }
+        };
+        DialogFragment newFragment = new TimePickerFragment(onTimeSetListener);
+        newFragment.show(getSupportFragmentManager(), "TimePicker");
+    }
+
+    @Override
+    public void returnToMainScreen(String message) {
+        Intent intent=new Intent();
+        intent.putExtra("addRace",message);
+        setResult(RESULT_OK,intent);
+        finish();
+    }
+
+    @Override
+    public boolean retunSuperOnOptionsItemSelected() {
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void finishActivity() {
+        finish();
+    }
+
+    @Override
+    public void fillImageViewFromCamera() {
+        Bundle extras = intentOnActivityResult.getExtras();
+        imageBitmap = (Bitmap) extras.get("data");
+        imgRace.setImageBitmap(imageBitmap);
+    }
+
+    @Override
+    public void fillImageViewFromGallery() {
+        Uri uriImage = intentOnActivityResult.getData();
+        imageBitmap = Utils.getBitmapFromUriImage(this, uriImage);
+        imgRace.setImageBitmap(imageBitmap);
+    }
+
+    @Override
+    public void openCamera() {
+        UtilsViews.openCamera(this);
+    }
+
+    @Override
+    public void openGalery() {
+        UtilsViews.openGallery(this);
+    }
+
+    @Override
+    public void addRace() {
+        showProgress();
+
+        final Event event = new Event();
+        new EncodeImageTask(this, imageBitmap) {
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                event.setName(edtNameRace.getText().toString().trim());
+                String distance = edtDistancia.getText().toString().trim();
+                event.setDistance(TextUtils.isEmpty(distance) ? 0 : Integer.valueOf(distance));
+                event.setCountry(edtPais.getText().toString().trim());
+                event.setCity(edtCiudad.getText().toString().trim());
+                String fecha = Utils.convertDateSpanishToEnglish(dtpFechaDesde.getText().toString());
+                String hora =tipHora.getText().toString();
+                event.setDate_time_init(fecha.concat(" ").concat(hora));
+                event.setImageBase64(s);
+                event.setWeb(edtWeb.getText().toString().trim());
+                event.setDescription(edtDescription.getText().toString());
+                event.setUser(sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER));
+                presenter.addRace(Utils.isOnline(AddNewRace.this), event);
+            }
+        }.execute();
     }
 }

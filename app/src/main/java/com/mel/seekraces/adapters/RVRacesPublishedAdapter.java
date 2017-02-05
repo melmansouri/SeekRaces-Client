@@ -55,7 +55,7 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
         holder.txtNameRace.setText(holder.mItem.getName());
         holder.txtCountryCity.setText(holder.mItem.getCountry()+", "+holder.mItem.getCity());
         SimpleDateFormat formato =
-                new SimpleDateFormat("EEEE d 'de' MMMM 'de' yyyy", Locale.getDefault());
+                new SimpleDateFormat("EEEE d 'de' MMMM 'de' yyyy 'a las' HH:mm", Locale.getDefault());
         SimpleDateFormat sdf =
                 new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date= null;

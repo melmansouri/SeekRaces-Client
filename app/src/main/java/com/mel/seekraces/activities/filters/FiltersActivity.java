@@ -3,14 +3,11 @@ package com.mel.seekraces.activities.filters;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.DatePicker;
@@ -57,7 +54,7 @@ public class FiltersActivity extends AppCompatActivity implements IFiltersView {
         ButterKnife.bind(this);
         sharedPreferencesSingleton=SharedPreferencesSingleton.getInstance(this);
         presenter=new FilterPresenterImpl(this);
-        dtpFechaDesde.setText(Utils.getCurrentDateSpanish());
+        dtpFechaDesde.setText(Utils.getCurrentDateSpanishString());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 

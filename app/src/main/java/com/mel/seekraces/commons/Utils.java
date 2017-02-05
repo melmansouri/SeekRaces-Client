@@ -159,13 +159,31 @@ public class Utils {
         return dateStringEnglish;
     }
 
-    public static String getCurrentDateSpanish(){
+    public static String getCurrentDateSpanishString(){
         Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
         int month =  c.get(Calendar.MONTH);
         int day =  c.get(Calendar.DAY_OF_MONTH);
 
         return getCorrectFormatDateSpanish(day,month,year);
+    }
+
+    public static String getCurrentTimeString(){
+        Calendar c = Calendar.getInstance();
+        int hour = c.get(Calendar.HOUR_OF_DAY);
+        int minute = c.get(Calendar.MINUTE);
+        return getCorrectFormatTime(hour,minute);
+
+    }
+
+    public static String getCorrectFormatTime(int hour,int minute){
+        StringBuilder horaMinute=new StringBuilder();
+        String hourString = String.valueOf(hour);
+        String minuteString = String.valueOf(minute);
+        hourString=(hourString.length()>1) ? hourString: "0".concat(hourString);
+        minuteString=(minuteString.length()>1) ? minuteString: "0".concat(minuteString);
+        horaMinute.append(hourString).append(":").append(minuteString);
+        return horaMinute.toString();
     }
 
     public static String getCorrectFormatDateSpanish(int day,int month,int year){

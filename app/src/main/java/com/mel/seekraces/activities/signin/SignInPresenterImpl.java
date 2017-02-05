@@ -29,6 +29,7 @@ public class SignInPresenterImpl implements ISignInPresenter, IListennerCallBack
     @Override
     public void signIn(boolean isOnline,User user) {
         if (!isOnline){
+            view.hideProgress();
             view.showMessage("Comprueba tu conexión");
             return;
         }

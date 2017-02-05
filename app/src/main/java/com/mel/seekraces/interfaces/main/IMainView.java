@@ -20,6 +20,8 @@ public interface IMainView {
 
     void setResult();
 
+    void showMessage(String message);
+
     boolean isDrawerOpen();
 
     void chargeFragmentRacesPublished(Filter filter);
@@ -30,6 +32,10 @@ public interface IMainView {
 
     void chargeFragmentRacesPrevious();
 
+    void goToAddRaceScreen();
+
     Intent getIntentActivityResult();
+
+
 
 }

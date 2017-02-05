@@ -50,5 +50,7 @@
     <!--Menus-->
     <string name="filter">Filtrar</string>
     <string name="addRace">Añadir Carrera</string>
+    <string name="hora">Hora</string>
+    <string name="fecha">Fecha</string>
     <!--Menus-->
 </resources>
