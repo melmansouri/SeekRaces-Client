@@ -14,6 +14,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,17 +28,21 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.mel.seekraces.R;
+import com.mel.seekraces.adapters.AutoCompleteCountriesAdapter;
 import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.SharedPreferencesSingleton;
 import com.mel.seekraces.commons.Utils;
 import com.mel.seekraces.commons.UtilsViews;
+import com.mel.seekraces.entities.Country;
 import com.mel.seekraces.entities.Event;
-import com.mel.seekraces.entities.Response;
 import com.mel.seekraces.fragments.DatePickerFragment;
 import com.mel.seekraces.fragments.TimePickerFragment;
 import com.mel.seekraces.interfaces.newRace.IAddNewRacePresenter;
 import com.mel.seekraces.interfaces.newRace.IAddNewRaceView;
 import com.mel.seekraces.tasks.EncodeImageTask;
+import com.mel.seekraces.tasks.RetrieveCountriesCitiesSqlite;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,12 +63,8 @@ public class AddNewRace extends AppCompatActivity implements IAddNewRaceView {
     TextInputEditText edtDistancia;
     @BindView(R.id.text_input_layout_distancia)
     TextInputLayout textInputLayoutDistancia;
-    @BindView(R.id.edtPais)
-    TextInputEditText edtPais;
     @BindView(R.id.text_input_layout_pais)
     TextInputLayout textInputLayoutPais;
-    @BindView(R.id.edtCiudad)
-    TextInputEditText edtCiudad;
     @BindView(R.id.text_input_layout_ciudad)
     TextInputLayout textInputLayoutCiudad;
     @BindView(R.id.lncityCountry)
@@ -90,12 +91,21 @@ public class AddNewRace extends AppCompatActivity implements IAddNewRaceView {
     CoordinatorLayout coordinatorLayout;
     @BindView(R.id.tipHora)
     TextView tipHora;
+    @BindView(R.id.edtPais)
+    AppCompatAutoCompleteTextView edtPais;
+    @BindView(R.id.edtCiudad)
+    AppCompatAutoCompleteTextView edtCiudad;
+    @BindView(R.id.txtHora)
+    TextView txtHora;
+    @BindView(R.id.lnFechaHora)
+    LinearLayout lnFechaHora;
 
     private Intent intentOnActivityResult;
     private Bitmap imageBitmap;
     private IAddNewRacePresenter presenter;
     private SharedPreferencesSingleton sharedPreferencesSingleton;
     private MenuItem item;
+    private AutoCompleteCountriesAdapter adapterCountries;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +117,26 @@ public class AddNewRace extends AppCompatActivity implements IAddNewRaceView {
         dtpFechaDesde.setText(Utils.getCurrentDateSpanishString());
         tipHora.setText(Utils.getCurrentTimeString());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        fillAutoCompleteTextView();
+
+    }
+
+    private void fillAutoCompleteTextView(){
+        new RetrieveCountriesCitiesSqlite(this){
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                showProgress();
+            }
+
+            @Override
+            protected void onPostExecute(List<Country> countries) {
+                super.onPostExecute(countries);
+                hideProgress();
+                adapterCountries=new AutoCompleteCountriesAdapter(AddNewRace.this,R.layout.item_autocomplete_country_city,countries);
+                edtPais.setAdapter(adapterCountries);
+            }
+        }.execute();
     }
 
     @Override
@@ -118,7 +148,7 @@ public class AddNewRace extends AppCompatActivity implements IAddNewRaceView {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        this.item=item;
+        this.item = item;
         return presenter.onOptionsItemSelected(item.getItemId());
 
     }
@@ -187,6 +217,26 @@ public class AddNewRace extends AppCompatActivity implements IAddNewRaceView {
     }
 
     @Override
+    public void showErrorCountry(String message) {
+
+    }
+
+    @Override
+    public void hideErrorCountry() {
+
+    }
+
+    @Override
+    public void showErrorCity(String message) {
+
+    }
+
+    @Override
+    public void hideErrorCity() {
+
+    }
+
+    @Override
     public void showComponents() {
         lnDataRace.setVisibility(View.VISIBLE);
         fab.setVisibility(View.VISIBLE);
@@ -214,10 +264,10 @@ public class AddNewRace extends AppCompatActivity implements IAddNewRaceView {
     @Override
     @OnClick(R.id.tipHora)
     public void showDialogTime() {
-        TimePickerDialog.OnTimeSetListener onTimeSetListener=new TimePickerDialog.OnTimeSetListener() {
+        TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                tipHora.setText(Utils.getCorrectFormatTime(hourOfDay,minute));
+                tipHora.setText(Utils.getCorrectFormatTime(hourOfDay, minute));
             }
         };
         DialogFragment newFragment = new TimePickerFragment(onTimeSetListener);
@@ -226,9 +276,9 @@ public class AddNewRace extends AppCompatActivity implements IAddNewRaceView {
 
     @Override
     public void returnToMainScreen(String message) {
-        Intent intent=new Intent();
-        intent.putExtra("addRace",message);
-        setResult(RESULT_OK,intent);
+        Intent intent = new Intent();
+        intent.putExtra("addRace", message);
+        setResult(RESULT_OK, intent);
         finish();
     }
 
@@ -281,7 +331,7 @@ public class AddNewRace extends AppCompatActivity implements IAddNewRaceView {
                 event.setCountry(edtPais.getText().toString().trim());
                 event.setCity(edtCiudad.getText().toString().trim());
                 String fecha = Utils.convertDateSpanishToEnglish(dtpFechaDesde.getText().toString());
-                String hora =tipHora.getText().toString();
+                String hora = tipHora.getText().toString();
                 event.setDate_time_init(fecha.concat(" ").concat(hora));
                 event.setImageBase64(s);
                 event.setWeb(edtWeb.getText().toString().trim());

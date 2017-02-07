@@ -38,8 +38,6 @@ public class ListOwnRacesPublishedFragment extends Fragment implements IListFrag
     RecyclerView recyclerView;
     @BindView(R.id.swipeRefresh)
     SwipeRefreshLayoutWithEmpty swipeRefresh;
-    @BindView(R.id.coordinatorLayout)
-    CoordinatorLayout coordinatorLayout;
     private RVRacesPublishedAdapter adapter;
     private IListFragmentOwnRacesPublishedPresenter presenter;
     private OnFragmentInteractionListener mListener;
@@ -115,7 +113,7 @@ public class ListOwnRacesPublishedFragment extends Fragment implements IListFrag
 
     @Override
     public void showMessage(String message) {
-        UtilsViews.showSnackBar(coordinatorLayout,message);
+        mListener.showMessageFromFragments(message);
     }
 
 

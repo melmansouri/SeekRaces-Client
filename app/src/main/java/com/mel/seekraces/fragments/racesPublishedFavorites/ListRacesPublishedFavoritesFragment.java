@@ -36,8 +36,6 @@ public class ListRacesPublishedFavoritesFragment extends Fragment implements ILi
     RecyclerView recyclerView;
     @BindView(R.id.swipeRefresh)
     SwipeRefreshLayoutWithEmpty swipeRefresh;
-    @BindView(R.id.coordinatorLayout)
-    CoordinatorLayout coordinatorLayout;
     private RVRacesPublishedAdapter adapter;
     private IListFragmentRacesPublishedFavoritesPresenter presenter;
     private OnFragmentInteractionListener mListener;
@@ -112,8 +110,7 @@ public class ListRacesPublishedFavoritesFragment extends Fragment implements ILi
     }
 
     @Override
-    public void showMessage(String message) {
-        UtilsViews.showSnackBar(coordinatorLayout,message);
+    public void showMessage(String message) {mListener.showMessageFromFragments(message);
     }
 
 

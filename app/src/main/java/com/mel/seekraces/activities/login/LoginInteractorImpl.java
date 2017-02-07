@@ -44,10 +44,8 @@ public class LoginInteractorImpl implements ILoginInteractor{
                 }else{
                     responsetmp=response.body();
                 }
-
+                Log.e("LoginInteractor",responsetmp.toString());
                 if (responsetmp.isOk()){
-                    User user=new Gson().fromJson(responsetmp.getContent(),User.class);
-                    Log.e("user",user.toString());
                     listennerCallBack.onSuccess(responsetmp);
                 }else{
                     listennerCallBack.onError(responsetmp);

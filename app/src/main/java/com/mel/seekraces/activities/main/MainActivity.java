@@ -139,6 +139,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public void showMessageFromFragments(String message) {
+        showMessage(message);
+    }
+
+    @Override
     public boolean isDrawerOpen() {
         return drawerLayout.isDrawerOpen(GravityCompat.START);
     }

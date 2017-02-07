@@ -35,8 +35,6 @@ public class ListRacesPublishedFragment extends Fragment implements IListFragmen
     RecyclerView recyclerView;
     @BindView(R.id.swipeRefresh)
     SwipeRefreshLayoutWithEmpty swipeRefresh;
-    @BindView(R.id.coordinatorLayout)
-    CoordinatorLayout coordinatorLayout;
     private RVRacesPublishedAdapter adapter;
     private IListFragmentRacesPublishedPresenter presenter;
     private Filter filter;
@@ -121,7 +119,7 @@ public class ListRacesPublishedFragment extends Fragment implements IListFragmen
 
     @Override
     public void showMessage(String message) {
-        UtilsViews.showSnackBar(coordinatorLayout,message);
+        mListener.showMessageFromFragments(message);
     }
 
     @Override

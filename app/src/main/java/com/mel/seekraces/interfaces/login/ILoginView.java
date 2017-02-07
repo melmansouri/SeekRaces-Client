@@ -35,4 +35,6 @@ public interface ILoginView {
     void fogotPassword();
 
     void finishActivity();
+
+    void saveCountriesCitiesSqlite(String countries,String cities);
 }

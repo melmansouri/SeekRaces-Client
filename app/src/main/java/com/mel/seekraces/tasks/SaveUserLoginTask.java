@@ -36,6 +36,7 @@ public class SaveUserLoginTask extends AsyncTask<Void,Void,Void> {
         sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USER,user.getEmail());
         sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USER_NAME_PICTURE,user.getPhoto_url());
         sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USERNAME,user.getUsername());
+
         return null;
     }
 }

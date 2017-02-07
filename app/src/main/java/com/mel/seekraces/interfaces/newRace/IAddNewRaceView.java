@@ -15,10 +15,10 @@ public interface IAddNewRaceView {
     void hideErrorName();
     void showErrorDistance(String message);
     void hideErrorDistance();
-    /*void showErrorCountry(String message);
+    void showErrorCountry(String message);
     void hideErrorCountry();
     void showErrorCity(String message);
-    void hideErrorCity();*/
+    void hideErrorCity();
     void showComponents();
     void hideComponents();
     void showDialogDate();

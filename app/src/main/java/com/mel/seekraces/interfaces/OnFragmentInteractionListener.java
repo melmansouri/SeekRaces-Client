@@ -10,4 +10,5 @@ public interface OnFragmentInteractionListener {
         void onListFragmentInteraction(Event item);
         void changeTitleActionBar(int idTitle);
         void startActivityFilters();
+        void showMessageFromFragments(String message);
 }

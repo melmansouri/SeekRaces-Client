@@ -27,6 +27,7 @@ import com.mel.seekraces.commons.UtilsViews;
 import com.mel.seekraces.entities.User;
 import com.mel.seekraces.interfaces.login.ILoginPresenter;
 import com.mel.seekraces.interfaces.login.ILoginView;
+import com.mel.seekraces.tasks.SaveCountriesCitiesSqlite;
 
 import java.util.Arrays;
 
@@ -197,6 +198,18 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
     @Override
     public void finishActivity() {
         finish();
+    }
+
+    @Override
+    public void saveCountriesCitiesSqlite(String countries, String cities) {
+        new SaveCountriesCitiesSqlite(this){
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                hideProgress();
+                goToMainScreen();
+            }
+        }.execute(countries,cities);
     }
 
     @Override
