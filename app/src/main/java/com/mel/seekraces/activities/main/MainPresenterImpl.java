@@ -72,6 +72,15 @@ public class MainPresenterImpl implements IMainPresenter, IListennerCallBack{
                     filter.setUser(sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER));
                     view.chargeFragmentRacesPublished(filter);
                 }
+            }else if (requestCode == Constantes.REQUEST_START_EDIT_PROFILE_FOR_RESULT) {
+                if (view.getIntentActivityResult()!=null) {
+                    String message=view.getIntentActivityResult().getStringExtra("editProfile");
+                    view.showMessage(message);
+                    fillDataHeaderView();
+                    Filter filter=new Filter();
+                    filter.setUser(sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER));
+                    view.chargeFragmentRacesPublished(filter);
+                }
             }
         }
     }

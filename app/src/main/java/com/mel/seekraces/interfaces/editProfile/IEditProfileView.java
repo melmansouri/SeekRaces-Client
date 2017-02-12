@@ -1,5 +1,7 @@
 package com.mel.seekraces.interfaces.editProfile;
 
+import com.mel.seekraces.entities.Response;
+
 /**
  * Created by moha on 10/01/17.
  */
@@ -13,11 +15,14 @@ public interface IEditProfileView {
     void hideErrorUserName();
     void showComponents();
     void hideComponents();
-    void returnToMainScreen();
+    void returnToMainScreen(String response);
     void fillImageViewFromCamera();
     void fillImageViewFromGallery();
     void openCamera();
     void openGalery();
-    void navigateUpFromSameTask();
     void editProfile();
+
+    void finishActivity();
+
+    boolean retunSuperOnOptionsItemSelected();
 }

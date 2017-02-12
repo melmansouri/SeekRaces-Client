@@ -16,7 +16,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.support.v7.widget.AppCompatSpinner;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -47,7 +46,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 
-public class AddNewRace extends AppCompatActivity implements IAddNewRaceView {
+public class AddNewRaceActivity extends AppCompatActivity implements IAddNewRaceView {
 
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
@@ -314,7 +313,7 @@ public class AddNewRace extends AppCompatActivity implements IAddNewRaceView {
                 event.setWeb(edtWeb.getText().toString().trim());
                 event.setDescription(edtDescription.getText().toString());
                 event.setUser(sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER));
-                presenter.addRace(Utils.isOnline(AddNewRace.this), event);
+                presenter.addRace(Utils.isOnline(AddNewRaceActivity.this), event);
             }
         }.execute();
     }

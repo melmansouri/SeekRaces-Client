@@ -12,13 +12,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.mel.seekraces.R;
+import com.mel.seekraces.activities.editProfile.EditProfileActivity;
 import com.mel.seekraces.activities.filters.FiltersActivity;
-import com.mel.seekraces.activities.newRace.AddNewRace;
-import com.mel.seekraces.activities.signin.SignInActivity;
+import com.mel.seekraces.activities.newRace.AddNewRaceActivity;
 import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.SharedPreferencesSingleton;
 import com.mel.seekraces.commons.UtilsViews;
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity
     private CircleImageView imgProfileUser;
     private SharedPreferencesSingleton sharedPreferencesSingleton;
     private Intent intentActivityResult;
+    private LinearLayout header_nav;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +77,13 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         navView.setNavigationItemSelectedListener(this);
         View view = navView.getHeaderView(0);
+        header_nav=(LinearLayout) view.findViewById(R.id.header_nav);
+        header_nav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToEditProfileScreen();
+            }
+        });
         txtUserName = (TextView) view.findViewById(R.id.txtUserName);
         imgProfileUser = (CircleImageView) view.findViewById(R.id.imgProfileUser);
         presenter.fillDataHeaderView();
@@ -178,8 +187,14 @@ public class MainActivity extends AppCompatActivity
     @Override
     @OnClick(R.id.fab)
     public void goToAddRaceScreen() {
-        Intent i = new Intent(this, AddNewRace.class);
+        Intent i = new Intent(this, AddNewRaceActivity.class);
         startActivityForResult(i, Constantes.REQUEST_START_ADD_RACE_FOR_RESULT);
+    }
+
+    @Override
+    public void goToEditProfileScreen() {
+        Intent i = new Intent(this, EditProfileActivity.class);
+        startActivityForResult(i, Constantes.REQUEST_START_EDIT_PROFILE_FOR_RESULT);
     }
 
     @Override

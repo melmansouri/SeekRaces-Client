@@ -22,6 +22,7 @@ public enum RMapped {
     ITEM_HOME_BACK(android.R.id.home),
     ITEM_SIGNIN(R.id.item_menu_signin_registrarse),
     ITEM_ADDRACE(R.id.item_menu_add_new_race),
+    ITEM_EDIT_PROFILE(R.id.item_menu_edit_profile),
 
     //Strings
     TITLE_CARRERAS_PUBLICADAS(R.string.title_carreras_publicadas),
@@ -31,7 +32,6 @@ public enum RMapped {
 
     //Result Code
     RESULT_OK(Activity.RESULT_OK);
-
     private int resource_id;
 
     RMapped(int id) {

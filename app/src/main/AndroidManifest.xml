@@ -73,14 +73,20 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.newRace.AddNewRace"
+            android:name=".activities.newRace.AddNewRaceActivity"
             android:parentActivityName=".activities.main.MainActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mel.seekraces.activities.main.MainActivity" />
         </activity>
-        <activity android:name=".activities.editProfile.EditProfileActivity"></activity>
+        <activity android:name=".activities.editProfile.EditProfileActivity"
+            android:parentActivityName=".activities.main.MainActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mel.seekraces.activities.main.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -2,6 +2,7 @@ package com.mel.seekraces.activities.login;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.RMapped;
 import com.mel.seekraces.commons.SharedPreferencesSingleton;
@@ -96,6 +97,11 @@ public class LoginPresenterImpl implements ILoginPresenter, IListennerCallBack {
     @Override
     public void onSuccess(Object object) {
         view.hideProgress();
+        User user=new Gson().fromJson(((Response)object).getContent(),User.class);
+        sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USER,user.getEmail());
+        sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USER_NAME_PICTURE,user.getPhoto_url());
+        sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USERNAME,user.getUsername());
+
         view.goToMainScreen();
     }
 
