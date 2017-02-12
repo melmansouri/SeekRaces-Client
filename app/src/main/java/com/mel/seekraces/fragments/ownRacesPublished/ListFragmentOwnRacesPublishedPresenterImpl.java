@@ -49,14 +49,14 @@ public class ListFragmentOwnRacesPublishedPresenterImpl implements IListFragment
     }
 
     @Override
-    public void onSuccess(Response response) {
+    public void onSuccess(Object object) {
         view.hideProgressBar();
         GsonBuilder gsonBuilder = new GsonBuilder()
                 .setLenient();
         gsonBuilder.registerTypeAdapter(Event.class,new EventDeserializer());
         Gson gson=gsonBuilder.create();
         Type founderListType = new TypeToken<ArrayList<Event>>(){}.getType();
-        List<Event> carreras=gson.fromJson(response.getContent(),founderListType);
+        List<Event> carreras=gson.fromJson(((Response)object).getContent(),founderListType);
         view.fillAdapterList(carreras);
         view.showList();
     }

@@ -31,8 +31,7 @@ public class EventDeserializer implements JsonDeserializer<Event>{
             event.setBitmap(Utils.base64ToBitmap(base64));
         }
         event.setDistance(jsonObject.get("distance").getAsInt());
-        event.setCountry(jsonObject.get("country").getAsString());
-        event.setCity(jsonObject.get("city").getAsString());
+        event.setPlace(jsonObject.get("place").getAsString());
         event.setDate_time_init(jsonObject.get("date_time_init").getAsString());
         event.setWeb(jsonObject.get("web").getAsString());
         event.setNum_reviews(jsonObject.get("num_reviews").getAsInt());

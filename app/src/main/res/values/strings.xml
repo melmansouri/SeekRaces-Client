@@ -34,6 +34,7 @@
     <!--Filter-->
     <string name="title_filtros">Filtros</string>
     <string name="pais">País</string>
+    <string name="lugar">Lugar</string>
     <string name="ciudad">Ciudad</string>
     <string name="distancia">Distancia</string>
     <string name="fecha_desde">Desde</string>
@@ -52,5 +53,6 @@
     <string name="addRace">Añadir Carrera</string>
     <string name="hora">Hora</string>
     <string name="fecha">Fecha</string>
+    <string name="edit">Editar</string>
     <!--Menus-->
 </resources>

@@ -1,10 +1,13 @@
 package com.mel.seekraces.activities.newRace;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.RMapped;
+import com.mel.seekraces.commons.Utils;
 import com.mel.seekraces.entities.Event;
+import com.mel.seekraces.entities.PlacePredictions;
 import com.mel.seekraces.entities.Response;
 import com.mel.seekraces.interfaces.IListennerCallBack;
 import com.mel.seekraces.interfaces.fragmentRacesPublishedFavorites.IListFragmentRacesPublishedFavoritesPresenter;
@@ -39,14 +42,26 @@ public class AddNewRacePresenterImpl implements IAddNewRacePresenter, IListenner
         interactor.addRace(event);
     }
 
+    @Override
+    public void onTextChangedPlaces(String text) {
+        if(text.length()>3){
+            interactor.getAutoCompletePlaces(null);
+            interactor.getAutoCompletePlaces(Utils.getPlaceAutoCompleteUrl(text));
+        }
+    }
+
     private boolean verifyDataUser(Event event) {
         boolean result = true;
-        if (event.getName().isEmpty()) {
+        if (TextUtils.isEmpty(event.getPlace())){
+            view.showErrorPlaces("Debe de introducir el lugar de la carrera");
+            result=false;
+        }
+        if (TextUtils.isEmpty(event.getName())) {
             view.showErrorName("La carrera debe de tener un nombre");
             result = false;
         }
         if (event.getDistance()==0){
-            view.showErrorDistance("La distancia mínima es 1 KM");
+            view.showMessage("La distancia mínima es 1 KM");
             result = false;
         }
 
@@ -87,11 +102,22 @@ public class AddNewRacePresenterImpl implements IAddNewRacePresenter, IListenner
         }
     }
 
+
     @Override
-    public void onSuccess(Response response) {
-        view.hideProgress();
-        view.showMessage(response.getMessage());
-        view.returnToMainScreen(response.getMessage());
+    public void onSuccess(Object object) {
+        if (object instanceof Response){
+            view.hideProgress();
+            view.showMessage(((Response)object).getMessage());
+            view.returnToMainScreen(((Response)object).getMessage());
+        }else if (object instanceof PlacePredictions){
+            if (((PlacePredictions)object).getStatus().equals("OK")){
+                if (view.getAdapterAutoComplete()==null){
+                    view.initAdapterAutoComplete(((PlacePredictions)object));
+                }else{
+                    view.resetAdapterAutoComplete(((PlacePredictions)object));
+                }
+            }
+        }
     }
 
     @Override

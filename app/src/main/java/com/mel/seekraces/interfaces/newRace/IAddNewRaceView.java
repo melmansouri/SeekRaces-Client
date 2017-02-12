@@ -1,5 +1,7 @@
 package com.mel.seekraces.interfaces.newRace;
 
+import com.mel.seekraces.adapters.AutoCompleteAdapter;
+import com.mel.seekraces.entities.PlacePredictions;
 import com.mel.seekraces.entities.Response;
 
 /**
@@ -13,12 +15,9 @@ public interface IAddNewRaceView {
     void showMessage(String message);
     void showErrorName(String message);
     void hideErrorName();
-    void showErrorDistance(String message);
-    void hideErrorDistance();
-    void showErrorCountry(String message);
-    void hideErrorCountry();
-    void showErrorCity(String message);
-    void hideErrorCity();
+    void showErrorPlaces(String message);
+    void hideErrorPlaces();
+    void onTextChangedPlaces();
     void showComponents();
     void hideComponents();
     void showDialogDate();
@@ -30,6 +29,9 @@ public interface IAddNewRaceView {
     void fillImageViewFromGallery();
     void openCamera();
     void openGalery();
+    AutoCompleteAdapter getAdapterAutoComplete();
+    void initAdapterAutoComplete(PlacePredictions placePredictions);
+    void resetAdapterAutoComplete(PlacePredictions placePredictions);
 
     void addRace();
 }

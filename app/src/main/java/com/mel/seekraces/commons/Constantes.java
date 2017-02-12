@@ -9,6 +9,8 @@ import java.io.File;
  */
 
 public class Constantes {
+    public static final String KEY_GOOGLE_API="AIzaSyDmZRb02-RcKK3I080i5D7nqkMpfOJLHVU";
+
     public static final int MIN_LENGTH_PASSWORD=1;
 
     //Paths

@@ -36,5 +36,4 @@ public interface ILoginView {
 
     void finishActivity();
 
-    void saveCountriesCitiesSqlite(String countries,String cities);
 }

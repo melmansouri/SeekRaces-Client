@@ -94,17 +94,9 @@ public class LoginPresenterImpl implements ILoginPresenter, IListennerCallBack {
 
 
     @Override
-    public void onSuccess(final Response response) {
-
-        new SaveUserLoginTask(response.getContent(), sharedPreferencesSingleton) {
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-                /*view.hideProgress();
-                view.goToMainScreen();*/
-                view.saveCountriesCitiesSqlite(response.getCountries(),response.getCities());
-            }
-        }.execute();
+    public void onSuccess(Object object) {
+        view.hideProgress();
+        view.goToMainScreen();
     }
 
     @Override

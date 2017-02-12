@@ -4,11 +4,6 @@ import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.gson.JsonElement;
-
-import java.math.BigDecimal;
-import java.util.Date;
-
 /**
  * Created by void on 18/01/2017.
  */
@@ -22,8 +17,7 @@ public class Event implements Parcelable{
     private Bitmap bitmap;
     private String imageBase64;
     private int distance;
-    private String country;
-    private String city;
+    private String place;
     private String date_time_init;
     private String web;
     private int num_reviews;
@@ -42,8 +36,7 @@ public class Event implements Parcelable{
         bitmap = in.readParcelable(Bitmap.class.getClassLoader());
         imageBase64 = in.readString();
         distance = in.readInt();
-        country = in.readString();
-        city = in.readString();
+        place = in.readString();
         date_time_init=in.readString();
         web = in.readString();
         num_reviews = in.readInt();
@@ -128,20 +121,12 @@ public class Event implements Parcelable{
         this.distance = distance;
     }
 
-    public String getCountry() {
-        return country;
+    public String getPlace() {
+        return place;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
+    public void setPlace(String place) {
+        this.place = place;
     }
 
     public String getDate_time_init() {
@@ -207,8 +192,7 @@ public class Event implements Parcelable{
         dest.writeParcelable(bitmap, flags);
         dest.writeString(imageBase64);
         dest.writeInt(distance);
-        dest.writeString(country);
-        dest.writeString(city);
+        dest.writeString(place);
         dest.writeString(date_time_init);
         dest.writeString(web);
         dest.writeInt(num_reviews);
@@ -224,8 +208,7 @@ public class Event implements Parcelable{
         bitmap = in.readParcelable(Bitmap.class.getClassLoader());
         imageBase64 = in.readString();
         distance = in.readInt();
-        country = in.readString();
-        city = in.readString();
+        place = in.readString();
         date_time_init = in.readString();
         web = in.readString();
         num_reviews = in.readInt();

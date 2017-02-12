@@ -1,6 +1,7 @@
 package com.mel.seekraces.interfaces;
 
 import com.mel.seekraces.entities.Event;
+import com.mel.seekraces.entities.PlacePredictions;
 import com.mel.seekraces.entities.Response;
 import com.mel.seekraces.entities.User;
 
@@ -24,6 +25,9 @@ public interface INetworkConnectionApi {
     //String BASE_URL = "http://192.168.105.18/SeekRaces/api/";
     //String BASE_URL_PICTURES = "http://192.168.105.18/SeekRaces/pictures/";
 
+    @GET
+    Call<PlacePredictions> getAutoCompletePlaces(@Url String url);
+
     @POST("user/signIn")
     Call<Response> signIn(@Body User user);
 
@@ -33,7 +37,6 @@ public interface INetworkConnectionApi {
     @GET("event")
     Call<Response> getRacesPublished(@Query("user") String user,
                                      @Query("country") String country,
-                                     @Query("city") String city,
                                      @Query("distance") int distance,
                                      @Query("date_interval_init") String date_interval_init,
                                      @Query("date_interval_end") String date_interval_end);

@@ -10,8 +10,6 @@ import android.os.Parcelable;
 public class Response implements Parcelable {
     private String message;
     private String content;
-    private String countries;
-    private String cities;
     private boolean isOk;
 
     public Response() {
@@ -21,8 +19,6 @@ public class Response implements Parcelable {
     protected Response(Parcel in) {
         message = in.readString();
         content = in.readString();
-        countries = in.readString();
-        cities = in.readString();
         isOk = in.readByte() != 0;
     }
 
@@ -54,22 +50,6 @@ public class Response implements Parcelable {
         this.content = content;
     }
 
-    public String getCountries() {
-        return countries;
-    }
-
-    public void setCountries(String countries) {
-        this.countries = countries;
-    }
-
-    public String getCities() {
-        return cities;
-    }
-
-    public void setCities(String cities) {
-        this.cities = cities;
-    }
-
     public boolean isOk() {
         return isOk;
     }
@@ -83,8 +63,6 @@ public class Response implements Parcelable {
         return "Response{" +
                 "message='" + message + '\'' +
                 ", content='" + content + '\'' +
-                ", countries='" + countries + '\'' +
-                ", cities='" + cities + '\'' +
                 ", isOk=" + isOk +
                 '}';
     }
@@ -98,16 +76,12 @@ public class Response implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(message);
         dest.writeString(content);
-        dest.writeString(countries);
-        dest.writeString(cities);
         dest.writeByte((byte) (isOk ? 1 : 0));
     }
 
     private void readFromParcel(Parcel in) {
         message = in.readString();
         content = in.readString();
-        countries = in.readString();
-        cities = in.readString();
         isOk = in.readByte() != 0;
     }
 }

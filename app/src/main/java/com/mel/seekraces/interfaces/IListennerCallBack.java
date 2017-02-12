@@ -1,5 +1,6 @@
 package com.mel.seekraces.interfaces;
 
+import com.mel.seekraces.entities.PlacePredictions;
 import com.mel.seekraces.entities.Response;
 
 /**
@@ -7,6 +8,6 @@ import com.mel.seekraces.entities.Response;
  */
 
 public interface IListennerCallBack {
-    void onSuccess(Response response);
+    void onSuccess(Object object);
     void onError(Response response);
 }

@@ -51,7 +51,7 @@
             android:name=".activities.main.MainActivity"
             android:label="@string/title_carreras_publicadas"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.filters.FiltersActivity"
             android:parentActivityName=".activities.main.MainActivity"
@@ -72,13 +72,15 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.newRace.AddNewRace"
+        <activity
+            android:name=".activities.newRace.AddNewRace"
             android:parentActivityName=".activities.main.MainActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mel.seekraces.activities.main.MainActivity" />
         </activity>
+        <activity android:name=".activities.editProfile.EditProfileActivity"></activity>
     </application>
 
 </manifest>

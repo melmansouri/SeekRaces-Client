@@ -1,4 +1,4 @@
-package com.mel.seekraces.interfaces.newRace;
+package com.mel.seekraces.interfaces.filters;
 
 import com.mel.seekraces.entities.Event;
 
@@ -6,7 +6,6 @@ import com.mel.seekraces.entities.Event;
  * Created by void on 05/02/2017.
  */
 
-public interface IAddNewRaceInteractor {
-    void addRace(Event event);
+public interface IFiltersInteractor {
     void getAutoCompletePlaces(String url);
 }

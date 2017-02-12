@@ -87,7 +87,7 @@ public class MainPresenterImpl implements IMainPresenter, IListennerCallBack{
     }
 
     @Override
-    public void onSuccess(Response response) {
+    public void onSuccess(Object object) {
 
     }
 

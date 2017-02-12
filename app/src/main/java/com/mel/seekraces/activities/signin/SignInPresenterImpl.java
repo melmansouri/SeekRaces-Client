@@ -113,12 +113,10 @@ public class SignInPresenterImpl implements ISignInPresenter, IListennerCallBack
         view=null;
     }
 
-
     @Override
-    public void onSuccess(Response response) {
+    public void onSuccess(Object object) {
         view.hideProgress();
-        view.showMessage(response.getMessage());
-        Log.e("tag",response.toString());
+        view.showMessage(((Response)object).getMessage());
         view.returnToLoginScreen();
     }
 

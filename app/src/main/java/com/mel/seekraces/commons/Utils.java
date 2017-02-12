@@ -13,6 +13,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -209,5 +211,21 @@ public class Utils {
         }
 
         return calendar;
+    }
+
+
+    public static String getPlaceAutoCompleteUrl(String input) {
+        //TODO https://maps.googleapis.com/maps/api/place/autocomplete/json?input=alahuri&types=(cities)&language=es&key=AIzaSyDmZRb02-RcKK3I080i5D7nqkMpfOJLHVU
+        StringBuilder urlString = new StringBuilder();
+        urlString.append("https://maps.googleapis.com/maps/api/place/autocomplete/json");
+        urlString.append("?input=");
+        try {
+            urlString.append(URLEncoder.encode(input, "utf8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        urlString.append("&types=(cities)&language=es");
+        urlString.append("&key=".concat(Constantes.KEY_GOOGLE_API));
+        return urlString.toString();
     }
 }

@@ -19,14 +19,29 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 
 import com.mel.seekraces.fragments.DatePickerFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by void on 12/01/2017.
  */
 
 public class UtilsViews {
+
+    public static ArrayAdapter<String> getSpinnerDistanceAdapter(Context context,int resource){
+        ArrayAdapter<String> arrayAdapter;
+        List<String> distancias=new ArrayList<>();
+        for (int i=1;i<=100;i++){
+            distancias.add(i+"KM");
+        }
+        arrayAdapter=new ArrayAdapter<>(context,resource,distancias);
+
+        return arrayAdapter;
+    }
 
     public void showDateDialogPicker(Activity activity,DatePickerDialog.OnDateSetListener onDateSetListener){
         /*DialogFragment datePickerFragment= new DatePickerFragment(onDateSetListener);

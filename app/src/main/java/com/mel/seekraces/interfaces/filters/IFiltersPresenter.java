@@ -6,4 +6,6 @@ package com.mel.seekraces.interfaces.filters;
 
 public interface IFiltersPresenter {
     boolean onOptionsItemSelected(int idSelected);
+
+    void onTextChangedPlaces(String input);
 }

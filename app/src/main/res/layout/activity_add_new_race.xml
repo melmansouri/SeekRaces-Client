@@ -34,78 +34,29 @@
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin">
+
                 <android.support.design.widget.TextInputLayout
-                    android:id="@+id/text_input_layout_name_race"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="@string/name_race">
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/edtNameRace"
+                    android:hint="@string/lugar"
+                    android:layout_below="@+id/lnNameDistance"
+                    android:id="@+id/text_input_layout_lugar"
+                    android:layout_weight="1">
+
+                    <android.support.v7.widget.AppCompatAutoCompleteTextView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:inputType="textPersonName"
-                        android:ems="10"/>
-                </android.support.design.widget.TextInputLayout>
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/distancia"
-                    android:id="@+id/text_input_layout_distancia"
-                    android:layout_below="@+id/text_input_layout_name_race"
-                    android:layout_marginTop="20dp">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:inputType="number"
+                        android:completionThreshold="1"
                         android:ems="10"
-                        android:id="@+id/edtDistancia" />
+                        android:id="@+id/edtLugar" />
                 </android.support.design.widget.TextInputLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_below="@+id/text_input_layout_distancia"
-                    android:id="@+id/lncityCountry">
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/pais"
-                        android:id="@+id/text_input_layout_pais"
-                        android:layout_weight="1">
-
-                        <android.support.v7.widget.AppCompatAutoCompleteTextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="textPersonName"
-                            android:completionThreshold="1"
-                            android:ems="10"
-                            android:id="@+id/edtPais" />
-                    </android.support.design.widget.TextInputLayout>
-
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/ciudad"
-                        android:id="@+id/text_input_layout_ciudad"
-                        android:layout_weight="1">
-
-                        <android.support.v7.widget.AppCompatAutoCompleteTextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="textPersonName"
-                            android:completionThreshold="1"
-                            android:ems="10"
-                            android:id="@+id/edtCiudad" />
-                    </android.support.design.widget.TextInputLayout>
-                </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:id="@+id/lnFechaHora"
-                    android:layout_below="@+id/lncityCountry"
+                    android:layout_below="@+id/text_input_layout_lugar"
                     android:layout_marginTop="20dp">
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -177,6 +128,36 @@
                         android:inputType="textMultiLine"
                         android:ems="10"/>
                 </android.support.design.widget.TextInputLayout>
+
+                <LinearLayout
+                    android:id="@+id/lnNameDistance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="20dp">
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/text_input_layout_name_race"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/name_race"
+                        android:layout_weight="1" >
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/edtNameRace"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:inputType="textPersonName"
+                            android:ems="10"/>
+                    </android.support.design.widget.TextInputLayout>
+                    <android.support.v7.widget.AppCompatSpinner
+                        android:id="@+id/spDistancia"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/text_input_layout_name_race"/>
+                </LinearLayout>
 
             </RelativeLayout>
         </android.support.v4.widget.NestedScrollView>

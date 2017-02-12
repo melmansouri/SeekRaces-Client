@@ -15,6 +15,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
+import android.support.v7.widget.AppCompatSpinner;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,21 +29,18 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.mel.seekraces.R;
-import com.mel.seekraces.adapters.AutoCompleteCountriesAdapter;
+import com.mel.seekraces.adapters.AutoCompleteAdapter;
 import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.SharedPreferencesSingleton;
 import com.mel.seekraces.commons.Utils;
 import com.mel.seekraces.commons.UtilsViews;
-import com.mel.seekraces.entities.Country;
 import com.mel.seekraces.entities.Event;
+import com.mel.seekraces.entities.PlacePredictions;
 import com.mel.seekraces.fragments.DatePickerFragment;
 import com.mel.seekraces.fragments.TimePickerFragment;
 import com.mel.seekraces.interfaces.newRace.IAddNewRacePresenter;
 import com.mel.seekraces.interfaces.newRace.IAddNewRaceView;
 import com.mel.seekraces.tasks.EncodeImageTask;
-import com.mel.seekraces.tasks.RetrieveCountriesCitiesSqlite;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,16 +57,8 @@ public class AddNewRace extends AppCompatActivity implements IAddNewRaceView {
     TextInputEditText edtNameRace;
     @BindView(R.id.text_input_layout_name_race)
     TextInputLayout textInputLayoutNameRace;
-    @BindView(R.id.edtDistancia)
-    TextInputEditText edtDistancia;
-    @BindView(R.id.text_input_layout_distancia)
-    TextInputLayout textInputLayoutDistancia;
-    @BindView(R.id.text_input_layout_pais)
-    TextInputLayout textInputLayoutPais;
-    @BindView(R.id.text_input_layout_ciudad)
-    TextInputLayout textInputLayoutCiudad;
-    @BindView(R.id.lncityCountry)
-    LinearLayout lncityCountry;
+    @BindView(R.id.text_input_layout_lugar)
+    TextInputLayout textInputLayoutLugar;
     @BindView(R.id.txtFechaDesde)
     TextView txtFechaDesde;
     @BindView(R.id.dtpFechaDesde)
@@ -91,21 +81,21 @@ public class AddNewRace extends AppCompatActivity implements IAddNewRaceView {
     CoordinatorLayout coordinatorLayout;
     @BindView(R.id.tipHora)
     TextView tipHora;
-    @BindView(R.id.edtPais)
-    AppCompatAutoCompleteTextView edtPais;
-    @BindView(R.id.edtCiudad)
-    AppCompatAutoCompleteTextView edtCiudad;
+    @BindView(R.id.edtLugar)
+    AppCompatAutoCompleteTextView edtLugar;
     @BindView(R.id.txtHora)
     TextView txtHora;
     @BindView(R.id.lnFechaHora)
     LinearLayout lnFechaHora;
+    @BindView(R.id.spDistancia)
+    AppCompatSpinner spDistancia;
 
     private Intent intentOnActivityResult;
     private Bitmap imageBitmap;
     private IAddNewRacePresenter presenter;
     private SharedPreferencesSingleton sharedPreferencesSingleton;
     private MenuItem item;
-    private AutoCompleteCountriesAdapter adapterCountries;
+    private AutoCompleteAdapter autoCompleteAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,26 +107,7 @@ public class AddNewRace extends AppCompatActivity implements IAddNewRaceView {
         dtpFechaDesde.setText(Utils.getCurrentDateSpanishString());
         tipHora.setText(Utils.getCurrentTimeString());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        fillAutoCompleteTextView();
-
-    }
-
-    private void fillAutoCompleteTextView(){
-        new RetrieveCountriesCitiesSqlite(this){
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                showProgress();
-            }
-
-            @Override
-            protected void onPostExecute(List<Country> countries) {
-                super.onPostExecute(countries);
-                hideProgress();
-                adapterCountries=new AutoCompleteCountriesAdapter(AddNewRace.this,R.layout.item_autocomplete_country_city,countries);
-                edtPais.setAdapter(adapterCountries);
-            }
-        }.execute();
+        spDistancia.setAdapter(UtilsViews.getSpinnerDistanceAdapter(this,R.layout.support_simple_spinner_dropdown_item));
     }
 
     @Override
@@ -205,35 +176,22 @@ public class AddNewRace extends AppCompatActivity implements IAddNewRaceView {
         textInputLayoutNameRace.setErrorEnabled(false);
     }
 
+
     @Override
-    public void showErrorDistance(String message) {
-        textInputLayoutDistancia.setError(message);
+    public void showErrorPlaces(String message) {
+        textInputLayoutLugar.setError(message);
     }
 
     @Override
-    @OnTextChanged(value = R.id.edtDistancia, callback = OnTextChanged.Callback.BEFORE_TEXT_CHANGED)
-    public void hideErrorDistance() {
-        textInputLayoutDistancia.setErrorEnabled(false);
+    @OnTextChanged(value = R.id.edtLugar, callback = OnTextChanged.Callback.BEFORE_TEXT_CHANGED)
+    public void hideErrorPlaces() {
+        textInputLayoutLugar.setErrorEnabled(false);
     }
 
     @Override
-    public void showErrorCountry(String message) {
-
-    }
-
-    @Override
-    public void hideErrorCountry() {
-
-    }
-
-    @Override
-    public void showErrorCity(String message) {
-
-    }
-
-    @Override
-    public void hideErrorCity() {
-
+    @OnTextChanged(R.id.edtLugar)
+    public void onTextChangedPlaces() {
+        presenter.onTextChangedPlaces(edtLugar.getText().toString());
     }
 
     @Override
@@ -317,6 +275,26 @@ public class AddNewRace extends AppCompatActivity implements IAddNewRaceView {
     }
 
     @Override
+    public AutoCompleteAdapter getAdapterAutoComplete() {
+        return autoCompleteAdapter;
+    }
+
+    @Override
+    public void initAdapterAutoComplete(PlacePredictions placePredictions) {
+        autoCompleteAdapter = new AutoCompleteAdapter(this, placePredictions.getPlaces());
+        edtLugar.setAdapter(autoCompleteAdapter);
+    }
+
+    @Override
+    public void resetAdapterAutoComplete(PlacePredictions placePredictions) {
+        autoCompleteAdapter.clear();
+        autoCompleteAdapter.addAll(placePredictions.getPlaces());
+        autoCompleteAdapter.notifyDataSetChanged();
+        edtLugar.invalidate();
+    }
+
+
+    @Override
     public void addRace() {
         showProgress();
 
@@ -326,10 +304,9 @@ public class AddNewRace extends AppCompatActivity implements IAddNewRaceView {
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
                 event.setName(edtNameRace.getText().toString().trim());
-                String distance = edtDistancia.getText().toString().trim();
-                event.setDistance(TextUtils.isEmpty(distance) ? 0 : Integer.valueOf(distance));
-                event.setCountry(edtPais.getText().toString().trim());
-                event.setCity(edtCiudad.getText().toString().trim());
+                String distance = spDistancia.getSelectedItem().toString();
+                event.setDistance(Integer.valueOf(distance.replace("KM","")));
+                event.setPlace(edtLugar.getText().toString().trim());
                 String fecha = Utils.convertDateSpanishToEnglish(dtpFechaDesde.getText().toString());
                 String hora = tipHora.getText().toString();
                 event.setDate_time_init(fecha.concat(" ").concat(hora));

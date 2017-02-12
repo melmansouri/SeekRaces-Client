@@ -1,11 +1,7 @@
 package com.mel.seekraces.entities;
 
-import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import java.io.File;
-import java.util.Date;
 
 /**
  * Created by void on 21/01/2017.
@@ -13,8 +9,7 @@ import java.util.Date;
 
 public class Filter implements Parcelable{
     private String user;
-    private String country;
-    private String city;
+    private String place;
     private int distance;
     private String date_interval_init;
     private String date_interval_end;
@@ -25,8 +20,7 @@ public class Filter implements Parcelable{
 
     protected Filter(Parcel in) {
         user=in.readString();
-        country = in.readString();
-        city = in.readString();
+        place = in.readString();
         distance = in.readInt();
         date_interval_init = in.readString();
         date_interval_end = in.readString();
@@ -52,21 +46,14 @@ public class Filter implements Parcelable{
         this.user = user;
     }
 
-    public String getCountry() {
-        return country;
+    public String getPlace() {
+        return place;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setPlace(String place) {
+        this.place = place;
     }
 
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
 
     public int getDistance() {
         return distance;
@@ -96,8 +83,7 @@ public class Filter implements Parcelable{
     public String toString() {
         return "Filter{" +
                 "user='" + user + '\'' +
-                "country='" + country + '\'' +
-                ", city='" + city + '\'' +
+                "place='" + place + '\'' +
                 ", distance='" + distance + '\'' +
                 ", date_interval_init=" + date_interval_init +
                 ", date_interval_end=" + date_interval_end +
@@ -112,8 +98,7 @@ public class Filter implements Parcelable{
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(user);
-        dest.writeString(country);
-        dest.writeString(city);
+        dest.writeString(place);
         dest.writeInt(distance);
         dest.writeString(date_interval_init);
         dest.writeString(date_interval_end);
@@ -121,8 +106,7 @@ public class Filter implements Parcelable{
 
     private void readFromParcel(Parcel in) {
         user = in.readString();
-        country = in.readString();
-        city = in.readString();
+        place = in.readString();
         distance = in.readInt();
         date_interval_init = in.readString();
         date_interval_end = in.readString();
