@@ -190,8 +190,10 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
     }
 
     @Override
+    @OnClick(R.id.txtForgotPwd)
     public void fogotPassword() {
-
+        UtilsViews.closeKeyBoard(this);
+        loginPresenter.forgotPwd(Utils.isOnline(this), edtEmail.getText().toString());
     }
 
     @Override

@@ -21,8 +21,8 @@ public interface INetworkConnectionApi {
     // TODO: Cambiar host por "10.0.0.2" para Genymotion.
     // TODO: Cambiar host por "10.0.0.3" para AVD.
     // TODO: Cambiar host por IP de tu PC para dispositivo real.
-    String BASE_URL = "http://192.168.0.101:8080/SeekRaces/api/";
-    String BASE_URL_PICTURES = "http://192.168.0.101:8080/SeekRaces/pictures/";
+    String BASE_URL = "http://192.168.0.106:8080/SeekRaces/api/";
+    String BASE_URL_PICTURES = "http://192.168.0.106:8080/SeekRaces/pictures/";
     //String BASE_URL = "http://192.168.105.18/SeekRaces/api/";
     //String BASE_URL_PICTURES = "http://192.168.105.18/SeekRaces/pictures/";
 
@@ -34,6 +34,9 @@ public interface INetworkConnectionApi {
 
     @POST("user/login")
     Call<Response> login(@Body User user);
+
+    @GET
+    Call<Response> forgotPwd(@Url String url);
 
     @PUT("user")
     Call<Response> editProfile(@Body User user);

@@ -12,6 +12,7 @@ public interface ILoginPresenter {
     void checkSession();
     void startActivitySignIn(boolean havePermission);
     void activityResult(int requestCode, int resultCode);
+    void forgotPwd(boolean isOnline,String email);
     void onDestroy();
 
 }

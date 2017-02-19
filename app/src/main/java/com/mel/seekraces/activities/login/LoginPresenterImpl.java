@@ -1,5 +1,6 @@
 package com.mel.seekraces.activities.login;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -10,6 +11,7 @@ import com.mel.seekraces.commons.Utils;
 import com.mel.seekraces.entities.Response;
 import com.mel.seekraces.entities.User;
 import com.mel.seekraces.interfaces.IListennerCallBack;
+import com.mel.seekraces.interfaces.INetworkConnectionApi;
 import com.mel.seekraces.interfaces.login.ILoginInteractor;
 import com.mel.seekraces.interfaces.login.ILoginPresenter;
 import com.mel.seekraces.interfaces.login.ILoginView;
@@ -32,8 +34,8 @@ public class LoginPresenterImpl implements ILoginPresenter, IListennerCallBack {
     }
 
     @Override
-    public void login(boolean isOnline,boolean havePermission,User user) {
-        if (!isOnline){
+    public void login(boolean isOnline, boolean havePermission, User user) {
+        if (!isOnline) {
             view.showMessage("Comprueba tu conexión");
             return;
         }
@@ -49,14 +51,14 @@ public class LoginPresenterImpl implements ILoginPresenter, IListennerCallBack {
 
     @Override
     public void checkSession() {
-        if (sharedPreferencesSingleton.containValue(Constantes.KEY_USER)){
+        if (sharedPreferencesSingleton.containValue(Constantes.KEY_USER)) {
             view.goToMainScreen();
         }
     }
 
     @Override
     public void startActivitySignIn(boolean havePermission) {
-        if (havePermission){
+        if (havePermission) {
             view.startActivitySignIn();
         }
     }
@@ -82,10 +84,38 @@ public class LoginPresenterImpl implements ILoginPresenter, IListennerCallBack {
         if (resultCode == RMapped.RESULT_OK.getValue()) {
             if (requestCode == Constantes.REQUEST_START_SIGNIN_FOR_RESULT) {
                 view.showMessage("Se le ha enviado un correo de confirmación.");
-            }else if (requestCode == Constantes.REQUEST_START_MAIN_FOR_RESULT) {
+            } else if (requestCode == Constantes.REQUEST_START_MAIN_FOR_RESULT) {
                 view.finishActivity();
             }
         }
+    }
+
+    @Override
+    public void forgotPwd(boolean isOnline, String email) {
+        if (!isOnline) {
+            view.showMessage("Comprueba tu conexión");
+            return;
+        }
+        view.showProgress();
+        if (!validateDataForgotPwd(email)) {
+            view.hideProgress();
+            return;
+        }
+        String url = INetworkConnectionApi.BASE_URL + "user/" + email + "/forgotPassword";
+        loginInteractor.forgotPwd(url);
+
+    }
+
+    private boolean validateDataForgotPwd(String email) {
+        boolean result = true;
+        if (TextUtils.isEmpty(email)) {
+            view.showMessage("Introduzca el email para la recuperación de la contraseña");
+            result = false;
+        } else if (!Utils.isValidEmail(email)) {
+            view.showMessage("Introduzca un email válido");
+            result = false;
+        }
+        return result;
     }
 
     @Override
@@ -97,10 +127,14 @@ public class LoginPresenterImpl implements ILoginPresenter, IListennerCallBack {
     @Override
     public void onSuccess(Object object) {
         view.hideProgress();
-        User user=new Gson().fromJson(((Response)object).getContent(),User.class);
-        sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USER,user.getEmail());
-        sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USER_NAME_PICTURE,user.getPhoto_url());
-        sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USERNAME,user.getUsername());
+        if (object instanceof String){
+            view.showMessage((String)object);
+            return;
+        }
+        User user = new Gson().fromJson(((Response) object).getContent(), User.class);
+        sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USER, user.getEmail());
+        sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USER_NAME_PICTURE, user.getPhoto_url());
+        sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USERNAME, user.getUsername());
 
         view.goToMainScreen();
     }

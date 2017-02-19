@@ -8,4 +8,5 @@ import com.mel.seekraces.entities.User;
 
 public interface ILoginInteractor {
     void login(User user);
+    void forgotPwd(String url);
 }

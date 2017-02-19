@@ -54,5 +54,6 @@
     <string name="hora">Hora</string>
     <string name="fecha">Fecha</string>
     <string name="edit">Editar</string>
+    <string name="forgotPwd">¿Olvidaste tu contraseña?</string>
     <!--Menus-->
 </resources>

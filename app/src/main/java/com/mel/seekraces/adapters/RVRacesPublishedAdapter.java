@@ -2,6 +2,7 @@ package com.mel.seekraces.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,11 +82,17 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
         }
 
 
-
+        holder.imgBtnLikeRace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("adapter","like");
+            }
+        });
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.e("adapter","carrera");
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
