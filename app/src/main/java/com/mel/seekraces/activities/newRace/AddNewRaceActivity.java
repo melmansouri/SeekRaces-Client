@@ -12,6 +12,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
@@ -73,7 +74,7 @@ public class AddNewRaceActivity extends AppCompatActivity implements IAddNewRace
     @BindView(R.id.text_input_layout_description)
     TextInputLayout textInputLayoutDescription;
     @BindView(R.id.lnDataRace)
-    LinearLayout lnDataRace;
+    NestedScrollView lnDataRace;
     @BindView(R.id.fab)
     FloatingActionButton fab;
     @BindView(R.id.coordinatorLayout)

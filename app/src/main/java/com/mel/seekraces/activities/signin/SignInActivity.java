@@ -6,9 +6,11 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.NavUtils;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -57,6 +59,10 @@ public class SignInActivity extends AppCompatActivity implements ISignInView {
     TextInputLayout textInputLayoutPass;
     @BindView(R.id.text_input_layout_repeat_pass)
     TextInputLayout textInputLayoutRepeatPass;
+    @BindView(R.id.lnDataUser)
+    NestedScrollView lnDataUser;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
     private Intent intentOnActivityResult;
     private ISignInPresenter presenter;
     private Bitmap imageBitmap;
@@ -70,7 +76,7 @@ public class SignInActivity extends AppCompatActivity implements ISignInView {
 
     }
 
-    private void initialize(){
+    private void initialize() {
         presenter = new SignInPresenterImpl(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -92,11 +98,11 @@ public class SignInActivity extends AppCompatActivity implements ISignInView {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         intentOnActivityResult = data;
-        presenter.activityResult(requestCode,resultCode);
+        presenter.activityResult(requestCode, resultCode);
     }
 
     @Override
-    @OnClick(R.id.imgProfileUser)
+    @OnClick(R.id.fab)
     public void selectPictureProfile() {
         AlertDialog.Builder builder = UtilsViews.createAlertDialog(this, getString(R.string.elige_opcion));
         builder.setItems(R.array.option_dialog_picture, new DialogInterface.OnClickListener() {
@@ -136,7 +142,7 @@ public class SignInActivity extends AppCompatActivity implements ISignInView {
     }
 
     @Override
-    @OnTextChanged(value = R.id.edtEmail,callback = OnTextChanged.Callback.BEFORE_TEXT_CHANGED)
+    @OnTextChanged(value = R.id.edtEmail, callback = OnTextChanged.Callback.BEFORE_TEXT_CHANGED)
     public void hideErrorEmail() {
         textInputLayoutEmail.setErrorEnabled(false);
     }
@@ -147,7 +153,7 @@ public class SignInActivity extends AppCompatActivity implements ISignInView {
     }
 
     @Override
-    @OnTextChanged(value = R.id.edtPassword,callback = OnTextChanged.Callback.BEFORE_TEXT_CHANGED)
+    @OnTextChanged(value = R.id.edtPassword, callback = OnTextChanged.Callback.BEFORE_TEXT_CHANGED)
     public void hideErrorPwd() {
         textInputLayoutPass.setErrorEnabled(false);
     }
@@ -164,8 +170,8 @@ public class SignInActivity extends AppCompatActivity implements ISignInView {
 
     @OnTextChanged(value = R.id.edtRepeatPassword,
             callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
-    public void afterTextChangedPwdRepeat(Editable editable){
-        presenter.validatePasswordRepeat(edtPassword.getText().toString(),editable.toString());
+    public void afterTextChangedPwdRepeat(Editable editable) {
+        presenter.validatePasswordRepeat(edtPassword.getText().toString(), editable.toString());
     }
 
     @Override
@@ -174,27 +180,31 @@ public class SignInActivity extends AppCompatActivity implements ISignInView {
     }
 
     @Override
-    @OnTextChanged(value = R.id.edtUserName,callback = OnTextChanged.Callback.BEFORE_TEXT_CHANGED)
+    @OnTextChanged(value = R.id.edtUserName, callback = OnTextChanged.Callback.BEFORE_TEXT_CHANGED)
     public void hideErrorUserName() {
         textInputLayoutUsername.setErrorEnabled(false);
     }
 
     @Override
     public void showComponents() {
-        textInputLayoutRepeatPass.setVisibility(View.VISIBLE);
+        /*textInputLayoutRepeatPass.setVisibility(View.VISIBLE);
         textInputLayoutEmail.setVisibility(View.VISIBLE);
         textInputLayoutUsername.setVisibility(View.VISIBLE);
         textInputLayoutPass.setVisibility(View.VISIBLE);
-        imgProfileUser.setVisibility(View.VISIBLE);
+        imgProfileUser.setVisibility(View.VISIBLE);*/
+        lnDataUser.setVisibility(View.VISIBLE);
+        fab.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideComponents() {
-        textInputLayoutRepeatPass.setVisibility(View.GONE);
+        /*textInputLayoutRepeatPass.setVisibility(View.GONE);
         textInputLayoutEmail.setVisibility(View.GONE);
         textInputLayoutUsername.setVisibility(View.GONE);
         textInputLayoutPass.setVisibility(View.GONE);
-        imgProfileUser.setVisibility(View.GONE);
+        imgProfileUser.setVisibility(View.GONE);*/
+        lnDataUser.setVisibility(View.GONE);
+        fab.setVisibility(View.GONE);
     }
 
     @Override
@@ -217,7 +227,7 @@ public class SignInActivity extends AppCompatActivity implements ISignInView {
         Uri uriImage = intentOnActivityResult.getData();
         //Bitmap bitmaptmp=Utils.getBitmapFromUriImage(this,uriImage);
         //imageBitmap = Bitmap.createScaledBitmap(bitmaptmp,(int)(bitmaptmp.getWidth()*0.8), (int)(bitmaptmp.getHeight()*0.8), true);
-        imageBitmap=Utils.getBitmapFromUriImage(this,uriImage);
+        imageBitmap = Utils.getBitmapFromUriImage(this, uriImage);
         imgProfileUser.setImageBitmap(imageBitmap);
     }
 
@@ -242,7 +252,7 @@ public class SignInActivity extends AppCompatActivity implements ISignInView {
         showProgress();
 
         final User user = new User();
-        new EncodeImageTask(this,imageBitmap){
+        new EncodeImageTask(this, imageBitmap) {
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
@@ -251,12 +261,11 @@ public class SignInActivity extends AppCompatActivity implements ISignInView {
                 user.setPwd_repeat(edtRepeatPassword.getText().toString());
                 user.setUsername(edtUserName.getText().toString());
                 user.setPhotoBase64(s);
-                presenter.signIn(Utils.isOnline(SignInActivity.this),user);
+                presenter.signIn(Utils.isOnline(SignInActivity.this), user);
             }
         }.execute();
 
     }
-
 
 
     @Override
