@@ -28,16 +28,18 @@ public class SignInPresenterImpl implements ISignInPresenter, IListennerCallBack
 
     @Override
     public void signIn(boolean isOnline,User user) {
-        if (!isOnline){
-            view.hideProgress();
-            view.showMessage("Comprueba tu conexión");
-            return;
+        if (view!=null){
+            if (!isOnline){
+                view.hideProgress();
+                view.showMessage("Comprueba tu conexión");
+                return;
+            }
+            if (!verifyDataUser(user)) {
+                view.hideProgress();
+                return;
+            }
+            interactor.signIn(user);
         }
-        if (!verifyDataUser(user)) {
-            view.hideProgress();
-            return;
-        }
-        interactor.signIn(user);
     }
 
     private boolean verifyDataUser(User user) {
@@ -72,58 +74,71 @@ public class SignInPresenterImpl implements ISignInPresenter, IListennerCallBack
 
     @Override
     public void activityResult(int requestCode,int resultCode) {
-        if (resultCode == RMapped.RESULT_OK.getValue()) {
-            if (requestCode==Constantes.REQUEST_IMAGE_CAPTURE_CAMERA){
-                view.fillImageViewFromCamera();
-            }else if(requestCode==Constantes.REQUEST_IMAGE_CAPTURE_GALLERY){
-                view.fillImageViewFromGallery();
-            }
+        if (view!=null){
+            if (resultCode == RMapped.RESULT_OK.getValue()) {
+                if (requestCode==Constantes.REQUEST_IMAGE_CAPTURE_CAMERA){
+                    view.fillImageViewFromCamera();
+                }else if(requestCode==Constantes.REQUEST_IMAGE_CAPTURE_GALLERY){
+                    view.fillImageViewFromGallery();
+                }
 
+            }
         }
     }
 
     @Override
     public void onOptionsItemSelected(int idSelected) {
-        if(idSelected==RMapped.ITEM_HOME_BACK.getValue()) {
-            view.navigateUpFromSameTask();
-        }else if(idSelected==RMapped.ITEM_SIGNIN.getValue()){
-            view.signIn();
+        if (view!=null){
+            if(idSelected==RMapped.ITEM_HOME_BACK.getValue()) {
+                view.navigateUpFromSameTask();
+            }else if(idSelected==RMapped.ITEM_SIGNIN.getValue()){
+                view.signIn();
+            }
         }
     }
 
 
     @Override
     public void selectOptionDialogPicture(String[] options, int selected) {
-        if (options[selected].equals("Tomar foto")) {
-            view.openCamera();
-        } else if (options[selected].equals("Elegir de galeria")) {
-            view.openGalery();
+        if (view!=null){
+            if (options[selected].equals("Tomar foto")) {
+                view.openCamera();
+            } else if (options[selected].equals("Elegir de galeria")) {
+                view.openGalery();
+            }
         }
     }
 
     @Override
     public void validatePasswordRepeat(String pwd, String pwdRepeat) {
-        if (pwdRepeat.equals(pwd)) {
-            view.hideErrorPwdRepeat();
+        if(view!=null) {
+            if (pwdRepeat.equals(pwd)) {
+                view.hideErrorPwdRepeat();
+            }
         }
     }
 
     @Override
     public void onDestroy() {
         view=null;
+        interactor.signIn(null);
     }
 
     @Override
     public void onSuccess(Object object) {
-        view.hideProgress();
-        view.showMessage(((Response)object).getMessage());
-        view.returnToLoginScreen();
+        if (view!=null){
+            view.hideProgress();
+            view.showMessage(((Response)object).getMessage());
+            view.returnToLoginScreen();
+        }
     }
 
     @Override
     public void onError(Response response) {
-        view.hideProgress();
-        view.showMessage(response.getMessage());
-        Log.e("tag",response.toString());
+        if (view!=null){
+            view.hideProgress();
+            view.showMessage(response.getMessage());
+            Log.e("tag",response.toString());
+        }
     }
 }

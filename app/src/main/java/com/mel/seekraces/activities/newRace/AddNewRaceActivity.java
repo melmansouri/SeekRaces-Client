@@ -25,6 +25,7 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -74,7 +75,7 @@ public class AddNewRaceActivity extends AppCompatActivity implements IAddNewRace
     @BindView(R.id.text_input_layout_description)
     TextInputLayout textInputLayoutDescription;
     @BindView(R.id.lnDataRace)
-    NestedScrollView lnDataRace;
+    ScrollView lnDataRace;
     @BindView(R.id.fab)
     FloatingActionButton fab;
     @BindView(R.id.coordinatorLayout)
@@ -317,5 +318,11 @@ public class AddNewRaceActivity extends AppCompatActivity implements IAddNewRace
                 presenter.addRace(Utils.isOnline(AddNewRaceActivity.this), event);
             }
         }.execute();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.onDestroy();
     }
 }

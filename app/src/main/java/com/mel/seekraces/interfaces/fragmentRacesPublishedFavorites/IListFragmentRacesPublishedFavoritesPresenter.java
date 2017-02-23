@@ -6,4 +6,5 @@ package com.mel.seekraces.interfaces.fragmentRacesPublishedFavorites;
 
 public interface IListFragmentRacesPublishedFavoritesPresenter {
     void getRacesPublishedFavorites();
+    void onDestroy();
 }

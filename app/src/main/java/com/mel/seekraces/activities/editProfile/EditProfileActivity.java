@@ -219,4 +219,10 @@ public class EditProfileActivity extends AppCompatActivity implements IEditProfi
     public boolean retunSuperOnOptionsItemSelected() {
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.onDestroy();
+    }
 }

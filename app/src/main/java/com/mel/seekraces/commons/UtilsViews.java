@@ -81,7 +81,7 @@ public class UtilsViews {
     }
 
     @TargetApi(Build.VERSION_CODES.M)
-    public static boolean PermisosValidos(Activity activity) {
+    public static boolean PermisosValidos(Activity activity,int requestCode) {
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
 
@@ -91,7 +91,7 @@ public class UtilsViews {
             if (camera != PackageManager.PERMISSION_GRANTED
                     || acceso_tarjeta_memoria != PackageManager.PERMISSION_GRANTED
                     || escritura_tarjeta_memoria != PackageManager.PERMISSION_GRANTED) {
-                activity.requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constantes.REQUEST_CODE_GENERIC_PERMISSION);
+                activity.requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, requestCode);
                 return false;
             }
         }

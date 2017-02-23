@@ -130,5 +130,9 @@ public class ListRacesPublishedFavoritesFragment extends Fragment implements ILi
         mListener = null;
     }
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.onDestroy();
+    }
 }

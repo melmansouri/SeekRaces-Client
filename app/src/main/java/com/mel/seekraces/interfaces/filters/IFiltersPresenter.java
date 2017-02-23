@@ -8,4 +8,6 @@ public interface IFiltersPresenter {
     boolean onOptionsItemSelected(int idSelected);
 
     void onTextChangedPlaces(String input);
+
+    void onDestroy();
 }

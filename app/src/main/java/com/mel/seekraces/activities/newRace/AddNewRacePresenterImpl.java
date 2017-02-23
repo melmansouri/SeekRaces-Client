@@ -30,16 +30,18 @@ public class AddNewRacePresenterImpl implements IAddNewRacePresenter, IListenner
 
     @Override
     public void addRace(boolean isOnline,Event event) {
-        if (!isOnline){
-            view.hideProgress();
-            view.showMessage("Comprueba tu conexión");
-            return;
+        if (view!=null){
+            if (!isOnline){
+                view.hideProgress();
+                view.showMessage("Comprueba tu conexión");
+                return;
+            }
+            if (!verifyDataUser(event)) {
+                view.hideProgress();
+                return;
+            }
+            interactor.addRace(event);
         }
-        if (!verifyDataUser(event)) {
-            view.hideProgress();
-            return;
-        }
-        interactor.addRace(event);
     }
 
     @Override
@@ -70,51 +72,66 @@ public class AddNewRacePresenterImpl implements IAddNewRacePresenter, IListenner
 
     @Override
     public void activityResult(int requestCode, int resultCode) {
-        if (resultCode == RMapped.RESULT_OK.getValue()) {
-            if (requestCode== Constantes.REQUEST_IMAGE_CAPTURE_CAMERA){
-                view.fillImageViewFromCamera();
-            }else if(requestCode==Constantes.REQUEST_IMAGE_CAPTURE_GALLERY){
-                view.fillImageViewFromGallery();
-            }
+        if (view!=null){
+            if (resultCode == RMapped.RESULT_OK.getValue()) {
+                if (requestCode== Constantes.REQUEST_IMAGE_CAPTURE_CAMERA){
+                    view.fillImageViewFromCamera();
+                }else if(requestCode==Constantes.REQUEST_IMAGE_CAPTURE_GALLERY){
+                    view.fillImageViewFromGallery();
+                }
 
+            }
         }
     }
 
     @Override
     public boolean onOptionsItemSelected(int idSelected) {
-        if(idSelected==RMapped.ITEM_HOME_BACK.getValue()) {
-            view.finishActivity();
-            return true;
-        }else if(idSelected==RMapped.ITEM_ADDRACE.getValue()){
-            view.addRace();
-            return true;
+        if (view!=null){
+            if(idSelected==RMapped.ITEM_HOME_BACK.getValue()) {
+                view.finishActivity();
+                return true;
+            }else if(idSelected==RMapped.ITEM_ADDRACE.getValue()){
+                view.addRace();
+                return true;
+            }
+            return view.retunSuperOnOptionsItemSelected();
         }
-
-        return view.retunSuperOnOptionsItemSelected();
+        return false;
     }
 
     @Override
     public void selectOptionDialogPicture(String[] options,int selected) {
-        if (options[selected].equals("Tomar foto")) {
-            view.openCamera();
-        } else if (options[selected].equals("Elegir de galeria")) {
-            view.openGalery();
+        if (view!=null){
+            if (options[selected].equals("Tomar foto")) {
+                view.openCamera();
+            } else if (options[selected].equals("Elegir de galeria")) {
+                view.openGalery();
+            }
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        view=null;
+        interactor.getAutoCompletePlaces(null);
+        interactor.addRace(null);
     }
 
 
     @Override
     public void onSuccess(Object object) {
-        if (object instanceof Response){
-            view.hideProgress();
-            view.showMessage(((Response)object).getMessage());
-            view.returnToMainScreen(((Response)object).getMessage());
-        }else if (object instanceof PlacePredictions){
-            if (((PlacePredictions)object).getStatus().equals("OK")){
-                if (view.getAdapterAutoComplete()==null){
-                    view.initAdapterAutoComplete(((PlacePredictions)object));
-                }else{
-                    view.resetAdapterAutoComplete(((PlacePredictions)object));
+        if (view!=null){
+            if (object instanceof Response){
+                view.hideProgress();
+                view.showMessage(((Response)object).getMessage());
+                view.returnToMainScreen(((Response)object).getMessage());
+            }else if (object instanceof PlacePredictions){
+                if (((PlacePredictions)object).getStatus().equals("OK")){
+                    if (view.getAdapterAutoComplete()==null){
+                        view.initAdapterAutoComplete(((PlacePredictions)object));
+                    }else{
+                        view.resetAdapterAutoComplete(((PlacePredictions)object));
+                    }
                 }
             }
         }
@@ -122,7 +139,9 @@ public class AddNewRacePresenterImpl implements IAddNewRacePresenter, IListenner
 
     @Override
     public void onError(Response response) {
-        view.hideProgress();
-        view.showMessage(response.getMessage());
+        if (view!=null){
+            view.hideProgress();
+            view.showMessage(response.getMessage());
+        }
     }
 }

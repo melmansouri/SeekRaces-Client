@@ -20,43 +20,49 @@ import retrofit2.Retrofit;
 public class SignInInteractorImpl implements ISignInInteractor{
     private IListennerCallBack listennerCallBack;
     private INetworkConnectionApi networkConnectionApi;
+    private Call<Response> signInCall;
 
     public SignInInteractorImpl(IListennerCallBack listennerCallBack){
         this.listennerCallBack=listennerCallBack;
+        Retrofit retrofit= RetrofitSingleton.getInstance().getRetrofit();
+        networkConnectionApi=retrofit.create(INetworkConnectionApi.class);
     }
 
     @Override
     public void signIn(User user) {
-        Retrofit retrofit= RetrofitSingleton.getInstance().getRetrofit();
-        networkConnectionApi=retrofit.create(INetworkConnectionApi.class);
-
-        Call<Response> signInCall=networkConnectionApi.signIn(user);
-        signInCall.enqueue(new Callback<Response>() {
-            @Override
-            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                Response responsetmp;
-                if (!response.isSuccessful()){
-                    responsetmp=new Response();
-                    responsetmp.setMessage(response.message());
-                    responsetmp.setOk(false);
-
-                }else{
-                    responsetmp=response.body();
+        if (user!=null){
+            signInCall=networkConnectionApi.signIn(user);
+            signInCall.enqueue(new Callback<Response>() {
+                @Override
+                public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                    Response responsetmp;
+                    if (!response.isSuccessful()){
+                        responsetmp=new Response();
+                        responsetmp.setMessage(response.message());
+                        responsetmp.setOk(false);
+                    }else{
+                        responsetmp=response.body();
+                    }
+                    if (responsetmp.isOk()){
+                        listennerCallBack.onSuccess(responsetmp);
+                    }else{
+                        listennerCallBack.onError(responsetmp);
+                    }
                 }
 
-                if (responsetmp.isOk()){
-                    listennerCallBack.onSuccess(responsetmp);
-                }else{
-                    listennerCallBack.onError(responsetmp);
+                @Override
+                public void onFailure(Call<Response> call, Throwable t) {
+                    if (signInCall!=null && !signInCall.isCanceled()){
+                        Response response=new Response();
+                        response.setMessage(t.getMessage());
+                        listennerCallBack.onError(response);
+                    }
                 }
+            });
+        }else{
+            if (signInCall!=null){
+                signInCall.cancel();
             }
-
-            @Override
-            public void onFailure(Call<Response> call, Throwable t) {
-                Response response=new Response();
-                response.setMessage(t.getMessage());
-                listennerCallBack.onError(response);
-            }
-        });
+        }
     }
 }

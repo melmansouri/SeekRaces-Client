@@ -23,6 +23,8 @@ public class Constantes {
     public static final int REQUEST_IMAGE_CAPTURE_GALLERY=101;
 
     public static final int REQUEST_CODE_GENERIC_PERMISSION=0;
+    public static final int REQUEST_CODE_GENERIC_PERMISSION_LOGIN = 1;
+    public static final int REQUEST_CODE_GENERIC_PERMISSION_SIGNIN = 2;
 
     public static final int REQUEST_START_SIGNIN_FOR_RESULT=200;
     public static final int REQUEST_START_MAIN_FOR_RESULT = 201;

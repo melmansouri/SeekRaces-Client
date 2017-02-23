@@ -33,34 +33,49 @@ public class ListFragmentRacesPublishedPresenterImpl implements IListFragmentRac
 
     @Override
     public void getRacesPublished(Filter filter) {
-        view.showProgressBar();
-        //view.showList();
-        interactor.getRacesPublished(filter);
+        if (view!=null){
+            view.showProgressBar();
+            //view.showList();
+            interactor.getRacesPublished(filter);
+        }
     }
 
     @Override
     public void onOptionsItemSelected(int itemSelected) {
-        if (itemSelected== RMapped.ITEM_FILTER.getValue()){
-            view.startScreenFilter();
+        if (view!=null){
+            if (itemSelected== RMapped.ITEM_FILTER.getValue()){
+                view.startScreenFilter();
+            }
         }
     }
+
+    @Override
+    public void onDestroy() {
+        view=null;
+        interactor.getRacesPublished(null);
+    }
+
     @Override
     public void onSuccess(Object object) {
-        view.hideProgressBar();
-        GsonBuilder gsonBuilder = new GsonBuilder()
-                .setLenient();
-        gsonBuilder.registerTypeAdapter(Event.class,new EventDeserializer());
-        Gson gson=gsonBuilder.create();
-        Type founderListType = new TypeToken<ArrayList<Event>>(){}.getType();
-        List<Event> carreras=gson.fromJson(((Response)object).getContent(),founderListType);
-        view.fillAdapterList(carreras);
-        view.showList();
+        if (view!=null){
+            view.hideProgressBar();
+            GsonBuilder gsonBuilder = new GsonBuilder()
+                    .setLenient();
+            gsonBuilder.registerTypeAdapter(Event.class,new EventDeserializer());
+            Gson gson=gsonBuilder.create();
+            Type founderListType = new TypeToken<ArrayList<Event>>(){}.getType();
+            List<Event> carreras=gson.fromJson(((Response)object).getContent(),founderListType);
+            view.fillAdapterList(carreras);
+            view.showList();
+        }
     }
 
     @Override
     public void onError(Response response) {
-        view.hideProgressBar();
-        view.hideList();
-        view.showMessage(response.getMessage());
+        if (view!=null){
+            view.hideProgressBar();
+            view.hideList();
+            view.showMessage(response.getMessage());
+        }
     }
 }

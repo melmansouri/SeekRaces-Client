@@ -8,4 +8,5 @@ import com.mel.seekraces.entities.Filter;
 
 public interface IListFragmentOwnRacesPublishedPresenter {
     void getOwnRacesPublished();
+    void onDestroy();
 }

@@ -21,53 +21,59 @@ import retrofit2.Retrofit;
 public class AddNewRaceInteractorImpl implements IAddNewRaceInteractor {
     private IListennerCallBack listennerCallBack;
     private INetworkConnectionApi networkConnectionApi;
+    private Call<Response> addRacesCall;
 
     public AddNewRaceInteractorImpl(IListennerCallBack listennerCallBack) {
         this.listennerCallBack = listennerCallBack;
+        Retrofit retrofit= RetrofitSingleton.getInstance().getRetrofit();
+        networkConnectionApi=retrofit.create(INetworkConnectionApi.class);
     }
 
     @Override
     public void addRace(Event event) {
-        Retrofit retrofit= RetrofitSingleton.getInstance().getRetrofit();
-        networkConnectionApi=retrofit.create(INetworkConnectionApi.class);
+        if (event!=null){
+            addRacesCall=networkConnectionApi.addRaces(event);
+            addRacesCall.enqueue(new Callback<Response>() {
+                @Override
+                public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                    Response responsetmp;
+                    if (!response.isSuccessful()){
+                        responsetmp=new Response();
+                        responsetmp.setMessage(response.message());
+                        responsetmp.setOk(false);
 
-        Call<Response> addRacesCall=networkConnectionApi.addRaces(event);
-        addRacesCall.enqueue(new Callback<Response>() {
-            @Override
-            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                Response responsetmp;
-                if (!response.isSuccessful()){
-                    responsetmp=new Response();
-                    responsetmp.setMessage(response.message());
-                    responsetmp.setOk(false);
+                    }else{
+                        responsetmp=response.body();
+                    }
 
-                }else{
-                    responsetmp=response.body();
+                    if (responsetmp.isOk()){
+                        listennerCallBack.onSuccess(responsetmp);
+                    }else{
+                        listennerCallBack.onError(responsetmp);
+                    }
                 }
 
-                if (responsetmp.isOk()){
-                    listennerCallBack.onSuccess(responsetmp);
-                }else{
-                    listennerCallBack.onError(responsetmp);
+                @Override
+                public void onFailure(Call<Response> call, Throwable t) {
+                    if (addRacesCall!=null && !addRacesCall.isCanceled()){
+                        Response response=new Response();
+                        response.setMessage(t.getMessage());
+                        listennerCallBack.onError(response);
+                    }
                 }
+            });
+        }else{
+            if (addRacesCall != null) {
+                addRacesCall.cancel();
             }
+        }
 
-            @Override
-            public void onFailure(Call<Response> call, Throwable t) {
-                Response response=new Response();
-                response.setMessage(t.getMessage());
-                listennerCallBack.onError(response);
-            }
-        });
     }
 
     @Override
     public void getAutoCompletePlaces(String url) {
         Call<PlacePredictions> getPlacesCall=null;
         if (url != null){
-            Retrofit retrofit= RetrofitSingleton.getInstance().getRetrofit();
-            networkConnectionApi=retrofit.create(INetworkConnectionApi.class);
-
             getPlacesCall=networkConnectionApi.getAutoCompletePlaces(url);
             getPlacesCall.enqueue(new Callback<PlacePredictions>() {
                 @Override

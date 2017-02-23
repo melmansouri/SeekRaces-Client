@@ -35,31 +35,37 @@ public class LoginPresenterImpl implements ILoginPresenter, IListennerCallBack {
 
     @Override
     public void login(boolean isOnline, boolean havePermission, User user) {
-        if (!isOnline) {
-            view.showMessage("Comprueba tu conexión");
-            return;
-        }
-        if (havePermission) {
-            view.showProgress();
-            if (!validateDataLogin(user)) {
-                view.hideProgress();
-                return;
+        if (view!=null){
+            if (havePermission) {
+                if (!isOnline) {
+                    view.showMessage("Comprueba tu conexión");
+                    return;
+                }
+                view.showProgress();
+                if (!validateDataLogin(user)) {
+                    view.hideProgress();
+                    return;
+                }
+                loginInteractor.login(user);
             }
-            loginInteractor.login(user);
         }
     }
 
     @Override
     public void checkSession() {
-        if (sharedPreferencesSingleton.containValue(Constantes.KEY_USER)) {
-            view.goToMainScreen();
+        if (view!=null){
+            if (sharedPreferencesSingleton.containValue(Constantes.KEY_USER)) {
+                view.goToMainScreen();
+            }
         }
     }
 
     @Override
     public void startActivitySignIn(boolean havePermission) {
-        if (havePermission) {
-            view.startActivitySignIn();
+        if (view!=null){
+            if (havePermission) {
+                view.startActivitySignIn();
+            }
         }
     }
 
@@ -81,29 +87,33 @@ public class LoginPresenterImpl implements ILoginPresenter, IListennerCallBack {
 
     @Override
     public void activityResult(int requestCode, int resultCode) {
-        if (resultCode == RMapped.RESULT_OK.getValue()) {
-            if (requestCode == Constantes.REQUEST_START_SIGNIN_FOR_RESULT) {
-                view.showMessage("Se le ha enviado un correo de confirmación.");
-            } else if (requestCode == Constantes.REQUEST_START_MAIN_FOR_RESULT) {
-                view.finishActivity();
+        if (view!=null){
+            if (resultCode == RMapped.RESULT_OK.getValue()) {
+                if (requestCode == Constantes.REQUEST_START_SIGNIN_FOR_RESULT) {
+                    view.showMessage("Se le ha enviado un correo de confirmación.");
+                } else if (requestCode == Constantes.REQUEST_START_MAIN_FOR_RESULT) {
+                    view.finishActivity();
+                }
             }
         }
     }
 
     @Override
     public void forgotPwd(boolean isOnline, String email) {
-        if (!isOnline) {
-            view.showMessage("Comprueba tu conexión");
-            return;
-        }
-        view.showProgress();
-        if (!validateDataForgotPwd(email)) {
-            view.hideProgress();
-            return;
-        }
-        String url = INetworkConnectionApi.BASE_URL + "user/" + email + "/forgotPassword";
-        loginInteractor.forgotPwd(url);
+        if (view!=null){
+            if (!isOnline) {
+                view.showMessage("Comprueba tu conexión");
+                return;
+            }
+            view.showProgress();
+            if (!validateDataForgotPwd(email)) {
+                view.hideProgress();
+                return;
+            }
+            String url = INetworkConnectionApi.BASE_URL + "user/" + email + "/forgotPassword";
+            loginInteractor.forgotPwd(url);
 
+        }
     }
 
     private boolean validateDataForgotPwd(String email) {
@@ -121,28 +131,60 @@ public class LoginPresenterImpl implements ILoginPresenter, IListennerCallBack {
     @Override
     public void onDestroy() {
         view = null;
+        loginInteractor.login(null);
+        loginInteractor.forgotPwd(null);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, int[] grantResults) {
+        boolean isGranted=true;
+        if (view!=null){
+            if (grantResults.length > 0) {
+                for (int i=0;i<grantResults.length;i++){
+                    if (grantResults[i] != RMapped.PERMISSION_GRANTED.getValue()){
+                        isGranted=false;
+                        break;
+                    }
+                }
+                if (isGranted){
+                    if (requestCode==Constantes.REQUEST_CODE_GENERIC_PERMISSION_LOGIN){
+
+                    }else if(requestCode==Constantes.REQUEST_CODE_GENERIC_PERMISSION_SIGNIN){
+                        view.startActivitySignIn();
+                    }
+                }else{
+                    view.showMessage("Debe aceptar todos los permisos");
+                }
+            } else {
+                view.showMessage("Debe aceptar todos los permisos");
+            }
+        }
     }
 
 
     @Override
     public void onSuccess(Object object) {
-        view.hideProgress();
-        if (object instanceof String){
-            view.showMessage((String)object);
-            return;
-        }
-        User user = new Gson().fromJson(((Response) object).getContent(), User.class);
-        sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USER, user.getEmail());
-        sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USER_NAME_PICTURE, user.getPhoto_url());
-        sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USERNAME, user.getUsername());
+        if (view!=null){
+            view.hideProgress();
+            if (object instanceof String){
+                view.showMessage((String)object);
+                return;
+            }
+            User user = new Gson().fromJson(((Response) object).getContent(), User.class);
+            sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USER, user.getEmail());
+            sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USER_NAME_PICTURE, user.getPhoto_url());
+            sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USERNAME, user.getUsername());
 
-        view.goToMainScreen();
+            view.goToMainScreen();
+        }
     }
 
     @Override
     public void onError(Response response) {
-        view.hideProgress();
-        view.showMessage(response.getMessage());
-        Log.e("tag", response.toString());
+        if (view!=null){
+            view.hideProgress();
+            view.showMessage(response.getMessage());
+            Log.e("tag", response.toString());
+        }
     }
 }

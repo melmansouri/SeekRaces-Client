@@ -25,14 +25,17 @@ public class FilterPresenterImpl implements IFiltersPresenter,IListennerCallBack
 
     @Override
     public boolean onOptionsItemSelected(int idSelected) {
-        if(idSelected== RMapped.ITEM_HOME_BACK.getValue()) {
-            view.finishActivity();
-            return true;
-        }else if(idSelected==RMapped.ITEM_ACTIVITY_FILTERS_FILTRAR.getValue()){
-            view.backToListRacesPublished();
-            return true;
+        if (view!=null){
+            if(idSelected== RMapped.ITEM_HOME_BACK.getValue()) {
+                view.finishActivity();
+                return true;
+            }else if(idSelected==RMapped.ITEM_ACTIVITY_FILTERS_FILTRAR.getValue()){
+                view.backToListRacesPublished();
+                return true;
+            }
+            return view.retunSuperOnOptionsItemSelected();
         }
-        return view.retunSuperOnOptionsItemSelected();
+        return false;
     }
 
     @Override
@@ -44,12 +47,20 @@ public class FilterPresenterImpl implements IFiltersPresenter,IListennerCallBack
     }
 
     @Override
+    public void onDestroy() {
+        view=null;
+        interactor.getAutoCompletePlaces(null);
+    }
+
+    @Override
     public void onSuccess(Object object) {
-        if (((PlacePredictions)object).getStatus().equals("OK")){
-            if (view.getAdapterAutoComplete()==null){
-                view.initAdapterAutoComplete(((PlacePredictions)object));
-            }else{
-                view.resetAdapterAutoComplete(((PlacePredictions)object));
+        if (view!=null){
+            if (((PlacePredictions)object).getStatus().equals("OK")){
+                if (view.getAdapterAutoComplete()==null){
+                    view.initAdapterAutoComplete(((PlacePredictions)object));
+                }else{
+                    view.resetAdapterAutoComplete(((PlacePredictions)object));
+                }
             }
         }
     }

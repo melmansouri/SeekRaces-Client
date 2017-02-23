@@ -156,4 +156,10 @@ public class FiltersActivity extends AppCompatActivity implements IFiltersView {
         autoCompleteAdapter.notifyDataSetChanged();
         edtLugar.invalidate();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.onDestroy();
+    }
 }

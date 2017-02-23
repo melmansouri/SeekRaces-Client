@@ -213,4 +213,10 @@ public class MainActivity extends AppCompatActivity
         intentActivityResult = data;
         presenter.activityResult(requestCode, resultCode);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.onDestroy();
+    }
 }

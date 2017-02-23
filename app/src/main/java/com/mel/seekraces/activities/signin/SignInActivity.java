@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 
 import com.mel.seekraces.R;
 import com.mel.seekraces.commons.Utils;
@@ -60,7 +61,7 @@ public class SignInActivity extends AppCompatActivity implements ISignInView {
     @BindView(R.id.text_input_layout_repeat_pass)
     TextInputLayout textInputLayoutRepeatPass;
     @BindView(R.id.lnDataUser)
-    NestedScrollView lnDataUser;
+    ScrollView lnDataUser;
     @BindView(R.id.fab)
     FloatingActionButton fab;
     private Intent intentOnActivityResult;

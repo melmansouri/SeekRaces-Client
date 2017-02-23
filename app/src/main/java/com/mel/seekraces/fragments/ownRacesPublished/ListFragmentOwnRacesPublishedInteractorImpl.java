@@ -19,6 +19,7 @@ import retrofit2.Retrofit;
 public class ListFragmentOwnRacesPublishedInteractorImpl implements IListFragmentOwnRacesPublishedInteractor{
     private IListennerCallBack listennerCallBack;
     private INetworkConnectionApi networkConnectionApi;
+    private Call<Response> ownRacesPublishedCall;
 
     public ListFragmentOwnRacesPublishedInteractorImpl(IListennerCallBack listennerCallBack) {
         this.listennerCallBack = listennerCallBack;
@@ -26,36 +27,44 @@ public class ListFragmentOwnRacesPublishedInteractorImpl implements IListFragmen
 
     @Override
     public void getOwnRacesPublished(String url) {
-        Retrofit retrofit= RetrofitSingleton.getInstance().getRetrofit();
-        networkConnectionApi=retrofit.create(INetworkConnectionApi.class);
+        if (url!=null){
+            Retrofit retrofit= RetrofitSingleton.getInstance().getRetrofit();
+            networkConnectionApi=retrofit.create(INetworkConnectionApi.class);
 
-        Call<Response> signInCall=networkConnectionApi.getOwnRacesPublished(url);
-        signInCall.enqueue(new Callback<Response>() {
-            @Override
-            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                Response responsetmp;
-                if (!response.isSuccessful()){
-                    responsetmp=new Response();
-                    responsetmp.setMessage(response.message());
-                    responsetmp.setOk(false);
+            ownRacesPublishedCall=networkConnectionApi.getOwnRacesPublished(url);
+            ownRacesPublishedCall.enqueue(new Callback<Response>() {
+                @Override
+                public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                    Response responsetmp;
+                    if (!response.isSuccessful()){
+                        responsetmp=new Response();
+                        responsetmp.setMessage(response.message());
+                        responsetmp.setOk(false);
 
-                }else{
-                    responsetmp=response.body();
+                    }else{
+                        responsetmp=response.body();
+                    }
+
+                    if (responsetmp.isOk()){
+                        listennerCallBack.onSuccess(responsetmp);
+                    }else{
+                        listennerCallBack.onError(responsetmp);
+                    }
                 }
 
-                if (responsetmp.isOk()){
-                    listennerCallBack.onSuccess(responsetmp);
-                }else{
-                    listennerCallBack.onError(responsetmp);
+                @Override
+                public void onFailure(Call<Response> call, Throwable t) {
+                    if (ownRacesPublishedCall!=null && !ownRacesPublishedCall.isCanceled()) {
+                        Response response=new Response();
+                        response.setMessage(t.getMessage());
+                        listennerCallBack.onError(response);
+                    }
                 }
+            });
+        }else{
+            if (ownRacesPublishedCall!=null){
+                ownRacesPublishedCall.cancel();
             }
-
-            @Override
-            public void onFailure(Call<Response> call, Throwable t) {
-                Response response=new Response();
-                response.setMessage(t.getMessage());
-                listennerCallBack.onError(response);
-            }
-        });
+        }
     }
 }

@@ -133,5 +133,9 @@ public class ListOwnRacesPublishedFragment extends Fragment implements IListFrag
         mListener = null;
     }
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.onDestroy();
+    }
 }

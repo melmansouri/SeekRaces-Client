@@ -2,6 +2,7 @@ package com.mel.seekraces.activities.login;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -97,9 +98,15 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        loginPresenter.onRequestPermissionsResult(requestCode,grantResults);
+    }
+
+    @Override
     @OnClick(R.id.btnSignIn)
     public void goToSignIn() {
-        loginPresenter.startActivitySignIn(UtilsViews.PermisosValidos(this));
+
+        loginPresenter.startActivitySignIn(UtilsViews.PermisosValidos(this,Constantes.REQUEST_CODE_GENERIC_PERMISSION_SIGNIN));
     }
 
     @Override
@@ -117,7 +124,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
         user.setPwd(edtPassword.getText().toString());
         user.setToken_push(sharedPreferencesSingleton.getStringSP(Constantes.KEY_TOKEN_PUSH));
         sharedPreferencesSingleton.removeValueSP(Constantes.KEY_TOKEN_PUSH);
-        loginPresenter.login(Utils.isOnline(this), UtilsViews.PermisosValidos(this), user);
+        loginPresenter.login(Utils.isOnline(this), UtilsViews.PermisosValidos(this,Constantes.REQUEST_CODE_GENERIC_PERMISSION_LOGIN), user);
     }
 
     @Override

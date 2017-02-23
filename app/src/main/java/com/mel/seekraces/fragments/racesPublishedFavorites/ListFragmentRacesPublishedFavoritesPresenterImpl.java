@@ -39,30 +39,42 @@ public class ListFragmentRacesPublishedFavoritesPresenterImpl implements IListFr
 
     @Override
     public void getRacesPublishedFavorites() {
-        view.showProgressBar();
-        //view.showList();
-        String user=sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER);
-        String url= INetworkConnectionApi.BASE_URL+"user/"+user+"/event/favorites";
-        interactor.getRacesPublishedFavorites(url);
+        if (view!=null){
+            view.showProgressBar();
+            //view.showList();
+            String user=sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER);
+            String url= INetworkConnectionApi.BASE_URL+"user/"+user+"/event/favorites";
+            interactor.getRacesPublishedFavorites(url);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        interactor.getRacesPublishedFavorites(null);
+        view=null;
     }
 
     @Override
     public void onSuccess(Object object) {
-        view.hideProgressBar();
-        GsonBuilder gsonBuilder = new GsonBuilder()
-                .setLenient();
-        gsonBuilder.registerTypeAdapter(Event.class,new EventDeserializer());
-        Gson gson=gsonBuilder.create();
-        Type founderListType = new TypeToken<ArrayList<Event>>(){}.getType();
-        List<Event> carreras=gson.fromJson(((Response)object).getContent(),founderListType);
-        view.fillAdapterList(carreras);
-        view.showList();
+        if (view!=null){
+            view.hideProgressBar();
+            GsonBuilder gsonBuilder = new GsonBuilder()
+                    .setLenient();
+            gsonBuilder.registerTypeAdapter(Event.class,new EventDeserializer());
+            Gson gson=gsonBuilder.create();
+            Type founderListType = new TypeToken<ArrayList<Event>>(){}.getType();
+            List<Event> carreras=gson.fromJson(((Response)object).getContent(),founderListType);
+            view.fillAdapterList(carreras);
+            view.showList();
+        }
     }
 
     @Override
     public void onError(Response response) {
-        view.hideProgressBar();
-        view.hideList();
-        view.showMessage(response.getMessage());
+        if (view!=null){
+            view.hideProgressBar();
+            view.hideList();
+            view.showMessage(response.getMessage());
+        }
     }
 }

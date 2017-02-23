@@ -20,6 +20,8 @@ public class EditProfileInteractorImpl implements IEditProfileInteractor {
 
     private IListennerCallBack callBack;
     private INetworkConnectionApi networkConnectionApi;
+    private Call<Response> edtiProfileCall=null;
+    private User userTmp;
 
     public EditProfileInteractorImpl(IListennerCallBack callBack) {
         this.callBack = callBack;
@@ -27,40 +29,49 @@ public class EditProfileInteractorImpl implements IEditProfileInteractor {
 
     @Override
     public void editProfile(User user) {
-        final User userTmp=user;
-        Retrofit retrofit = RetrofitSingleton.getInstance().getRetrofit();
-        networkConnectionApi = retrofit.create(INetworkConnectionApi.class);
+        if (user!=null){
+            userTmp=user;
+            Retrofit retrofit = RetrofitSingleton.getInstance().getRetrofit();
+            networkConnectionApi = retrofit.create(INetworkConnectionApi.class);
 
-        Call<Response> edtiProfileCall = networkConnectionApi.editProfile(user);
-        edtiProfileCall.enqueue(new Callback<Response>() {
-            @Override
-            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                Response responsetmp;
-                if (!response.isSuccessful()) {
-                    responsetmp = new Response();
-                    responsetmp.setMessage(response.message());
-                    responsetmp.setOk(false);
+            edtiProfileCall = networkConnectionApi.editProfile(user);
+            edtiProfileCall.enqueue(new Callback<Response>() {
+                @Override
+                public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                    Response responsetmp;
+                    if (!response.isSuccessful()) {
+                        responsetmp = new Response();
+                        responsetmp.setMessage(response.message());
+                        responsetmp.setOk(false);
 
-                } else {
-                    responsetmp = response.body();
-                    userTmp.setPhotoBase64("");
-                    responsetmp.setContent(new Gson().toJson(userTmp));
+                    } else {
+                        responsetmp = response.body();
+                        userTmp.setPhotoBase64("");
+                        responsetmp.setContent(new Gson().toJson(userTmp));
+                    }
+
+                    if (responsetmp.isOk()) {
+                        callBack.onSuccess(responsetmp);
+                    } else {
+                        callBack.onError(responsetmp);
+                    }
                 }
 
-                if (responsetmp.isOk()) {
-                    callBack.onSuccess(responsetmp);
-                } else {
-                    callBack.onError(responsetmp);
+                @Override
+                public void onFailure(Call<Response> call, Throwable t) {
+                    if(edtiProfileCall!=null && !edtiProfileCall.isCanceled()){
+                        Response response = new Response();
+                        response.setMessage(t.getMessage());
+                        callBack.onError(response);
+                    }
                 }
+            });
+        }else{
+            if (edtiProfileCall!=null){
+                edtiProfileCall.cancel();
             }
+        }
 
-            @Override
-            public void onFailure(Call<Response> call, Throwable t) {
-                Response response = new Response();
-                response.setMessage(t.getMessage());
-                callBack.onError(response);
-            }
-        });
 
     }
 }

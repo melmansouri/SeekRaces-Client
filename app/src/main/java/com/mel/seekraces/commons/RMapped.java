@@ -1,6 +1,7 @@
 package com.mel.seekraces.commons;
 
 import android.app.Activity;
+import android.content.pm.PackageManager;
 
 import com.mel.seekraces.R;
 
@@ -31,7 +32,11 @@ public enum RMapped {
     TITLE_CARRERAS_ANTERIORES(R.string.title_carreras_anteriores),
 
     //Result Code
-    RESULT_OK(Activity.RESULT_OK);
+    RESULT_OK(Activity.RESULT_OK),
+
+    //Permissions_package_manager
+    PERMISSION_GRANTED(PackageManager.PERMISSION_GRANTED);
+
     private int resource_id;
 
     RMapped(int id) {

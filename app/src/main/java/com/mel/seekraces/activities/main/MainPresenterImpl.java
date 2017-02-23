@@ -27,59 +27,63 @@ public class MainPresenterImpl implements IMainPresenter, IListennerCallBack{
 
     @Override
     public void fillDataHeaderView() {
-        String username=sharedPreferencesSingleton.getStringSP(Constantes.KEY_USERNAME);
-        String userNamePicture=sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER_NAME_PICTURE);
-        view.fillNavHeaderTxtUserName(username);
-        if (!TextUtils.isEmpty(userNamePicture)){
-            view.fillNavHeaderImgProfile(userNamePicture);
+        if (view!=null){
+            String username=sharedPreferencesSingleton.getStringSP(Constantes.KEY_USERNAME);
+            String userNamePicture=sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER_NAME_PICTURE);
+            view.fillNavHeaderTxtUserName(username);
+            if (!TextUtils.isEmpty(userNamePicture)){
+                view.fillNavHeaderImgProfile(userNamePicture);
+            }
         }
-
     }
 
     @Override
     public void onNavigationItemSelected(int itemSelectd) {
-
-        if (itemSelectd == RMapped.ITEM_RACES_PUBLISHED.getValue()) {
-            Filter filter=new Filter();
-            filter.setUser(sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER));
-            view.chargeFragmentRacesPublished(filter);
-        } else if (itemSelectd == RMapped.ITEM_RACES_MY_PUBLISHED.getValue()) {
-            view.chargeFragmentMyRacesPublished();
-        } else if (itemSelectd == RMapped.ITEM_RACES_FAVORITES.getValue()) {
-            view.chargeFragmentRacesFavorites();
-        } else if (itemSelectd == RMapped.ITEM_RACES_PREVIOUS.getValue()) {
-            view.chargeFragmentRacesPrevious();
-        }else if(itemSelectd == RMapped.ITEM_EXIT.getValue()){
-            sharedPreferencesSingleton.clearAllUserSharedPreferences();
-            view.returnBack();
+        if (view!=null){
+            if (itemSelectd == RMapped.ITEM_RACES_PUBLISHED.getValue()) {
+                Filter filter=new Filter();
+                filter.setUser(sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER));
+                view.chargeFragmentRacesPublished(filter);
+            } else if (itemSelectd == RMapped.ITEM_RACES_MY_PUBLISHED.getValue()) {
+                view.chargeFragmentMyRacesPublished();
+            } else if (itemSelectd == RMapped.ITEM_RACES_FAVORITES.getValue()) {
+                view.chargeFragmentRacesFavorites();
+            } else if (itemSelectd == RMapped.ITEM_RACES_PREVIOUS.getValue()) {
+                view.chargeFragmentRacesPrevious();
+            }else if(itemSelectd == RMapped.ITEM_EXIT.getValue()){
+                sharedPreferencesSingleton.clearAllUserSharedPreferences();
+                view.returnBack();
+            }
+            view.closeDrawerLayout();
         }
-        view.closeDrawerLayout();
     }
 
     @Override
     public void activityResult(int requestCode, int resultCode) {
-        if (resultCode == RMapped.RESULT_OK.getValue()) {
-            if (requestCode==Constantes.REQUEST_START_FILTERS_FOR_RESULT){
-                if (view.getIntentActivityResult()!=null){
-                    Filter filter=view.getIntentActivityResult().getParcelableExtra("filter");
-                    view.chargeFragmentRacesPublished(filter);
-                }
-            }else if (requestCode == Constantes.REQUEST_START_ADD_RACE_FOR_RESULT) {
-                if (view.getIntentActivityResult()!=null) {
-                    String message=view.getIntentActivityResult().getStringExtra("addRace");
-                    view.showMessage(message);
-                    Filter filter=new Filter();
-                    filter.setUser(sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER));
-                    view.chargeFragmentRacesPublished(filter);
-                }
-            }else if (requestCode == Constantes.REQUEST_START_EDIT_PROFILE_FOR_RESULT) {
-                if (view.getIntentActivityResult()!=null) {
-                    String message=view.getIntentActivityResult().getStringExtra("editProfile");
-                    view.showMessage(message);
-                    fillDataHeaderView();
-                    Filter filter=new Filter();
-                    filter.setUser(sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER));
-                    view.chargeFragmentRacesPublished(filter);
+        if (view!=null){
+            if (resultCode == RMapped.RESULT_OK.getValue()) {
+                if (requestCode==Constantes.REQUEST_START_FILTERS_FOR_RESULT){
+                    if (view.getIntentActivityResult()!=null){
+                        Filter filter=view.getIntentActivityResult().getParcelableExtra("filter");
+                        view.chargeFragmentRacesPublished(filter);
+                    }
+                }else if (requestCode == Constantes.REQUEST_START_ADD_RACE_FOR_RESULT) {
+                    if (view.getIntentActivityResult()!=null) {
+                        String message=view.getIntentActivityResult().getStringExtra("addRace");
+                        view.showMessage(message);
+                        Filter filter=new Filter();
+                        filter.setUser(sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER));
+                        view.chargeFragmentRacesPublished(filter);
+                    }
+                }else if (requestCode == Constantes.REQUEST_START_EDIT_PROFILE_FOR_RESULT) {
+                    if (view.getIntentActivityResult()!=null) {
+                        String message=view.getIntentActivityResult().getStringExtra("editProfile");
+                        view.showMessage(message);
+                        fillDataHeaderView();
+                        Filter filter=new Filter();
+                        filter.setUser(sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER));
+                        view.chargeFragmentRacesPublished(filter);
+                    }
                 }
             }
         }
@@ -87,12 +91,19 @@ public class MainPresenterImpl implements IMainPresenter, IListennerCallBack{
 
     @Override
     public void onBackPressed() {
-        if (view.isDrawerOpen()) {
-            view.closeDrawerLayout();
-            return;
+        if (view!=null){
+            if (view.isDrawerOpen()) {
+                view.closeDrawerLayout();
+                return;
+            }
+            view.setResult();
+            view.returnBack();
         }
-        view.setResult();
-        view.returnBack();
+    }
+
+    @Override
+    public void onDestroy() {
+        view=null;
     }
 
     @Override

@@ -12,4 +12,6 @@ public interface IMainPresenter {
     void activityResult(int requestCode,int resultCode);
 
     void onBackPressed();
+
+    void onDestroy();
 }

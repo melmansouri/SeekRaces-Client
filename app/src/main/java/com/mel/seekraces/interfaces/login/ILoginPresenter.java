@@ -15,4 +15,5 @@ public interface ILoginPresenter {
     void forgotPwd(boolean isOnline,String email);
     void onDestroy();
 
+    void onRequestPermissionsResult(int requestCode, int[] grantResults);
 }
