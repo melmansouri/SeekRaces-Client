@@ -1,5 +1,6 @@
 package com.mel.seekraces.interfaces.fragmentRacesPublished;
 
+import com.mel.seekraces.entities.Favorite;
 import com.mel.seekraces.entities.Filter;
 
 /**
@@ -8,4 +9,8 @@ import com.mel.seekraces.entities.Filter;
 
 public interface IListFragmentRacesPublishedInteractor {
     void getRacesPublished(Filter filter);
+
+    void addEventToFavorites(Favorite item);
+
+    void deleteEventFromFavorite(String user, int id);
 }

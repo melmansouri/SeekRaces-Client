@@ -11,33 +11,28 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:id="@+id/lncityCountry">
-        <android.support.design.widget.TextInputLayout
+        android:layout_below="@+id/lncityCountry"
+        android:id="@+id/lnDistance"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/txtDistancia"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/lugar"
-            android:id="@+id/text_input_layout_lugar"
-            android:layout_weight="1">
-
-            <android.support.v7.widget.AppCompatAutoCompleteTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:ems="10"
-                android:id="@+id/edtLugar" />
-        </android.support.design.widget.TextInputLayout>
+            android:text="@string/distancia"
+            android:textColor="@color/colorAccent"/>
         <android.support.v7.widget.AppCompatSpinner
             android:id="@+id/spDistancia"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
             android:layout_below="@+id/text_input_layout_name_race"/>
+
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@+id/lncityCountry"
+        android:layout_below="@+id/lnDistance"
         android:id="@+id/lnFechaDesdeHasta"
         android:layout_marginTop="20dp">
         <LinearLayout
@@ -77,6 +72,31 @@
                 android:id="@+id/dtpFechaHasta"
                 android:layout_marginTop="10dp"/>
         </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="22dp"
+        android:id="@+id/lncityCountry"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/lugar"
+            android:id="@+id/text_input_layout_lugar">
+
+            <android.support.v7.widget.AppCompatAutoCompleteTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/edtLugar" />
+        </android.support.design.widget.TextInputLayout>
+
     </LinearLayout>
 
 </RelativeLayout>

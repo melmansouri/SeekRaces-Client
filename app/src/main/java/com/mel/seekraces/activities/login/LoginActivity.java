@@ -7,11 +7,13 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -52,8 +54,8 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
     CoordinatorLayout coordinatorLayout;
     @BindView(R.id.btnLogin)
     Button btnLogin;
-    @BindView(R.id.btnSignIn)
-    Button btnSignIn;
+    @BindView(R.id.txtSignIn)
+    TextView txtSignIn;
     @BindView(R.id.activity_login)
     RelativeLayout activityLogin;
 
@@ -98,15 +100,10 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        loginPresenter.onRequestPermissionsResult(requestCode,grantResults);
-    }
-
-    @Override
-    @OnClick(R.id.btnSignIn)
+    @OnClick(R.id.txtSignIn)
     public void goToSignIn() {
 
-        loginPresenter.startActivitySignIn(UtilsViews.PermisosValidos(this,Constantes.REQUEST_CODE_GENERIC_PERMISSION_SIGNIN));
+        loginPresenter.startActivitySignIn();
     }
 
     @Override
@@ -124,7 +121,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
         user.setPwd(edtPassword.getText().toString());
         user.setToken_push(sharedPreferencesSingleton.getStringSP(Constantes.KEY_TOKEN_PUSH));
         sharedPreferencesSingleton.removeValueSP(Constantes.KEY_TOKEN_PUSH);
-        loginPresenter.login(Utils.isOnline(this), UtilsViews.PermisosValidos(this,Constantes.REQUEST_CODE_GENERIC_PERMISSION_LOGIN), user);
+        loginPresenter.login(Utils.isOnline(this), user);
     }
 
     @Override
@@ -171,7 +168,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
     @Override
     public void showComponentScreen() {
         btnLogin.setVisibility(View.VISIBLE);
-        btnSignIn.setVisibility(View.VISIBLE);
+        txtSignIn.setVisibility(View.VISIBLE);
         textInputLayoutEmail.setVisibility(View.VISIBLE);
         textInputLayoutPass.setVisibility(View.VISIBLE);
     }
@@ -179,7 +176,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
     @Override
     public void hideComponentScreen() {
         btnLogin.setVisibility(View.GONE);
-        btnSignIn.setVisibility(View.GONE);
+        txtSignIn.setVisibility(View.GONE);
         textInputLayoutEmail.setVisibility(View.GONE);
         textInputLayoutPass.setVisibility(View.GONE);
     }
@@ -191,7 +188,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
     }
 
     @Override
-    @OnClick(R.id.btnLoginFacebook)
+    //@OnClick(R.id.btnLoginFacebook)
     public void loginFacebook() {
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile","email"));
     }

@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import com.mel.seekraces.commons.RMapped;
 import com.mel.seekraces.deserializers.EventDeserializer;
 import com.mel.seekraces.entities.Event;
+import com.mel.seekraces.entities.Favorite;
 import com.mel.seekraces.entities.Filter;
 import com.mel.seekraces.entities.Response;
 import com.mel.seekraces.interfaces.IListennerCallBack;
@@ -53,20 +54,32 @@ public class ListFragmentRacesPublishedPresenterImpl implements IListFragmentRac
     public void onDestroy() {
         view=null;
         interactor.getRacesPublished(null);
+        interactor.addEventToFavorites(null);
+        interactor.deleteEventFromFavorite(null,0);
+    }
+
+    @Override
+    public void addEventToFavorite(Favorite item) {
+        interactor.addEventToFavorites(item);
+    }
+
+    @Override
+    public void deleteEventFromFavorite(String user, int id) {
+        interactor.deleteEventFromFavorite(user,id);
     }
 
     @Override
     public void onSuccess(Object object) {
         if (view!=null){
-            view.hideProgressBar();
-            GsonBuilder gsonBuilder = new GsonBuilder()
-                    .setLenient();
-            gsonBuilder.registerTypeAdapter(Event.class,new EventDeserializer());
-            Gson gson=gsonBuilder.create();
-            Type founderListType = new TypeToken<ArrayList<Event>>(){}.getType();
-            List<Event> carreras=gson.fromJson(((Response)object).getContent(),founderListType);
-            view.fillAdapterList(carreras);
-            view.showList();
+                view.hideProgressBar();
+                GsonBuilder gsonBuilder = new GsonBuilder()
+                        .setLenient();
+                gsonBuilder.registerTypeAdapter(Event.class,new EventDeserializer());
+                Gson gson=gsonBuilder.create();
+                Type founderListType = new TypeToken<ArrayList<Event>>(){}.getType();
+                List<Event> carreras=gson.fromJson(((Response)object).getContent(),founderListType);
+                view.fillAdapterList(carreras);
+                view.showList();
         }
     }
 
@@ -74,7 +87,7 @@ public class ListFragmentRacesPublishedPresenterImpl implements IListFragmentRac
     public void onError(Response response) {
         if (view!=null){
             view.hideProgressBar();
-            view.hideList();
+            //view.hideList();
             view.showMessage(response.getMessage());
         }
     }

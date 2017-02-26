@@ -13,4 +13,6 @@ public interface ISignInPresenter {
     void selectOptionDialogPicture(String[] options,int selected);
     void validatePasswordRepeat(String pwd,String pwdRepeat);
     void onDestroy();
+
+    void onRequestPermissionsResult(int requestCode, int[] grantResults);
 }

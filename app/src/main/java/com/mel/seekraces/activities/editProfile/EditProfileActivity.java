@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
@@ -45,7 +46,7 @@ public class EditProfileActivity extends AppCompatActivity implements IEditProfi
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
     @BindView(R.id.imgProfileUser)
-    CircleImageView imgProfileUser;
+    ImageView imgProfileUser;
     @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
     private SharedPreferencesSingleton sharedPreferencesSingleton;

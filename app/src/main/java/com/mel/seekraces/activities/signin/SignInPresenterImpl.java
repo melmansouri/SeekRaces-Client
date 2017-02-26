@@ -127,8 +127,8 @@ public class SignInPresenterImpl implements ISignInPresenter, IListennerCallBack
     @Override
     public void onSuccess(Object object) {
         if (view!=null){
-            view.hideProgress();
-            view.showMessage(((Response)object).getMessage());
+            //view.hideProgress();
+            //view.showMessage(((Response)object).getMessage());
             view.returnToLoginScreen();
         }
     }
@@ -139,6 +139,26 @@ public class SignInPresenterImpl implements ISignInPresenter, IListennerCallBack
             view.hideProgress();
             view.showMessage(response.getMessage());
             Log.e("tag",response.toString());
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, int[] grantResults) {
+        boolean isGranted=true;
+        if (view!=null){
+            if (grantResults.length > 0) {
+                for (int i=0;i<grantResults.length;i++){
+                    if (grantResults[i] != RMapped.PERMISSION_GRANTED.getValue()){
+                        isGranted=false;
+                        break;
+                    }
+                }
+                if (isGranted){
+                    if (requestCode==Constantes.REQUEST_CODE_PERMISSION_READ_EXTERNAL_STORAGE){
+                        view.openGalery();
+                    }
+                }
+            }
         }
     }
 }

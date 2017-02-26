@@ -1,12 +1,14 @@
 package com.mel.seekraces.interfaces;
 
 import com.mel.seekraces.entities.Event;
+import com.mel.seekraces.entities.Favorite;
 import com.mel.seekraces.entities.PlacePredictions;
 import com.mel.seekraces.entities.Response;
 import com.mel.seekraces.entities.User;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -21,8 +23,8 @@ public interface INetworkConnectionApi {
     // TODO: Cambiar host por "10.0.0.2" para Genymotion.
     // TODO: Cambiar host por "10.0.0.3" para AVD.
     // TODO: Cambiar host por IP de tu PC para dispositivo real.
-    String BASE_URL = "http://192.168.0.106:8080/SeekRaces/api/";
-    String BASE_URL_PICTURES = "http://192.168.0.106:8080/SeekRaces/pictures/";
+    String BASE_URL = "http://192.168.0.102:8080/SeekRaces/api/";
+    String BASE_URL_PICTURES = "http://192.168.0.102:8080/SeekRaces/pictures/";
     //String BASE_URL = "http://192.168.105.18/SeekRaces/api/";
     //String BASE_URL_PICTURES = "http://192.168.105.18/SeekRaces/pictures/";
 
@@ -54,4 +56,9 @@ public interface INetworkConnectionApi {
     @POST("event")
     Call<Response> addRaces(@Body Event event);
 
+    @POST("user/event/favorites")
+    Call<Response> addEventToFavorites(@Body Favorite favorite);
+
+    @DELETE
+    Call<Response> deleteEventFromFavorites(@Url String url);
 }

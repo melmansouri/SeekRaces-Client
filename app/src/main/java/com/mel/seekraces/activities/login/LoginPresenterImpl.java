@@ -34,9 +34,8 @@ public class LoginPresenterImpl implements ILoginPresenter, IListennerCallBack {
     }
 
     @Override
-    public void login(boolean isOnline, boolean havePermission, User user) {
+    public void login(boolean isOnline, User user) {
         if (view!=null){
-            if (havePermission) {
                 if (!isOnline) {
                     view.showMessage("Comprueba tu conexión");
                     return;
@@ -47,7 +46,7 @@ public class LoginPresenterImpl implements ILoginPresenter, IListennerCallBack {
                     return;
                 }
                 loginInteractor.login(user);
-            }
+
         }
     }
 
@@ -61,11 +60,9 @@ public class LoginPresenterImpl implements ILoginPresenter, IListennerCallBack {
     }
 
     @Override
-    public void startActivitySignIn(boolean havePermission) {
+    public void startActivitySignIn() {
         if (view!=null){
-            if (havePermission) {
-                view.startActivitySignIn();
-            }
+            view.startActivitySignIn();
         }
     }
 
@@ -133,32 +130,6 @@ public class LoginPresenterImpl implements ILoginPresenter, IListennerCallBack {
         view = null;
         loginInteractor.login(null);
         loginInteractor.forgotPwd(null);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, int[] grantResults) {
-        boolean isGranted=true;
-        if (view!=null){
-            if (grantResults.length > 0) {
-                for (int i=0;i<grantResults.length;i++){
-                    if (grantResults[i] != RMapped.PERMISSION_GRANTED.getValue()){
-                        isGranted=false;
-                        break;
-                    }
-                }
-                if (isGranted){
-                    if (requestCode==Constantes.REQUEST_CODE_GENERIC_PERMISSION_LOGIN){
-
-                    }else if(requestCode==Constantes.REQUEST_CODE_GENERIC_PERMISSION_SIGNIN){
-                        view.startActivitySignIn();
-                    }
-                }else{
-                    view.showMessage("Debe aceptar todos los permisos");
-                }
-            } else {
-                view.showMessage("Debe aceptar todos los permisos");
-            }
-        }
     }
 
 

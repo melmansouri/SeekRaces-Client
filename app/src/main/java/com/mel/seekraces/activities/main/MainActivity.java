@@ -24,6 +24,7 @@ import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.SharedPreferencesSingleton;
 import com.mel.seekraces.commons.UtilsViews;
 import com.mel.seekraces.entities.Event;
+import com.mel.seekraces.entities.Favorite;
 import com.mel.seekraces.entities.Filter;
 import com.mel.seekraces.fragments.ownRacesPublished.ListOwnRacesPublishedFragment;
 import com.mel.seekraces.fragments.racesPublished.ListRacesPublishedFragment;
@@ -153,6 +154,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public void deleteEventFromFavorite(String user, int id) {
+
+    }
+
+    @Override
     public boolean isDrawerOpen() {
         return drawerLayout.isDrawerOpen(GravityCompat.START);
     }
@@ -207,6 +213,10 @@ public class MainActivity extends AppCompatActivity
     public void onListFragmentInteraction(Event item) {
     }
 
+    @Override
+    public void addEventToFavorite(Favorite item) {
+
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

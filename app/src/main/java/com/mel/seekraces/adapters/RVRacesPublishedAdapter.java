@@ -14,6 +14,8 @@ import com.mel.seekraces.R;
 import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.SharedPreferencesSingleton;
 import com.mel.seekraces.entities.Event;
+import com.mel.seekraces.entities.Favorite;
+import com.mel.seekraces.interfaces.INetworkConnectionApi;
 import com.mel.seekraces.interfaces.OnFragmentInteractionListener;
 
 import java.text.ParseException;
@@ -85,7 +87,20 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
         holder.imgBtnLikeRace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("adapter","like");
+                if (!SharedPreferencesSingleton.getInstance(c).getStringSP(Constantes.KEY_USER).equals(holder.mItem.getUser())){
+                    String user=SharedPreferencesSingleton.getInstance(c).getStringSP(Constantes.KEY_USER);
+                    if (holder.mItem.isFavorite()){
+                        if (null != mListener) {
+                            mListener.deleteEventFromFavorite(user,holder.mItem.getId());
+                            Log.e("adapter","deleteFavorite");
+                        }
+                    }else{
+                        if (null != mListener) {
+                            mListener.addEventToFavorite(new Favorite(user, holder.mItem.getId()));
+                            Log.e("adapter","addFavorite");
+                        }
+                    }
+                }
             }
         });
 

@@ -59,7 +59,7 @@ public class FiltersActivity extends AppCompatActivity implements IFiltersView {
         presenter = new FilterPresenterImpl(this);
         dtpFechaDesde.setText(Utils.getCurrentDateSpanishString());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        spDistancia.setAdapter(UtilsViews.getSpinnerDistanceAdapter(this,R.layout.support_simple_spinner_dropdown_item));
+        spDistancia.setAdapter(UtilsViews.getSpinnerDistanceAdapter(this,R.layout.support_simple_spinner_dropdown_item,false));
     }
 
     @Override
@@ -80,7 +80,11 @@ public class FiltersActivity extends AppCompatActivity implements IFiltersView {
         filter.setUser(sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER));
         filter.setPlace(edtLugar.getText().toString().trim());
         String distance = spDistancia.getSelectedItem().toString();
-        filter.setDistance(Integer.valueOf(distance.replace("KM", "")));
+        try{
+            filter.setDistance(Integer.valueOf(distance.replace("KM", "")));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         String fechaDesde = Utils.convertDateSpanishToEnglish(dtpFechaDesde.getText().toString());
         filter.setDate_interval_init(fechaDesde);
         String fechaHasta = Utils.convertDateSpanishToEnglish(dtpFechaHasta.getText().toString());

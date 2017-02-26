@@ -20,6 +20,7 @@ import com.mel.seekraces.commons.RMapped;
 import com.mel.seekraces.commons.UtilsViews;
 import com.mel.seekraces.customsViews.SwipeRefreshLayoutWithEmpty;
 import com.mel.seekraces.entities.Event;
+import com.mel.seekraces.entities.Favorite;
 import com.mel.seekraces.entities.Filter;
 import com.mel.seekraces.interfaces.OnFragmentInteractionListener;
 import com.mel.seekraces.interfaces.fragmentRacesPublished.IListFragmentRacesPublishedPresenter;
@@ -30,7 +31,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ListRacesPublishedFragment extends Fragment implements IListFragmentRacesPublishedView {
+public class ListRacesPublishedFragment extends Fragment implements IListFragmentRacesPublishedView,OnFragmentInteractionListener {
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.swipeRefresh)
@@ -93,7 +94,7 @@ public class ListRacesPublishedFragment extends Fragment implements IListFragmen
     @Override
     public void fillAdapterList(List<Event> races) {
         hideProgressBar();
-        adapter = new RVRacesPublishedAdapter(races, null);
+        adapter = new RVRacesPublishedAdapter(races, this);
         recyclerView.setAdapter(adapter);
     }
 
@@ -148,5 +149,36 @@ public class ListRacesPublishedFragment extends Fragment implements IListFragmen
     public void onDestroy() {
         super.onDestroy();
         presenter.onDestroy();
+    }
+
+    @Override
+    public void onListFragmentInteraction(Event item) {
+
+    }
+
+    @Override
+    public void addEventToFavorite(Favorite item) {
+        presenter.addEventToFavorite(item);
+    }
+
+
+    @Override
+    public void changeTitleActionBar(int idTitle) {
+
+    }
+
+    @Override
+    public void startActivityFilters() {
+
+    }
+
+    @Override
+    public void showMessageFromFragments(String message) {
+
+    }
+
+    @Override
+    public void deleteEventFromFavorite(String user, int id) {
+        presenter.deleteEventFromFavorite(user,id);
     }
 }

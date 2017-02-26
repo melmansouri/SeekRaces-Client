@@ -8,10 +8,12 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -32,9 +34,12 @@ import java.util.List;
 
 public class UtilsViews {
 
-    public static ArrayAdapter<String> getSpinnerDistanceAdapter(Context context,int resource){
+    public static ArrayAdapter<String> getSpinnerDistanceAdapter(Context context,int resource,boolean startWithKM){
         ArrayAdapter<String> arrayAdapter;
         List<String> distancias=new ArrayList<>();
+        if (!startWithKM){
+            distancias.add("-----");
+        }
         for (int i=1;i<=100;i++){
             distancias.add(i+"KM");
         }
@@ -75,10 +80,42 @@ public class UtilsViews {
     }
 
     public static void openGallery(Activity activity){
-        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        intent.setType("image/*");
-        activity.startActivityForResult(intent.createChooser(intent, "Selecciona app de imagen"), Constantes.REQUEST_IMAGE_CAPTURE_GALLERY);
+        if (checkPermission(activity,Manifest.permission.READ_EXTERNAL_STORAGE,Constantes.REQUEST_CODE_PERMISSION_READ_EXTERNAL_STORAGE)) {
+            Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            intent.setType("image/*");
+            activity.startActivityForResult(intent.createChooser(intent, "Selecciona app de imagen"), Constantes.REQUEST_IMAGE_CAPTURE_GALLERY);
+        }
     }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    public static boolean checkPermission(Activity activity,String permission,int requestCode){
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+            int acceso_permiso = ContextCompat.checkSelfPermission(activity, permission);
+            if (acceso_permiso != PackageManager.PERMISSION_GRANTED) {
+                activity.requestPermissions(new String[]{permission}, requestCode);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    //TODO Para proxima mejora
+    /*private boolean requestPermission(Activity activity,String permission,int requestCode){
+        if(ActivityCompat.shouldShowRequestPermissionRationale(activity,permission)) {
+
+        }else {
+
+        }
+    }
+
+    private Snackbar getSnackBarForAction(CoordinatorLayout root,String message) {
+        return Snackbar.make(root,message,Snackbar.LENGTH_LONG);
+    }
+    public void openSettings(Context context) {
+        Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        intent.setData(Uri.parse("package:" + context.getPackageName()));
+        context.startActivity(intent);
+    }*/
 
     @TargetApi(Build.VERSION_CODES.M)
     public static boolean PermisosValidos(Activity activity,int requestCode) {
@@ -92,7 +129,7 @@ public class UtilsViews {
                     || acceso_tarjeta_memoria != PackageManager.PERMISSION_GRANTED
                     || escritura_tarjeta_memoria != PackageManager.PERMISSION_GRANTED) {
                 activity.requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, requestCode);
-                return false;
+                return true;
             }
         }
         return true;

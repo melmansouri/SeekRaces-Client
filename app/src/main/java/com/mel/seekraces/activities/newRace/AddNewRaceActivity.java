@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
@@ -108,7 +109,7 @@ public class AddNewRaceActivity extends AppCompatActivity implements IAddNewRace
         dtpFechaDesde.setText(Utils.getCurrentDateSpanishString());
         tipHora.setText(Utils.getCurrentTimeString());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        spDistancia.setAdapter(UtilsViews.getSpinnerDistanceAdapter(this,R.layout.support_simple_spinner_dropdown_item));
+        spDistancia.setAdapter(UtilsViews.getSpinnerDistanceAdapter(this,R.layout.support_simple_spinner_dropdown_item,true));
     }
 
     @Override
@@ -131,6 +132,12 @@ public class AddNewRaceActivity extends AppCompatActivity implements IAddNewRace
         intentOnActivityResult = data;
         presenter.activityResult(requestCode, resultCode);
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        presenter.onRequestPermissionsResult(requestCode,grantResults);
+    }
+
 
     @Override
     @OnClick(R.id.fab)

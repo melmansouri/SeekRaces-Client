@@ -13,4 +13,6 @@ public interface IAddNewRacePresenter {
     boolean onOptionsItemSelected(int idSelected);
     void selectOptionDialogPicture(String[] options,int selected);
     void onDestroy();
+
+    void onRequestPermissionsResult(int requestCode, int[] grantResults);
 }

@@ -117,6 +117,26 @@ public class AddNewRacePresenterImpl implements IAddNewRacePresenter, IListenner
         interactor.addRace(null);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, int[] grantResults) {
+        boolean isGranted=true;
+        if (view!=null){
+            if (grantResults.length > 0) {
+                for (int i=0;i<grantResults.length;i++){
+                    if (grantResults[i] != RMapped.PERMISSION_GRANTED.getValue()){
+                        isGranted=false;
+                        break;
+                    }
+                }
+                if (isGranted){
+                    if (requestCode==Constantes.REQUEST_CODE_PERMISSION_READ_EXTERNAL_STORAGE){
+                        view.openGalery();
+                    }
+                }
+            }
+        }
+    }
+
 
     @Override
     public void onSuccess(Object object) {

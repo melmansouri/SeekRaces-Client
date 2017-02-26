@@ -25,6 +25,7 @@ public class Constantes {
     public static final int REQUEST_CODE_GENERIC_PERMISSION=0;
     public static final int REQUEST_CODE_GENERIC_PERMISSION_LOGIN = 1;
     public static final int REQUEST_CODE_GENERIC_PERMISSION_SIGNIN = 2;
+    public static final int REQUEST_CODE_PERMISSION_READ_EXTERNAL_STORAGE = 10;
 
     public static final int REQUEST_START_SIGNIN_FOR_RESULT=200;
     public static final int REQUEST_START_MAIN_FOR_RESULT = 201;
@@ -38,5 +39,6 @@ public class Constantes {
     public static final String KEY_USER="user";
     public static final String KEY_USERNAME="username";
     public static final String KEY_USER_NAME_PICTURE="picture";
+
 
 }
