@@ -161,6 +161,20 @@ public class Utils {
         return dateStringEnglish;
     }
 
+    public static String convertDateEnglishToSpanish(String dateStringEnglish) {
+        String dateStringSpanish=null;
+        try{
+            SimpleDateFormat sdfEnglish=new SimpleDateFormat("yyyy-MM-dd");
+            Date dateEnglish=sdfEnglish.parse(dateStringEnglish);
+            SimpleDateFormat sdfSpanish=new SimpleDateFormat("dd-MM-yyyy");
+            dateStringSpanish=sdfSpanish.format(dateEnglish);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return dateStringSpanish;
+    }
+
     public static String getCurrentDateSpanishString(){
         Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
@@ -228,4 +242,5 @@ public class Utils {
         urlString.append("&key=".concat(Constantes.KEY_GOOGLE_API));
         return urlString.toString();
     }
+
 }

@@ -24,13 +24,14 @@ import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.SharedPreferencesSingleton;
 import com.mel.seekraces.commons.UtilsViews;
 import com.mel.seekraces.entities.Event;
-import com.mel.seekraces.entities.Favorite;
 import com.mel.seekraces.entities.Filter;
+import com.mel.seekraces.fragments.EditRaceFragment.EditRaceFragment;
+import com.mel.seekraces.fragments.detailRace.DetailRaceFragment;
 import com.mel.seekraces.fragments.ownRacesPublished.ListOwnRacesPublishedFragment;
 import com.mel.seekraces.fragments.racesPublished.ListRacesPublishedFragment;
 import com.mel.seekraces.fragments.racesPublishedFavorites.ListRacesPublishedFavoritesFragment;
+import com.mel.seekraces.interfaces.IGenericInterface;
 import com.mel.seekraces.interfaces.INetworkConnectionApi;
-import com.mel.seekraces.interfaces.OnFragmentInteractionListener;
 import com.mel.seekraces.interfaces.main.IMainPresenter;
 import com.mel.seekraces.interfaces.main.IMainView;
 
@@ -40,7 +41,7 @@ import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, IMainView, OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, IMainView,IGenericInterface.OnFragmentInteractionListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -124,7 +125,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void returnBack() {
         super.onBackPressed();
-        finish();
+        //finish();
     }
 
     @Override
@@ -154,9 +155,32 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void deleteEventFromFavorite(String user, int id) {
-
+    public void hideFloatingButton() {
+        fab.setVisibility(View.GONE);
     }
+
+    @Override
+    public void setDrawerEnabled(boolean enabled) {
+        int lockMode = enabled ? DrawerLayout.LOCK_MODE_UNLOCKED :
+                DrawerLayout.LOCK_MODE_LOCKED_CLOSED;
+        drawerLayout.setDrawerLockMode(lockMode);
+    }
+
+    @Override
+    public void editEvent(Event event) {
+        EditRaceFragment fragment;
+        fragment = new EditRaceFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("event", event);
+        fragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment).addToBackStack(null).commit();
+    }
+
+    @Override
+    public void showFloatingButton() {
+        fab.setVisibility(View.VISIBLE);
+    }
+
 
     @Override
     public boolean isDrawerOpen() {
@@ -208,15 +232,22 @@ public class MainActivity extends AppCompatActivity
         return intentActivityResult;
     }
 
+    @Override
+    public void setIntentActivityResultToNull() {
+        intentActivityResult=null;
+    }
+
 
     @Override
     public void onListFragmentInteraction(Event item) {
+        DetailRaceFragment fragment;
+        fragment = new DetailRaceFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("event", item);
+        fragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment).addToBackStack(null).commit();
     }
 
-    @Override
-    public void addEventToFavorite(Favorite item) {
-
-    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

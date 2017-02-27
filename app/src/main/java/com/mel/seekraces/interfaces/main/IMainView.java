@@ -1,13 +1,8 @@
 package com.mel.seekraces.interfaces.main;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 
-import com.mel.seekraces.R;
 import com.mel.seekraces.entities.Filter;
-
-import butterknife.OnClick;
 
 /**
  * Created by moha on 18/01/17.
@@ -42,5 +37,5 @@ public interface IMainView {
     Intent getIntentActivityResult();
 
 
-
+    void setIntentActivityResultToNull();
 }

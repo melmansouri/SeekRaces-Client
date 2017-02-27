@@ -3,7 +3,6 @@ package com.mel.seekraces.fragments.racesPublished;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
@@ -17,12 +16,11 @@ import android.view.ViewGroup;
 import com.mel.seekraces.R;
 import com.mel.seekraces.adapters.RVRacesPublishedAdapter;
 import com.mel.seekraces.commons.RMapped;
-import com.mel.seekraces.commons.UtilsViews;
 import com.mel.seekraces.customsViews.SwipeRefreshLayoutWithEmpty;
 import com.mel.seekraces.entities.Event;
 import com.mel.seekraces.entities.Favorite;
 import com.mel.seekraces.entities.Filter;
-import com.mel.seekraces.interfaces.OnFragmentInteractionListener;
+import com.mel.seekraces.interfaces.IGenericInterface;
 import com.mel.seekraces.interfaces.fragmentRacesPublished.IListFragmentRacesPublishedPresenter;
 import com.mel.seekraces.interfaces.fragmentRacesPublished.IListFragmentRacesPublishedView;
 
@@ -31,7 +29,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ListRacesPublishedFragment extends Fragment implements IListFragmentRacesPublishedView,OnFragmentInteractionListener {
+public class ListRacesPublishedFragment extends Fragment implements IListFragmentRacesPublishedView,IGenericInterface.OnListInteractionListener {
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.swipeRefresh)
@@ -39,7 +37,7 @@ public class ListRacesPublishedFragment extends Fragment implements IListFragmen
     private RVRacesPublishedAdapter adapter;
     private IListFragmentRacesPublishedPresenter presenter;
     private Filter filter;
-    private OnFragmentInteractionListener mListener;
+    private IGenericInterface.OnFragmentInteractionListener mListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -94,7 +92,7 @@ public class ListRacesPublishedFragment extends Fragment implements IListFragmen
     @Override
     public void fillAdapterList(List<Event> races) {
         hideProgressBar();
-        adapter = new RVRacesPublishedAdapter(races, this);
+        adapter = new RVRacesPublishedAdapter(races, this,mListener);
         recyclerView.setAdapter(adapter);
     }
 
@@ -133,7 +131,7 @@ public class ListRacesPublishedFragment extends Fragment implements IListFragmen
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            mListener = (OnFragmentInteractionListener) context;
+            mListener = (IGenericInterface.OnFragmentInteractionListener) context;
         } catch (ClassCastException e) {
             e.printStackTrace();
         }
@@ -151,34 +149,19 @@ public class ListRacesPublishedFragment extends Fragment implements IListFragmen
         presenter.onDestroy();
     }
 
-    @Override
-    public void onListFragmentInteraction(Event item) {
-
-    }
 
     @Override
     public void addEventToFavorite(Favorite item) {
         presenter.addEventToFavorite(item);
     }
 
-
-    @Override
-    public void changeTitleActionBar(int idTitle) {
-
-    }
-
-    @Override
-    public void startActivityFilters() {
-
-    }
-
-    @Override
-    public void showMessageFromFragments(String message) {
-
-    }
-
     @Override
     public void deleteEventFromFavorite(String user, int id) {
         presenter.deleteEventFromFavorite(user,id);
+    }
+
+    @Override
+    public void onItemLongClickListener(Object object) {
+
     }
 }

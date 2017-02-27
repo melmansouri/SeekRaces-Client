@@ -1,11 +1,12 @@
 package com.mel.seekraces.fragments.racesPublishedFavorites;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,14 +16,14 @@ import android.view.ViewGroup;
 
 import com.mel.seekraces.R;
 import com.mel.seekraces.adapters.RVRacesPublishedAdapter;
+import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.RMapped;
 import com.mel.seekraces.commons.SharedPreferencesSingleton;
 import com.mel.seekraces.commons.UtilsViews;
 import com.mel.seekraces.customsViews.SwipeRefreshLayoutWithEmpty;
 import com.mel.seekraces.entities.Event;
-import com.mel.seekraces.interfaces.OnFragmentInteractionListener;
-import com.mel.seekraces.interfaces.fragmentOwnRacesPublished.IListFragmentOwnRacesPublishedPresenter;
-import com.mel.seekraces.interfaces.fragmentOwnRacesPublished.IListFragmentOwnRacesPublishedView;
+import com.mel.seekraces.entities.Favorite;
+import com.mel.seekraces.interfaces.IGenericInterface;
 import com.mel.seekraces.interfaces.fragmentRacesPublishedFavorites.IListFragmentRacesPublishedFavoritesPresenter;
 import com.mel.seekraces.interfaces.fragmentRacesPublishedFavorites.IListFragmentRacesPublishedFavoritesView;
 
@@ -31,22 +32,23 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ListRacesPublishedFavoritesFragment extends Fragment implements IListFragmentRacesPublishedFavoritesView{
+public class ListRacesPublishedFavoritesFragment extends Fragment implements IListFragmentRacesPublishedFavoritesView, IGenericInterface.OnListInteractionListener {
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.swipeRefresh)
     SwipeRefreshLayoutWithEmpty swipeRefresh;
     private RVRacesPublishedAdapter adapter;
     private IListFragmentRacesPublishedFavoritesPresenter presenter;
-    private OnFragmentInteractionListener mListener;
+    private IGenericInterface.OnFragmentInteractionListener mListener;
     private SharedPreferencesSingleton sharedPreferencesSingleton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sharedPreferencesSingleton=SharedPreferencesSingleton.getInstance(getActivity());
-        presenter = new ListFragmentRacesPublishedFavoritesPresenterImpl(this,sharedPreferencesSingleton);
+        sharedPreferencesSingleton = SharedPreferencesSingleton.getInstance(getActivity());
+        presenter = new ListFragmentRacesPublishedFavoritesPresenterImpl(this, sharedPreferencesSingleton);
         mListener.changeTitleActionBar(RMapped.TITLE_CARRERAS_FAVORITAS.getValue());
+        mListener.hideFloatingButton();
     }
 
     @Override
@@ -85,7 +87,7 @@ public class ListRacesPublishedFavoritesFragment extends Fragment implements ILi
     @Override
     public void fillAdapterList(List<Event> races) {
         hideProgressBar();
-        adapter = new RVRacesPublishedAdapter(getActivity(),races, null);
+        adapter = new RVRacesPublishedAdapter(getActivity(), races, this, mListener);
         recyclerView.setAdapter(adapter);
     }
 
@@ -110,7 +112,8 @@ public class ListRacesPublishedFavoritesFragment extends Fragment implements ILi
     }
 
     @Override
-    public void showMessage(String message) {mListener.showMessageFromFragments(message);
+    public void showMessage(String message) {
+        mListener.showMessageFromFragments(message);
     }
 
 
@@ -118,7 +121,7 @@ public class ListRacesPublishedFavoritesFragment extends Fragment implements ILi
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            mListener = (OnFragmentInteractionListener) context;
+            mListener = (IGenericInterface.OnFragmentInteractionListener) context;
         } catch (ClassCastException e) {
             e.printStackTrace();
         }
@@ -134,5 +137,34 @@ public class ListRacesPublishedFavoritesFragment extends Fragment implements ILi
     public void onDestroy() {
         super.onDestroy();
         presenter.onDestroy();
+    }
+
+    @Override
+    public void addEventToFavorite(Favorite item) {
+    }
+
+    @Override
+    public void deleteEventFromFavorite(final String user, final int id) {
+    }
+
+    @Override
+    public void onItemLongClickListener(final Object object) {
+        AlertDialog.Builder builder = UtilsViews.createAlertDialog(getContext(), "Importante");
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String user = sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER);
+                presenter.deleteEventFromFavorite(user, ((Event) object).getId());
+            }
+        });
+
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        builder.setMessage("¿Está seguro de eliminar esta carrera de tu lista de favoritos?");
+        builder.show();
+
     }
 }

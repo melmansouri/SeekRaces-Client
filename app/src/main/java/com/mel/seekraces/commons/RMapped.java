@@ -24,6 +24,7 @@ public enum RMapped {
     ITEM_SIGNIN(R.id.item_menu_signin_registrarse),
     ITEM_ADDRACE(R.id.item_menu_add_new_race),
     ITEM_EDIT_PROFILE(R.id.item_menu_edit_profile),
+    ITEM_EDIT_RACE(R.id.item_menu_edit_race),
 
     //Strings
     TITLE_CARRERAS_PUBLICADAS(R.string.title_carreras_publicadas),

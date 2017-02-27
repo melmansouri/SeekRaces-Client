@@ -19,7 +19,6 @@
             android:layout_height="150dp"
             android:layout_marginBottom="5dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
             android:scaleType="fitXY" />
 
         <TextView
@@ -50,7 +49,7 @@
             android:layout_alignLeft="@+id/txtNameRace"
             android:layout_below="@+id/txtNameRace"
             android:layout_marginBottom="6dp"
-            android:text="Pais, Ciudad"
+            android:text="Lugar"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView

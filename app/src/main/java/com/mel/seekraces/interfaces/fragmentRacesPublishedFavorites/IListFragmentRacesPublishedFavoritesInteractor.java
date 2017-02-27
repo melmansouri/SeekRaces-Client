@@ -6,4 +6,6 @@ package com.mel.seekraces.interfaces.fragmentRacesPublishedFavorites;
 
 public interface IListFragmentRacesPublishedFavoritesInteractor {
     void getRacesPublishedFavorites(String url);
+
+    void deleteEventFromFavorite(String user, int id);
 }

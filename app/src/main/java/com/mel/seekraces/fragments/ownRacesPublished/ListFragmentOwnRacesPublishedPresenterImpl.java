@@ -4,20 +4,15 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.mel.seekraces.commons.Constantes;
-import com.mel.seekraces.commons.RMapped;
 import com.mel.seekraces.commons.SharedPreferencesSingleton;
 import com.mel.seekraces.deserializers.EventDeserializer;
 import com.mel.seekraces.entities.Event;
-import com.mel.seekraces.entities.Filter;
 import com.mel.seekraces.entities.Response;
 import com.mel.seekraces.interfaces.IListennerCallBack;
 import com.mel.seekraces.interfaces.INetworkConnectionApi;
 import com.mel.seekraces.interfaces.fragmentOwnRacesPublished.IListFragmentOwnRacesPublishedInteractor;
 import com.mel.seekraces.interfaces.fragmentOwnRacesPublished.IListFragmentOwnRacesPublishedPresenter;
 import com.mel.seekraces.interfaces.fragmentOwnRacesPublished.IListFragmentOwnRacesPublishedView;
-import com.mel.seekraces.interfaces.fragmentRacesPublished.IListFragmentRacesPublishedInteractor;
-import com.mel.seekraces.interfaces.fragmentRacesPublished.IListFragmentRacesPublishedPresenter;
-import com.mel.seekraces.interfaces.fragmentRacesPublished.IListFragmentRacesPublishedView;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -54,6 +49,22 @@ public class ListFragmentOwnRacesPublishedPresenterImpl implements IListFragment
     public void onDestroy() {
         view=null;
         interactor.getOwnRacesPublished(null);
+    }
+
+    @Override
+    public void selectOptionDialogLongClickList(String[] options, int selected,Event event) {
+        if (view!=null){
+            if (options[selected].equals("Editar")) {
+                view.editEvent(event);
+            } else if (options[selected].equals("Eliminar")) {
+                view.deleteOwnRacePublished(event.getUser(),event.getId());
+            }
+        }
+    }
+
+    @Override
+    public void deleteOwnRacePublished(String user, int id) {
+        interactor.deleteEvent(user,id);
     }
 
     @Override

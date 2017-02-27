@@ -84,6 +84,8 @@ public class MainPresenterImpl implements IMainPresenter, IListennerCallBack{
                         filter.setUser(sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER));
                         view.chargeFragmentRacesPublished(filter);
                     }
+                }else{
+                    view.setIntentActivityResultToNull();
                 }
             }
         }

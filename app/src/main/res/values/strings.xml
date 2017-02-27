@@ -42,6 +42,10 @@
     <string name="fecha_hasta_default">No especificado</string>
     <!--Filter-->
 
+    <!--Edit Race-->
+    <string name="title_edit_race">Editar Carrera</string>
+    <!--Edit Race-->
+
     <!--New Race-->
     <string name="name_race">Nombre</string>
     <string name="web">Web</string>
@@ -56,4 +60,12 @@
     <string name="edit">Editar</string>
     <string name="forgotPwd">¿Olvidaste tu contraseña?</string>
     <!--Menus-->
+
+    <!--Long Click Event-->
+    <string-array name="option_long_click_event">
+        <item>Editar</item>
+        <item>Eliminar</item>
+    </string-array>
+    <!--Long Click Event-->
+
 </resources>

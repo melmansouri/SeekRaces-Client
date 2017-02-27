@@ -15,8 +15,7 @@ import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.SharedPreferencesSingleton;
 import com.mel.seekraces.entities.Event;
 import com.mel.seekraces.entities.Favorite;
-import com.mel.seekraces.interfaces.INetworkConnectionApi;
-import com.mel.seekraces.interfaces.OnFragmentInteractionListener;
+import com.mel.seekraces.interfaces.IGenericInterface;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,19 +28,22 @@ import butterknife.ButterKnife;
 
 public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublishedAdapter.ViewHolder> {
 
-    private final List<Event> mValues;
-    private final OnFragmentInteractionListener mListener;
+    private List<Event> mValues;
+    private IGenericInterface.OnListInteractionListener mListenerListInteracion;
+    private IGenericInterface.OnFragmentInteractionListener mListenerFragmentInteracion;
     private Context c;
 
-    public RVRacesPublishedAdapter(List<Event> items, OnFragmentInteractionListener listener) {
+    public RVRacesPublishedAdapter(List<Event> items,IGenericInterface.OnListInteractionListener listListener,IGenericInterface.OnFragmentInteractionListener fragmentListener) {
         mValues = items;
-        mListener = listener;
+        mListenerListInteracion = listListener;
+        mListenerFragmentInteracion=fragmentListener;
     }
 
-    public RVRacesPublishedAdapter(Context context,List<Event> items, OnFragmentInteractionListener listener) {
+    public RVRacesPublishedAdapter(Context context,List<Event> items, IGenericInterface.OnListInteractionListener listener,IGenericInterface.OnFragmentInteractionListener fragmentListener) {
         mValues = items;
-        mListener = listener;
+        mListenerListInteracion = listener;
         c=context;
+        mListenerFragmentInteracion=fragmentListener;
     }
 
     @Override
@@ -90,13 +92,13 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
                 if (!SharedPreferencesSingleton.getInstance(c).getStringSP(Constantes.KEY_USER).equals(holder.mItem.getUser())){
                     String user=SharedPreferencesSingleton.getInstance(c).getStringSP(Constantes.KEY_USER);
                     if (holder.mItem.isFavorite()){
-                        if (null != mListener) {
-                            mListener.deleteEventFromFavorite(user,holder.mItem.getId());
+                        if (null != mListenerListInteracion) {
+                            mListenerListInteracion.deleteEventFromFavorite(user,holder.mItem.getId());
                             Log.e("adapter","deleteFavorite");
                         }
                     }else{
-                        if (null != mListener) {
-                            mListener.addEventToFavorite(new Favorite(user, holder.mItem.getId()));
+                        if (null != mListenerListInteracion) {
+                            mListenerListInteracion.addEventToFavorite(new Favorite(user, holder.mItem.getId()));
                             Log.e("adapter","addFavorite");
                         }
                     }
@@ -104,14 +106,26 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
             }
         });
 
+        holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (null != mListenerListInteracion) {
+                    // Notify the active callbacks interface (the activity, if the
+                    // fragment is attached to one) that an item has been selected.
+                    mListenerListInteracion.onItemLongClickListener(holder.mItem);
+                }
+                return false;
+            }
+        });
+
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.e("adapter","carrera");
-                if (null != mListener) {
+                if (null != mListenerFragmentInteracion) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    mListenerFragmentInteracion.onListFragmentInteraction(holder.mItem);
                 }
             }
         });
