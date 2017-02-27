@@ -114,7 +114,7 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
                     // fragment is attached to one) that an item has been selected.
                     mListenerListInteracion.onItemLongClickListener(holder.mItem);
                 }
-                return false;
+                return true;
             }
         });
 

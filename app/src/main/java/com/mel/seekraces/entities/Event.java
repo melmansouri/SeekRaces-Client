@@ -16,6 +16,7 @@ public class Event implements Parcelable{
     private String description;
     private Bitmap bitmap;
     private String imageBase64;
+    private String imageName;
     private int distance;
     private String place;
     private String date_time_init;
@@ -35,6 +36,7 @@ public class Event implements Parcelable{
         description = in.readString();
         bitmap = in.readParcelable(Bitmap.class.getClassLoader());
         imageBase64 = in.readString();
+        imageName= in.readString();
         distance = in.readInt();
         place = in.readString();
         date_time_init=in.readString();
@@ -111,6 +113,14 @@ public class Event implements Parcelable{
 
     public void setImageBase64(String imageBase64) {
         this.imageBase64 = imageBase64;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
     }
 
     public int getDistance() {
@@ -191,6 +201,7 @@ public class Event implements Parcelable{
         dest.writeString(description);
         dest.writeParcelable(bitmap, flags);
         dest.writeString(imageBase64);
+        dest.writeString(imageName);
         dest.writeInt(distance);
         dest.writeString(place);
         dest.writeString(date_time_init);
@@ -207,6 +218,7 @@ public class Event implements Parcelable{
         description = in.readString();
         bitmap = in.readParcelable(Bitmap.class.getClassLoader());
         imageBase64 = in.readString();
+        imageName= in.readString();
         distance = in.readInt();
         place = in.readString();
         date_time_init = in.readString();

@@ -197,6 +197,7 @@ public class EditRaceFragment extends Fragment implements IEditRaceView{
     }
 
     @Override
+    @OnClick(R.id.fab)
     public void selectPictureRace() {
         AlertDialog.Builder builder = UtilsViews.createAlertDialog(getContext(), getString(R.string.elige_opcion));
         builder.setItems(R.array.option_dialog_picture, new DialogInterface.OnClickListener() {
@@ -323,12 +324,12 @@ public class EditRaceFragment extends Fragment implements IEditRaceView{
 
     @Override
     public void openCamera() {
-        UtilsViews.openCamera(getActivity());
+        UtilsViews.openCamera(this);
     }
 
     @Override
     public void openGalery() {
-        UtilsViews.openGallery(getActivity());
+        UtilsViews.openGallery(this);
     }
 
     @Override

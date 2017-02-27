@@ -26,6 +26,7 @@ public class EventDeserializer implements JsonDeserializer<Event>{
         event.setUserName(jsonObject.get("userName").getAsString());
         event.setName(jsonObject.get("name").getAsString());
         event.setDescription(jsonObject.get("description").getAsString());
+        //event.setImageName(jsonObject.get("imageName").getAsString());
         String base64=jsonObject.get("imageBase64").getAsString();
         if (!TextUtils.isEmpty(base64)){
             event.setBitmap(Utils.base64ToBitmap(base64));

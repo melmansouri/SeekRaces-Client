@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity
         header_nav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                closeDrawerLayout();
                 goToEditProfileScreen();
             }
         });
