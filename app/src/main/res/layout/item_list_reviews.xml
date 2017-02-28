@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imgProfileUser"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/user_default"
+            android:paddingTop="5dp"
+            android:paddingBottom="@dimen/nav_header_vertical_spacing"
+            app:civ_border_width="1dp"
+            app:civ_border_color="@color/divider" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/imgProfileUser">
+            <TextView
+                android:id="@+id/txtUserName"
+                android:text="@string/username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Base.TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorPrimaryText"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp">
+                <RatingBar
+                    android:id="@+id/ratingBar"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:numStars="5"/>
+                <TextView
+                    android:id="@+id/txtfecha"
+                    android:text="28/02/2017"
+                    android:layout_marginLeft="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Base.TextAppearance.AppCompat.Small"
+                    android:textColor="@color/colorSecondaryText"/>
+            </LinearLayout>
+            <TextView
+                android:id="@+id/txtComentario"
+                android:text="@string/username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                style="@style/Base.TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorPrimaryText"/>
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

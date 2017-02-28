@@ -1,4 +1,4 @@
-package com.mel.seekraces.fragments.EditRaceFragment;
+package com.mel.seekraces.fragments.editRace;
 
 import com.mel.seekraces.connection.RetrofitSingleton;
 import com.mel.seekraces.entities.Event;

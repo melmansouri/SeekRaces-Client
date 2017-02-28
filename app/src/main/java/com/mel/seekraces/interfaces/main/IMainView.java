@@ -9,12 +9,21 @@ import com.mel.seekraces.entities.Filter;
  */
 
 public interface IMainView {
+    void backToPreviousFragment();
+
+    int getBackStackEntryCount();
+
     void closeDrawerLayout();
 
     void fillNavHeaderTxtUserName(String username);
+
+    void fillNavHeaderTxtEmail(String email);
+
     void fillNavHeaderImgProfile(String namePicture);
 
     void returnBack();
+
+    void exitSession();
 
     void setResult();
 

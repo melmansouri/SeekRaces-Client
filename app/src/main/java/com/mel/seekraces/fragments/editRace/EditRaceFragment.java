@@ -1,4 +1,4 @@
-package com.mel.seekraces.fragments.EditRaceFragment;
+package com.mel.seekraces.fragments.editRace;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;

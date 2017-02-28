@@ -16,7 +16,6 @@ import retrofit2.Retrofit;
 
 public class ListFragmentOwnRacesPublishedInteractorImpl implements IListFragmentOwnRacesPublishedInteractor{
     private IListennerCallBack listennerCallBack;
-    private INetworkConnectionApi networkConnectionApi;
     private Call<Response> ownRacesPublishedCall;
     private Call<Response> deleteOwnRacePublished;
 
@@ -28,7 +27,7 @@ public class ListFragmentOwnRacesPublishedInteractorImpl implements IListFragmen
     public void getOwnRacesPublished(String url) {
         if (url!=null){
             Retrofit retrofit= RetrofitSingleton.getInstance().getRetrofit();
-            networkConnectionApi=retrofit.create(INetworkConnectionApi.class);
+            INetworkConnectionApi networkConnectionApi=retrofit.create(INetworkConnectionApi.class);
 
             ownRacesPublishedCall=networkConnectionApi.getOwnRacesPublished(url);
             ownRacesPublishedCall.enqueue(new Callback<Response>() {
@@ -71,7 +70,7 @@ public class ListFragmentOwnRacesPublishedInteractorImpl implements IListFragmen
     public void deleteEvent(final String user,int id) {
         if (user!=null){
             Retrofit retrofit= RetrofitSingleton.getInstance().getRetrofit();
-            networkConnectionApi=retrofit.create(INetworkConnectionApi.class);
+            INetworkConnectionApi networkConnectionApi=retrofit.create(INetworkConnectionApi.class);
 
             String url = INetworkConnectionApi.BASE_URL + "user/" + user + "/event/" + id;
             deleteOwnRacePublished=networkConnectionApi.deleteOwnRacePublished(url);

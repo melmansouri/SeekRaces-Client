@@ -40,11 +40,16 @@ public class ListRacesPublishedFragment extends Fragment implements IListFragmen
     private IGenericInterface.OnFragmentInteractionListener mListener;
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mListener.changeTitleActionBar(RMapped.TITLE_CARRERAS_PUBLICADAS.getValue());
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         filter = getArguments().getParcelable("filter");
         presenter = new ListFragmentRacesPublishedPresenterImpl(this);
-        mListener.changeTitleActionBar(RMapped.TITLE_CARRERAS_PUBLICADAS.getValue());
     }
 
     @Override

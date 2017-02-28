@@ -43,12 +43,17 @@ public class ListRacesPublishedFavoritesFragment extends Fragment implements ILi
     private SharedPreferencesSingleton sharedPreferencesSingleton;
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mListener.changeTitleActionBar(RMapped.TITLE_CARRERAS_FAVORITAS.getValue());
+        mListener.hideFloatingButton();
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sharedPreferencesSingleton = SharedPreferencesSingleton.getInstance(getActivity());
         presenter = new ListFragmentRacesPublishedFavoritesPresenterImpl(this, sharedPreferencesSingleton);
-        mListener.changeTitleActionBar(RMapped.TITLE_CARRERAS_FAVORITAS.getValue());
-        mListener.hideFloatingButton();
     }
 
     @Override

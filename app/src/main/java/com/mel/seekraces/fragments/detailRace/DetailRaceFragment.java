@@ -9,10 +9,12 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.mel.seekraces.R;
@@ -50,12 +52,6 @@ public class DetailRaceFragment extends Fragment {
     TextView txtDescripcion;
     @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
-    @BindView(R.id.txtRating)
-    TextView txtRating;
-    @BindView(R.id.ratingBar)
-    RatingBar ratingBar;
-    @BindView(R.id.txtTotalScores)
-    TextView txtTotalScores;
     private Event event;
     private IGenericInterface.OnFragmentInteractionListener mListener;
 
@@ -81,6 +77,7 @@ public class DetailRaceFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mListener.setActionBar(toolbar);
         imgRace.setImageBitmap(event.getBitmap());
 
         //toolbar.setTitle(event.getName());
@@ -102,9 +99,19 @@ public class DetailRaceFragment extends Fragment {
         txtLugar.setText(event.getPlace());
         txtWeb.setText(event.getWeb());
         txtDescripcion.setText(event.getDescription());
-        txtRating.setText(Double.toString(event.getRating()));
-        ratingBar.setRating((float)event.getRating());
-        txtTotalScores.setText(String.valueOf(event.getTotal_scores()).concat(" Votos en total"));
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        inflater.inflate(R.menu.menu_fragment_detail, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        mListener.startScreenReviews(event.getId());
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

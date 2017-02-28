@@ -1,5 +1,6 @@
 package com.mel.seekraces.activities.main;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -8,6 +9,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -25,11 +27,12 @@ import com.mel.seekraces.commons.SharedPreferencesSingleton;
 import com.mel.seekraces.commons.UtilsViews;
 import com.mel.seekraces.entities.Event;
 import com.mel.seekraces.entities.Filter;
-import com.mel.seekraces.fragments.EditRaceFragment.EditRaceFragment;
+import com.mel.seekraces.fragments.editRace.EditRaceFragment;
 import com.mel.seekraces.fragments.detailRace.DetailRaceFragment;
 import com.mel.seekraces.fragments.ownRacesPublished.ListOwnRacesPublishedFragment;
 import com.mel.seekraces.fragments.racesPublished.ListRacesPublishedFragment;
 import com.mel.seekraces.fragments.racesPublishedFavorites.ListRacesPublishedFavoritesFragment;
+import com.mel.seekraces.fragments.reviews.ReviewsFragment;
 import com.mel.seekraces.interfaces.IGenericInterface;
 import com.mel.seekraces.interfaces.INetworkConnectionApi;
 import com.mel.seekraces.interfaces.main.IMainPresenter;
@@ -56,6 +59,7 @@ public class MainActivity extends AppCompatActivity
 
     private IMainPresenter presenter;
     private TextView txtUserName;
+    private TextView txtEmail;
     private CircleImageView imgProfileUser;
     private SharedPreferencesSingleton sharedPreferencesSingleton;
     private Intent intentActivityResult;
@@ -88,6 +92,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
         txtUserName = (TextView) view.findViewById(R.id.txtUserName);
+        txtEmail = (TextView) view.findViewById(R.id.txtEmail);
         imgProfileUser = (CircleImageView) view.findViewById(R.id.imgProfileUser);
         presenter.fillDataHeaderView();
         navView.getMenu().getItem(0).setChecked(true);
@@ -97,6 +102,16 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         presenter.onBackPressed();
+    }
+
+    @Override
+    public void backToPreviousFragment() {
+        getSupportFragmentManager().popBackStack(getSupportFragmentManager().getBackStackEntryAt(0).getId(),getSupportFragmentManager().POP_BACK_STACK_INCLUSIVE);
+    }
+
+    @Override
+    public int getBackStackEntryCount() {
+        return getSupportFragmentManager().getBackStackEntryCount();
     }
 
 
@@ -119,13 +134,38 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public void fillNavHeaderTxtEmail(String email) {
+        txtEmail.setText(email);
+    }
+
+    @Override
     public void fillNavHeaderImgProfile(String namePicture) {
-        Glide.with(getApplicationContext()).load(INetworkConnectionApi.BASE_URL_PICTURES + namePicture).error(R.drawable.ic_default_user).into(imgProfileUser);
+        Glide.with(getApplicationContext()).load(INetworkConnectionApi.BASE_URL_PICTURES + namePicture).error(R.drawable.user_default).into(imgProfileUser);
     }
 
     @Override
     public void returnBack() {
         super.onBackPressed();
+        //finish();
+    }
+
+    @Override
+    public void exitSession() {
+        AlertDialog.Builder builder = UtilsViews.createAlertDialog(this, "Importante");
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                MainActivity.super.onBackPressed();
+            }
+        });
+
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        builder.setMessage("¿Seguro que quieres salir?");
+        builder.show();
         //finish();
     }
 
@@ -182,6 +222,21 @@ public class MainActivity extends AppCompatActivity
         fab.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void startScreenReviews(int idEvent) {
+        ReviewsFragment fragment;
+        fragment = new ReviewsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("idEvent", idEvent);
+        fragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment).addToBackStack(null).commit();
+    }
+
+    @Override
+    public void setActionBar(Toolbar toolbar) {
+        setSupportActionBar(toolbar);
+    }
+
 
     @Override
     public boolean isDrawerOpen() {
@@ -201,13 +256,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void chargeFragmentMyRacesPublished() {
         ListOwnRacesPublishedFragment fragment = new ListOwnRacesPublishedFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment).addToBackStack(null).commit();
     }
 
     @Override
     public void chargeFragmentRacesFavorites() {
         ListRacesPublishedFavoritesFragment fragment = new ListRacesPublishedFavoritesFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment).addToBackStack(null).commit();
     }
 
     @Override

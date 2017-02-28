@@ -26,7 +26,7 @@
                 android:id="@+id/imgProfileUser"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:src="@drawable/ic_default_user"
+                android:src="@drawable/user_default"
                 android:layout_weight=".9"/>
 
             <RelativeLayout

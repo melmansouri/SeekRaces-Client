@@ -35,9 +35,9 @@ public class EventDeserializer implements JsonDeserializer<Event>{
         event.setPlace(jsonObject.get("place").getAsString());
         event.setDate_time_init(jsonObject.get("date_time_init").getAsString());
         event.setWeb(jsonObject.get("web").getAsString());
-        event.setNum_reviews(jsonObject.get("num_reviews").getAsInt());
+        /*event.setNum_reviews(jsonObject.get("num_reviews").getAsInt());
         event.setTotal_scores(jsonObject.get("total_scores").getAsInt());
-        event.setRating(jsonObject.get("rating").getAsDouble());
+        event.setRating(jsonObject.get("rating").getAsDouble());*/
         event.setFavorite(!jsonObject.get("isFavorite").isJsonNull());
         return event;
     }

@@ -1,5 +1,7 @@
 package com.mel.seekraces.interfaces;
 
+import android.support.v7.widget.Toolbar;
+
 import com.mel.seekraces.entities.Event;
 import com.mel.seekraces.entities.Favorite;
 
@@ -29,6 +31,10 @@ public interface IGenericInterface {
         void editEvent(Event event);
 
         void showFloatingButton();
+
+        void startScreenReviews(int idEvent);
+
+        void setActionBar(Toolbar toolbar);
     }
 
     /**

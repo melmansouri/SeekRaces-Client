@@ -29,8 +29,10 @@ public class MainPresenterImpl implements IMainPresenter, IListennerCallBack{
     public void fillDataHeaderView() {
         if (view!=null){
             String username=sharedPreferencesSingleton.getStringSP(Constantes.KEY_USERNAME);
+            String email=sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER);
             String userNamePicture=sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER_NAME_PICTURE);
             view.fillNavHeaderTxtUserName(username);
+            view.fillNavHeaderTxtEmail(email);
             if (!TextUtils.isEmpty(userNamePicture)){
                 view.fillNavHeaderImgProfile(userNamePicture);
             }
@@ -52,7 +54,7 @@ public class MainPresenterImpl implements IMainPresenter, IListennerCallBack{
                 view.chargeFragmentRacesPrevious();
             }else if(itemSelectd == RMapped.ITEM_EXIT.getValue()){
                 sharedPreferencesSingleton.clearAllUserSharedPreferences();
-                view.returnBack();
+                view.exitSession();
             }
             view.closeDrawerLayout();
         }
@@ -96,6 +98,10 @@ public class MainPresenterImpl implements IMainPresenter, IListennerCallBack{
         if (view!=null){
             if (view.isDrawerOpen()) {
                 view.closeDrawerLayout();
+                return;
+            }
+            if (view.getBackStackEntryCount()>0){
+                view.backToPreviousFragment();
                 return;
             }
             view.setResult();
