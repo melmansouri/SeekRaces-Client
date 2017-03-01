@@ -18,7 +18,11 @@ public interface IGenericInterface {
      */
 
     interface OnFragmentInteractionListener {
+        void showHamburgerIconDrawer(boolean show);
+
         void onListFragmentInteraction(Event item);
+
+        void setCheckedItemNavView(int index);
 
         void changeTitleActionBar(int idTitle);
         void startActivityFilters();

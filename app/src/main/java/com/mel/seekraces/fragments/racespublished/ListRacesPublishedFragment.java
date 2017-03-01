@@ -43,13 +43,14 @@ public class ListRacesPublishedFragment extends Fragment implements IListFragmen
     public void onResume() {
         super.onResume();
         mListener.changeTitleActionBar(RMapped.TITLE_CARRERAS_PUBLICADAS.getValue());
+        mListener.setCheckedItemNavView(0);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         filter = getArguments().getParcelable("filter");
-        presenter = new ListFragmentRacesPublishedPresenterImpl(this);
+        presenter = new com.mel.seekraces.fragments.racesPublished.ListFragmentRacesPublishedPresenterImpl(this);
     }
 
     @Override

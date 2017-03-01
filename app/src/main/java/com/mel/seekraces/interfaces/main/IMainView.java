@@ -9,7 +9,10 @@ import com.mel.seekraces.entities.Filter;
  */
 
 public interface IMainView {
-    void backToPreviousFragment();
+
+    void backToPreviousFragment(int id);
+
+    String getBackStackEntryNameAt(int id);
 
     int getBackStackEntryCount();
 

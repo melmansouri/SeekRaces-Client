@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -57,9 +58,12 @@ public class ReviewsFragment extends Fragment implements IFragmentReviewsView {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        idEvent = getArguments().getInt("idevent");
+        idEvent = getArguments().getInt("idEvent");
         mListener.setDrawerEnabled(false);
         mListener.hideFloatingButton();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+        mListener.changeTitleActionBar(R.string.title_opiniones);
+        mListener.showHamburgerIconDrawer(false);
         presenter = new ReviewsFragmentPresenterImpl(this);
     }
 
@@ -82,7 +86,7 @@ public class ReviewsFragment extends Fragment implements IFragmentReviewsView {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
-        inflater.inflate(R.menu.menu_fragment_detail, menu);
+        //inflater.inflate(R.menu.menu_fragment_detail, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -111,8 +115,9 @@ public class ReviewsFragment extends Fragment implements IFragmentReviewsView {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mListener.setDrawerEnabled(true);
-        mListener.showFloatingButton();
+        presenter.onDestroy();
+        mListener.showHamburgerIconDrawer(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
     }
 
     @Override

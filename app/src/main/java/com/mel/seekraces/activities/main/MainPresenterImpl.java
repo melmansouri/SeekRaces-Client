@@ -100,8 +100,19 @@ public class MainPresenterImpl implements IMainPresenter, IListennerCallBack{
                 view.closeDrawerLayout();
                 return;
             }
-            if (view.getBackStackEntryCount()>0){
-                view.backToPreviousFragment();
+            int countBackStackEntry=view.getBackStackEntryCount();
+            if (countBackStackEntry>0){
+                int id=countBackStackEntry-1;
+                for (int i=0;i<countBackStackEntry;i++){
+                    String name=view.getBackStackEntryNameAt(i);
+
+                }
+                String actualName=view.getBackStackEntryNameAt(countBackStackEntry);
+
+                if (actualName.equals(Constantes.TAG_RACES_FAVORITES_FRAGMENT) || actualName.equals(Constantes.TAG_MY_RACES_PUBLISHED_FRAGMENT)){
+                    id=0;
+                }
+                view.backToPreviousFragment(id);
                 return;
             }
             view.setResult();

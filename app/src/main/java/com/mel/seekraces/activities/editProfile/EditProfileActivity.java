@@ -99,7 +99,7 @@ public class EditProfileActivity extends AppCompatActivity implements IEditProfi
     }
 
     @Override
-    @OnClick(R.id.imgProfileUser)
+    @OnClick(R.id.fab)
     public void selectPictureProfile() {
         AlertDialog.Builder builder = UtilsViews.createAlertDialog(this, getString(R.string.elige_opcion));
         builder.setItems(R.array.option_dialog_picture, new DialogInterface.OnClickListener() {

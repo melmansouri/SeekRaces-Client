@@ -27,8 +27,8 @@ import com.mel.seekraces.commons.SharedPreferencesSingleton;
 import com.mel.seekraces.commons.UtilsViews;
 import com.mel.seekraces.entities.Event;
 import com.mel.seekraces.entities.Filter;
-import com.mel.seekraces.fragments.editRace.EditRaceFragment;
 import com.mel.seekraces.fragments.detailRace.DetailRaceFragment;
+import com.mel.seekraces.fragments.editRace.EditRaceFragment;
 import com.mel.seekraces.fragments.ownRacesPublished.ListOwnRacesPublishedFragment;
 import com.mel.seekraces.fragments.racesPublished.ListRacesPublishedFragment;
 import com.mel.seekraces.fragments.racesPublishedFavorites.ListRacesPublishedFavoritesFragment;
@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity
     private SharedPreferencesSingleton sharedPreferencesSingleton;
     private Intent intentActivityResult;
     private LinearLayout header_nav;
+    private ActionBarDrawerToggle toggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setupNavigationDrawer() {
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
@@ -95,7 +96,7 @@ public class MainActivity extends AppCompatActivity
         txtEmail = (TextView) view.findViewById(R.id.txtEmail);
         imgProfileUser = (CircleImageView) view.findViewById(R.id.imgProfileUser);
         presenter.fillDataHeaderView();
-        navView.getMenu().getItem(0).setChecked(true);
+        setCheckedItemNavView(0);
         navView.getMenu().performIdentifierAction(R.id.itemListEventsPublished, 0);
     }
 
@@ -105,8 +106,13 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void backToPreviousFragment() {
-        getSupportFragmentManager().popBackStack(getSupportFragmentManager().getBackStackEntryAt(0).getId(),getSupportFragmentManager().POP_BACK_STACK_INCLUSIVE);
+    public void backToPreviousFragment(int id) {
+        getSupportFragmentManager().popBackStack(getSupportFragmentManager().getBackStackEntryAt(id).getId(),getSupportFragmentManager().POP_BACK_STACK_INCLUSIVE);
+    }
+
+    @Override
+    public String getBackStackEntryNameAt(int id) {
+        return getSupportFragmentManager().getFragments().get(id).getTag();
     }
 
     @Override
@@ -136,6 +142,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void fillNavHeaderTxtEmail(String email) {
         txtEmail.setText(email);
+    }
+
+    @Override
+    public void setCheckedItemNavView(int index) {
+        navView.getMenu().getItem(index).setChecked(true);
     }
 
     @Override
@@ -229,7 +240,7 @@ public class MainActivity extends AppCompatActivity
         Bundle bundle = new Bundle();
         bundle.putInt("idEvent", idEvent);
         fragment.setArguments(bundle);
-        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment).addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment,Constantes.TAG_REVIEWS_FRAGMENT).addToBackStack(null).commit();
     }
 
     @Override
@@ -244,25 +255,30 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public void showHamburgerIconDrawer(boolean show) {
+        toggle.setDrawerIndicatorEnabled(show);
+    }
+
+    @Override
     public void chargeFragmentRacesPublished(Filter filter) {
         ListRacesPublishedFragment fragment;
         fragment = new ListRacesPublishedFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable("filter", filter);
         fragment.setArguments(bundle);
-        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment,Constantes.TAG_RACES_PUBLISHED_FRAGMENT).commit();
     }
 
     @Override
     public void chargeFragmentMyRacesPublished() {
         ListOwnRacesPublishedFragment fragment = new ListOwnRacesPublishedFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment).addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment,Constantes.TAG_MY_RACES_PUBLISHED_FRAGMENT).addToBackStack(null).commit();
     }
 
     @Override
     public void chargeFragmentRacesFavorites() {
         ListRacesPublishedFavoritesFragment fragment = new ListRacesPublishedFavoritesFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment).addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment,Constantes.TAG_RACES_FAVORITES_FRAGMENT).addToBackStack(null).commit();
     }
 
     @Override
@@ -301,7 +317,7 @@ public class MainActivity extends AppCompatActivity
         Bundle bundle = new Bundle();
         bundle.putParcelable("event", item);
         fragment.setArguments(bundle);
-        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment).addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment,Constantes.TAG_DETAIL_RACES_FRAGMENT).addToBackStack(null).commit();
     }
 
     @Override

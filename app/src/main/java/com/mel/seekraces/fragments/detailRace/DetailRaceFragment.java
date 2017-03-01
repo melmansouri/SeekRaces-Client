@@ -9,8 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +57,6 @@ public class DetailRaceFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         event = getArguments().getParcelable("event");
-
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         mListener.setDrawerEnabled(false);
         mListener.hideFloatingButton();
@@ -77,7 +74,7 @@ public class DetailRaceFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mListener.setActionBar(toolbar);
+        //mListener.setActionBar(toolbar);
         imgRace.setImageBitmap(event.getBitmap());
 
         //toolbar.setTitle(event.getName());
@@ -99,19 +96,14 @@ public class DetailRaceFragment extends Fragment {
         txtLugar.setText(event.getPlace());
         txtWeb.setText(event.getWeb());
         txtDescripcion.setText(event.getDescription());
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
-        inflater.inflate(R.menu.menu_fragment_detail, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        mListener.startScreenReviews(event.getId());
-        return super.onOptionsItemSelected(item);
+        toolbar.inflateMenu(R.menu.menu_fragment_detail);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                mListener.startScreenReviews(event.getId());
+                return false;
+            }
+        });
     }
 
     @Override
