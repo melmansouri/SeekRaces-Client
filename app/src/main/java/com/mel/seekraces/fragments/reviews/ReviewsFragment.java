@@ -64,6 +64,13 @@ public class ReviewsFragment extends Fragment implements IFragmentReviewsView {
         ((AppCompatActivity) getActivity()).getSupportActionBar().show();
         mListener.changeTitleActionBar(R.string.title_opiniones);
         mListener.showHamburgerIconDrawer(false);
+        mListener.setNavigationIcon();
+        mListener.setOnClickNavigationToolbar(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
         presenter = new ReviewsFragmentPresenterImpl(this);
     }
 
@@ -122,7 +129,6 @@ public class ReviewsFragment extends Fragment implements IFragmentReviewsView {
 
     @Override
     public void fillAdapterList(List<Review> reviews) {
-        hideProgressBar();
         adapter = new RVReviewsAdapter(getContext(),reviews);
         recyclerViewReviews.setAdapter(adapter);
     }

@@ -63,7 +63,6 @@ public class ReviewsFragmentPresenterImpl implements IFragmentReviewsPresenter, 
                 Gson gson=new Gson();
                 Type founderListType = new TypeToken<ArrayList<Review>>(){}.getType();
                 List<Review> reviews=gson.fromJson(((Response)object).getContent(),founderListType);
-                view.fillAdapterList(reviews);
                 int totalReviews=reviews.size();
                 double rating;
                 int totalScores=0;
@@ -71,6 +70,7 @@ public class ReviewsFragmentPresenterImpl implements IFragmentReviewsPresenter, 
                     totalScores+=review.getScore();
                 }
                 rating=totalScores/totalReviews;
+                view.fillAdapterList(reviews);
                 view.fillViewRating(rating,totalReviews);
                 view.hideProgressBar();
                 view.showList();

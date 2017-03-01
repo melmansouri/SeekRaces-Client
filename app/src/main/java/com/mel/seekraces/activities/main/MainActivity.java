@@ -260,6 +260,16 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public void setNavigationIcon() {
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+    }
+
+    @Override
+    public void setOnClickNavigationToolbar(View.OnClickListener onToolbarNavigationClickListener) {
+        toggle.setToolbarNavigationClickListener(onToolbarNavigationClickListener);
+    }
+
+    @Override
     public void chargeFragmentRacesPublished(Filter filter) {
         ListRacesPublishedFragment fragment;
         fragment = new ListRacesPublishedFragment();

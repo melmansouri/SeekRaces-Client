@@ -1,6 +1,7 @@
 package com.mel.seekraces.interfaces;
 
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.mel.seekraces.entities.Event;
 import com.mel.seekraces.entities.Favorite;
@@ -19,6 +20,11 @@ public interface IGenericInterface {
 
     interface OnFragmentInteractionListener {
         void showHamburgerIconDrawer(boolean show);
+
+        void setNavigationIcon();
+
+
+        void setOnClickNavigationToolbar(View.OnClickListener onToolbarNavigationClickListener);
 
         void onListFragmentInteraction(Event item);
 

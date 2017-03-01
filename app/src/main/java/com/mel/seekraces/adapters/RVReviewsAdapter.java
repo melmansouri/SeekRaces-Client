@@ -26,10 +26,6 @@ public class RVReviewsAdapter extends RecyclerView.Adapter<RVReviewsAdapter.View
     private List<Review> mValues;
     private Context c;
 
-    public RVReviewsAdapter(List<Review> items) {
-        mValues = items;
-    }
-
     public RVReviewsAdapter(Context context, List<Review> items) {
         mValues = items;
         c = context;

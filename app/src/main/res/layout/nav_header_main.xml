@@ -28,7 +28,7 @@
         android:id="@+id/txtUserName"
         android:text="username"
         android:layout_marginLeft="10dp"
-        android:textColor="@color/colorSecondaryText"
+        android:textColor="@color/colorPrimaryText"
         android:textAppearance="@style/TextAppearance.AppCompat.Small" />
     <TextView
         android:layout_width="match_parent"
@@ -36,7 +36,7 @@
         android:id="@+id/txtEmail"
         android:text="username"
         android:layout_marginLeft="10dp"
-        android:textColor="@color/colorSecondaryText"
+        android:textColor="@color/colorPrimaryText"
         android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
 </LinearLayout>
