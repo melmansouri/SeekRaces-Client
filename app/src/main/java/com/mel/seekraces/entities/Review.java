@@ -9,7 +9,7 @@ public class Review {
     private String userName;
     private String photo_name;
     private int event;
-    private int score;
+    private float score;
     private String comment;
     private String dateOpinion;
 
@@ -45,11 +45,11 @@ public class Review {
         this.event = event;
     }
 
-    public int getScore() {
+    public float getScore() {
         return score;
     }
 
-    public void setScore(int score) {
+    public void setScore(float score) {
         this.score = score;
     }
 

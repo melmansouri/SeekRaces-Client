@@ -11,5 +11,7 @@ public interface IFragmentReviewsInteractor {
 
     void addReview(Review review);
 
+    void editReview(Review review);
+
     void deleteReview(String user, int idEvent);
 }

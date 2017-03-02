@@ -4,6 +4,7 @@ import com.mel.seekraces.entities.Event;
 import com.mel.seekraces.entities.Favorite;
 import com.mel.seekraces.entities.PlacePredictions;
 import com.mel.seekraces.entities.Response;
+import com.mel.seekraces.entities.Review;
 import com.mel.seekraces.entities.User;
 
 import retrofit2.Call;
@@ -23,10 +24,10 @@ public interface INetworkConnectionApi {
     // TODO: Cambiar host por "10.0.0.2" para Genymotion.
     // TODO: Cambiar host por "10.0.0.3" para AVD.
     // TODO: Cambiar host por IP de tu PC para dispositivo real.
-    String BASE_URL = "http://192.168.0.107:8080/SeekRaces/api/";
-    String BASE_URL_PICTURES = "http://192.168.0.107:8080/SeekRaces/pictures/";
-    //String BASE_URL = "http://192.168.105.109/SeekRaces/api/";
-    //String BASE_URL_PICTURES = "http://192.168.105.109/SeekRaces/pictures/";
+    //String BASE_URL = "http://192.168.0.107:8080/SeekRaces/api/";
+    //String BASE_URL_PICTURES = "http://192.168.0.107:8080/SeekRaces/pictures/";
+    String BASE_URL = "http://192.168.105.109/SeekRaces/api/";
+    String BASE_URL_PICTURES = "http://192.168.105.109/SeekRaces/pictures/";
 
     @GET
     Call<PlacePredictions> getAutoCompletePlaces(@Url String url);
@@ -72,4 +73,13 @@ public interface INetworkConnectionApi {
 
     @GET
     Call<Response> getReviews(@Url String url);
+
+    @POST("user/event/reviews")
+    Call<Response> addNewOpinionEvent(@Body Review review);
+
+    @PUT("user/event/reviews")
+    Call<Response> editEventOpinion(@Body Review review);
+
+    @DELETE
+    Call<Response> deleteEventOpinion(@Url String url);
 }

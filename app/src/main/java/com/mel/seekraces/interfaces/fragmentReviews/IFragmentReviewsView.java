@@ -1,5 +1,8 @@
 package com.mel.seekraces.interfaces.fragmentReviews;
 
+import android.view.Menu;
+
+import com.mel.seekraces.adapters.RVReviewsAdapter;
 import com.mel.seekraces.entities.Review;
 
 import java.util.List;
@@ -9,14 +12,27 @@ import java.util.List;
  */
 
 public interface IFragmentReviewsView {
+    void showItemMenu(int idgroup, boolean showMenu);
+
+    Menu getMenu();
+
     void fillAdapterList(List<Review> reviews);
 
-    void fillViewRating(double rating, int totalScores);
+    void fillViewRating(float rating, int totalScores);
+
+    void showDialogAddReview();
+
+    void showDialogEditReview();
+
+    void deleteOwnReview();
 
     void showProgressBar();
     void hideProgressBar();
     void showList();
     void hideList();
+
+    RVReviewsAdapter getAdapter();
+
     void showMessage(String message);
 
 

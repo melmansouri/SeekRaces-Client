@@ -24,7 +24,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <!--SignIn-->
     <!--Navigation Drawer elements-->
-    <string name="title_carreras_publicadas">Carreras Publicadas</string>
+    <string name="title_carreras_publicadas">Carreras Pubicadas</string>
     <string name="title_mis_carreras_publicadas">Mis Carreras Publicadas</string>
     <string name="title_carreras_favoritas">Carreras Favoritas</string>
     <string name="title_carreras_anteriores">Carreras Anteriores</string>
@@ -60,6 +60,9 @@
     <string name="edit">Editar</string>
     <string name="forgotPwd">¿Olvidaste tu contraseña?</string>
     <string name="title_opiniones">Opiniones</string>
+    <string name="opinar">Opinar</string>
+    <string name="editar_opinion">Editar</string>
+    <string name="delete_opinion">Eliminar</string>
     <!--Menus-->
 
     <!--Long Click Event-->
@@ -68,5 +71,9 @@
         <item>Eliminar</item>
     </string-array>
     <!--Long Click Event-->
+
+    <!--Reviews-->
+    <string name="breve_opinion">Breve opinión</string>
+    <!--Reviews-->
 
 </resources>

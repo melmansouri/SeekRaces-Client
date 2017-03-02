@@ -42,7 +42,7 @@ public class RVReviewsAdapter extends RecyclerView.Adapter<RVReviewsAdapter.View
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.review = mValues.get(position);
 
-        Glide.with(c).load(INetworkConnectionApi.BASE_URL_PICTURES + holder.review.getPhoto_name()).error(R.drawable.default_user).into(holder.imgProfileUser);
+        Glide.with(c).load(INetworkConnectionApi.BASE_URL_PICTURES + holder.review.getPhoto_name()).error(R.drawable.user_default).into(holder.imgProfileUser);
         holder.txtUserName.setText(holder.review.getUserName());
         holder.ratingBar.setRating(holder.review.getScore());
         holder.txtfecha.setText(Utils.convertDateEnglishToSpanish(holder.review.getDateOpinion()));
@@ -52,6 +52,10 @@ public class RVReviewsAdapter extends RecyclerView.Adapter<RVReviewsAdapter.View
     @Override
     public int getItemCount() {
         return mValues.size();
+    }
+
+    public Review getOwnReview(){
+        return mValues.get(0);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

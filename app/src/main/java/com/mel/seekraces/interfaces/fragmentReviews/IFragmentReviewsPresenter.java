@@ -13,5 +13,7 @@ public interface IFragmentReviewsPresenter {
 
     void addReview(Review review);
 
+    void editReview(Review review);
+
     void deleteReview(String user, int idEvent);
 }

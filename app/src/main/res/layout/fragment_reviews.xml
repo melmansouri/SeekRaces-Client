@@ -7,6 +7,7 @@
     android:layout_height="match_parent">
 
         <RelativeLayout
+            android:id="@+id/rlRoot"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <ProgressBar
@@ -34,7 +35,7 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/txtRating"
                         android:textSize="50sp"
-                        android:text="3.4"
+                        android:text="0.0"
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:layout_marginRight="5dp"/>
                     <LinearLayout
@@ -55,7 +56,6 @@
 
                     </LinearLayout>
                 </LinearLayout>
-
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recyclerViewReviews"
                     android:layout_width="match_parent"
