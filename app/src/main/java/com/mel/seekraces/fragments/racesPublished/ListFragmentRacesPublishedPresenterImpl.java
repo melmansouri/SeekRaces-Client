@@ -1,5 +1,7 @@
 package com.mel.seekraces.fragments.racesPublished;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -52,10 +54,12 @@ public class ListFragmentRacesPublishedPresenterImpl implements IListFragmentRac
 
     @Override
     public void onDestroy() {
-        view=null;
         interactor.getRacesPublished(null);
         interactor.addEventToFavorites(null);
         interactor.deleteEventFromFavorite(null,0);
+        interactor=null;
+        view=null;
+        Log.e("ListRacesPublished","onDestroy");
     }
 
     @Override

@@ -10,11 +10,16 @@ import com.mel.seekraces.entities.Filter;
 
 public interface IMainView {
 
-    void backToPreviousFragment(int id);
+    void backToPreviousFragmentById(int id);
 
-    String getBackStackEntryNameAt(int id);
 
-    int getBackStackEntryCount();
+    void backToPreviousFragment();
+
+    void setActualFragmentActive();
+
+    boolean actualFragmentActiveInstanceOf(Class clase);
+
+    void clearPopBackStack();
 
     void closeDrawerLayout();
 
@@ -31,6 +36,7 @@ public interface IMainView {
     void setResult();
 
     void showMessage(String message);
+
 
     boolean isDrawerOpen();
 

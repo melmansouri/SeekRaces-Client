@@ -150,16 +150,21 @@ public class ListRacesPublishedFavoritesFragment extends Fragment implements ILi
 
     @Override
     public void deleteEventFromFavorite(final String user, final int id) {
+        alertDialogDeleteFromFavorites(user,id);
     }
 
     @Override
     public void onItemLongClickListener(final Object object) {
+        String user = sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER);
+        alertDialogDeleteFromFavorites(user,((Event) object).getId());
+    }
+
+    private void alertDialogDeleteFromFavorites(final String user, final int idEvent){
         AlertDialog.Builder builder = UtilsViews.createAlertDialog(getContext(), "Importante");
         builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String user = sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER);
-                presenter.deleteEventFromFavorite(user, ((Event) object).getId());
+                presenter.deleteEventFromFavorite(user, idEvent);
             }
         });
 
@@ -170,6 +175,5 @@ public class ListRacesPublishedFavoritesFragment extends Fragment implements ILi
         });
         builder.setMessage("¿Está seguro de eliminar esta carrera de tu lista de favoritos?");
         builder.show();
-
     }
 }

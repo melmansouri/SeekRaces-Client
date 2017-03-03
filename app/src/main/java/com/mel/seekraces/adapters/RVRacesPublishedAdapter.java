@@ -6,15 +6,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.like.LikeButton;
+import com.like.OnLikeListener;
 import com.mel.seekraces.R;
 import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.SharedPreferencesSingleton;
 import com.mel.seekraces.entities.Event;
 import com.mel.seekraces.entities.Favorite;
+import com.mel.seekraces.fragments.racesPublishedFavorites.ListRacesPublishedFavoritesFragment;
 import com.mel.seekraces.interfaces.IGenericInterface;
 
 import java.text.ParseException;
@@ -76,17 +78,18 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
 
         if (!SharedPreferencesSingleton.getInstance(c).getStringSP(Constantes.KEY_USER).equals(holder.mItem.getUser())){
             holder.imgBtnLikeRace.setVisibility(View.VISIBLE);
-            if (holder.mItem.isFavorite()){
+            /*if (holder.mItem.isFavorite()){
                 holder.imgBtnLikeRace.setImageResource(R.drawable.ic_favorite);
             }else{
                 holder.imgBtnLikeRace.setImageResource(R.drawable.ic_not_favorite);
-            }
+            }*/
+            holder.imgBtnLikeRace.setLiked(holder.mItem.isFavorite());
         }else{
             holder.imgBtnLikeRace.setVisibility(View.INVISIBLE);
         }
 
 
-        holder.imgBtnLikeRace.setOnClickListener(new View.OnClickListener() {
+        /*holder.imgBtnLikeRace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!SharedPreferencesSingleton.getInstance(c).getStringSP(Constantes.KEY_USER).equals(holder.mItem.getUser())){
@@ -104,7 +107,29 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
                     }
                 }
             }
-        });
+        });*/
+
+        if (!(mListenerListInteracion instanceof ListRacesPublishedFavoritesFragment)){
+            holder.imgBtnLikeRace.setOnLikeListener(new OnLikeListener() {
+                @Override
+                public void liked(LikeButton likeButton) {
+                    if (null != mListenerListInteracion) {
+                        String user=SharedPreferencesSingleton.getInstance(c).getStringSP(Constantes.KEY_USER);
+                        mListenerListInteracion.addEventToFavorite(new Favorite(user, holder.mItem.getId()));
+                    }
+                }
+
+                @Override
+                public void unLiked(LikeButton likeButton) {
+                    if (null != mListenerListInteracion) {
+                        String user=SharedPreferencesSingleton.getInstance(c).getStringSP(Constantes.KEY_USER);
+                        mListenerListInteracion.deleteEventFromFavorite(user,holder.mItem.getId());
+                    }
+                }
+            });
+        }else{
+            holder.imgBtnLikeRace.setEnabled(false);
+        }
 
         holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -151,7 +176,7 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
         @BindView(R.id.txtPublicadoPor)
         TextView txtPublicadoPor;
         @BindView(R.id.imgBtnLikeRace)
-        ImageButton imgBtnLikeRace;
+        LikeButton imgBtnLikeRace;
         public Event mItem;
 
         public ViewHolder(View view) {

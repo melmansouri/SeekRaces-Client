@@ -45,11 +45,26 @@ public class Utils {
         Bitmap bitmap=null;
         try {
             InputStream imageStream = context.getContentResolver().openInputStream(uriImage);
-            bitmap = BitmapFactory.decodeStream(imageStream);
+            bitmap = getResizedBitmap(BitmapFactory.decodeStream(imageStream),400);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return bitmap;
+    }
+
+    public static Bitmap getResizedBitmap(Bitmap image, int maxSize) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        float bitmapRatio = (float)width / (float) height;
+        if (bitmapRatio > 1) {
+            width = maxSize;
+            height = (int) (width / bitmapRatio);
+        } else {
+            height = maxSize;
+            width = (int) (height * bitmapRatio);
+        }
+        return Bitmap.createScaledBitmap(image, width, height, true);
     }
 
     public static String convertUriImageToBase64(Bitmap bitmap){
@@ -57,7 +72,7 @@ public class Utils {
         String encodedImage="";
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG,40,baos);
+            bitmap.compress(Bitmap.CompressFormat.JPEG,50,baos);
             byte[] b = baos.toByteArray();
             encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
         } catch (Exception e) {
@@ -90,7 +105,6 @@ public class Utils {
         // Decode the image file into a Bitmap sized to fill the View
         bmOptions.inJustDecodeBounds = false;
         bmOptions.inSampleSize = scaleFactor;
-        bmOptions.inPurgeable = true;
 
         return BitmapFactory.decodeFile(imagePath, bmOptions);
     }
@@ -140,7 +154,7 @@ public class Utils {
 
     public static Bitmap base64ToBitmap(String b64) {
         byte[] imageAsBytes = Base64.decode(b64.getBytes(), Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
+        return getResizedBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length),150);
     }
 
     public static boolean isValidEmail(String email) {

@@ -16,10 +16,9 @@
         <ImageView
             android:id="@+id/imgRace"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:scaleType="fitXY" />
+            android:background="?attr/selectableItemBackgroundBorderless"/>
 
         <TextView
             android:id="@+id/txtNameRace"
@@ -71,15 +70,26 @@
             android:text="Publicado por Manolo"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
-        <ImageButton
+        <!--ImageButton
             android:id="@+id/imgBtnLikeRace"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:src="@drawable/ic_not_favorite"
             android:layout_below="@+id/txtPublicadoPor"
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
-            style="?android:attr/borderlessButtonStyle" />
+            style="?android:attr/borderlessButtonStyle" /-->
+
+        <com.like.LikeButton
+            app:icon_type="heart"
+            app:icon_size="25dp"
+            android:id="@+id/imgBtnLikeRace"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/txtPublicadoPor"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            app:anim_scale_factor="2"/>
 
 
     </RelativeLayout>

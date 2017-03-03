@@ -11,6 +11,7 @@
             android:title="@string/title_mis_carreras_publicadas" />
         <item
             android:id="@+id/itemListEventsFavorites"
+            android:icon="@drawable/ic_favorite"
             android:title="@string/title_carreras_favoritas" />
         <item
             android:id="@+id/itemListPreviousEvents"

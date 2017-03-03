@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -65,6 +67,7 @@ public class MainActivity extends AppCompatActivity
     private Intent intentActivityResult;
     private LinearLayout header_nav;
     private ActionBarDrawerToggle toggle;
+    private Fragment actualFragmentActive;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,18 +109,28 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void backToPreviousFragment(int id) {
+    public void backToPreviousFragmentById(int id) {
         getSupportFragmentManager().popBackStack(getSupportFragmentManager().getBackStackEntryAt(id).getId(),getSupportFragmentManager().POP_BACK_STACK_INCLUSIVE);
     }
 
     @Override
-    public String getBackStackEntryNameAt(int id) {
-        return getSupportFragmentManager().getFragments().get(id).getTag();
+    public void backToPreviousFragment() {
+        getSupportFragmentManager().popBackStack();
     }
 
     @Override
-    public int getBackStackEntryCount() {
-        return getSupportFragmentManager().getBackStackEntryCount();
+    public void setActualFragmentActive() {
+        actualFragmentActive=getSupportFragmentManager().findFragmentById(R.id.frameLayout);
+    }
+
+    @Override
+    public boolean actualFragmentActiveInstanceOf(Class clase) {
+        return (actualFragmentActive!=null && clase.isAssignableFrom(actualFragmentActive.getClass()));
+    }
+
+    @Override
+    public void clearPopBackStack() {
+        getSupportFragmentManager().popBackStack(null,getSupportFragmentManager().POP_BACK_STACK_INCLUSIVE);
     }
 
 
@@ -225,7 +238,8 @@ public class MainActivity extends AppCompatActivity
         Bundle bundle = new Bundle();
         bundle.putParcelable("event", event);
         fragment.setArguments(bundle);
-        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment).addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment).addToBackStack("edit").commit();
+        Log.e("asdasdasd","editEvent "+getSupportFragmentManager().getBackStackEntryCount());
     }
 
     @Override
@@ -240,14 +254,14 @@ public class MainActivity extends AppCompatActivity
         Bundle bundle = new Bundle();
         bundle.putInt("idEvent", idEvent);
         fragment.setArguments(bundle);
-        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment,Constantes.TAG_REVIEWS_FRAGMENT).addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment,Constantes.TAG_REVIEWS_FRAGMENT).addToBackStack("review").commit();
+        Log.e("asdasdasd","startScreenReviews "+getSupportFragmentManager().getBackStackEntryCount());
     }
 
     @Override
     public void setActionBar(Toolbar toolbar) {
         setSupportActionBar(toolbar);
     }
-
 
     @Override
     public boolean isDrawerOpen() {
@@ -277,18 +291,21 @@ public class MainActivity extends AppCompatActivity
         bundle.putParcelable("filter", filter);
         fragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment,Constantes.TAG_RACES_PUBLISHED_FRAGMENT).commit();
+        Log.e("asdasdasd","chargeFragmentRacesPublished "+getSupportFragmentManager().getBackStackEntryCount());
     }
 
     @Override
     public void chargeFragmentMyRacesPublished() {
         ListOwnRacesPublishedFragment fragment = new ListOwnRacesPublishedFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment,Constantes.TAG_MY_RACES_PUBLISHED_FRAGMENT).addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment,Constantes.TAG_MY_RACES_PUBLISHED_FRAGMENT).addToBackStack("myRaces").commit();
+        Log.e("asdasdasd","chargeFragmentMyRacesPublished "+getSupportFragmentManager().getBackStackEntryCount());
     }
 
     @Override
     public void chargeFragmentRacesFavorites() {
         ListRacesPublishedFavoritesFragment fragment = new ListRacesPublishedFavoritesFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment,Constantes.TAG_RACES_FAVORITES_FRAGMENT).addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment,Constantes.TAG_RACES_FAVORITES_FRAGMENT).addToBackStack("races").commit();
+        Log.e("asdasdasd","chargeFragmentRacesFavorites "+getSupportFragmentManager().getBackStackEntryCount());
     }
 
     @Override
@@ -327,7 +344,8 @@ public class MainActivity extends AppCompatActivity
         Bundle bundle = new Bundle();
         bundle.putParcelable("event", item);
         fragment.setArguments(bundle);
-        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment,Constantes.TAG_DETAIL_RACES_FRAGMENT).addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment,Constantes.TAG_DETAIL_RACES_FRAGMENT).addToBackStack("detail").commit();
+        Log.e("asdasdasd","DetailRaceFragment "+getSupportFragmentManager().getBackStackEntryCount());
     }
 
     @Override
