@@ -4,11 +4,7 @@ import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import static android.R.attr.bitmap;
-import static android.R.attr.description;
 import static android.R.attr.id;
-import static android.R.attr.name;
-import static android.R.attr.rating;
 
 /**
  * Created by moha on 10/01/17.
@@ -24,6 +20,7 @@ public class User implements Parcelable {
     private Bitmap photo;
     private String country;
     private String token_push;
+    private String idTokenGoogle;
 
     public User() {
         this.email = "";
@@ -33,7 +30,7 @@ public class User implements Parcelable {
         this.photo = null;
         this.country = "";
         this.token_push = "";
-
+        this.idTokenGoogle="";
     }
 
     protected User(Parcel in) {
@@ -126,6 +123,14 @@ public class User implements Parcelable {
 
     public void setToken_push(String token_push) {
         this.token_push = token_push;
+    }
+
+    public String getIdTokenGoogle() {
+        return idTokenGoogle;
+    }
+
+    public void setIdTokenGoogle(String idTokenGoogle) {
+        this.idTokenGoogle = idTokenGoogle;
     }
 
     @Override

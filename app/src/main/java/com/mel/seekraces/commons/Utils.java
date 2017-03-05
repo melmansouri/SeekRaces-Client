@@ -45,7 +45,7 @@ public class Utils {
         Bitmap bitmap=null;
         try {
             InputStream imageStream = context.getContentResolver().openInputStream(uriImage);
-            bitmap = getResizedBitmap(BitmapFactory.decodeStream(imageStream),400);
+            bitmap = BitmapFactory.decodeStream(imageStream);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -154,7 +154,7 @@ public class Utils {
 
     public static Bitmap base64ToBitmap(String b64) {
         byte[] imageAsBytes = Base64.decode(b64.getBytes(), Base64.DEFAULT);
-        return getResizedBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length),150);
+        return BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
     }
 
     public static boolean isValidEmail(String email) {
@@ -248,7 +248,7 @@ public class Utils {
         urlString.append("https://maps.googleapis.com/maps/api/place/autocomplete/json");
         urlString.append("?input=");
         try {
-            urlString.append(URLEncoder.encode(input, "utf8"));
+            urlString.append(URLEncoder.encode(input.trim(), "utf8"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
