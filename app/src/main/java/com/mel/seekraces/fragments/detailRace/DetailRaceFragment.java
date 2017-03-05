@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mel.seekraces.R;
-import com.mel.seekraces.entities.Event;
+import com.mel.seekraces.entities.Race;
 import com.mel.seekraces.interfaces.IGenericInterface;
 
 import java.text.ParseException;
@@ -50,13 +50,13 @@ public class DetailRaceFragment extends Fragment {
     TextView txtDescripcion;
     @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
-    private Event event;
+    private Race race;
     private IGenericInterface.OnFragmentInteractionListener mListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        event = getArguments().getParcelable("event");
+        race = getArguments().getParcelable("race");
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         mListener.setDrawerEnabled(false);
         mListener.hideFloatingButton();
@@ -82,32 +82,32 @@ public class DetailRaceFragment extends Fragment {
             }
         });
         //mListener.setActionBar(toolbar);
-        imgRace.setImageBitmap(event.getBitmap());
+        imgRace.setImageBitmap(race.getBitmap());
 
-        //toolbar.setTitle(event.getName());
-        collapsingToolbar.setTitle(event.getName());
+        //toolbar.setTitle(race.getName());
+        collapsingToolbar.setTitle(race.getName());
         //collapsingToolbar.setExpandedTitleColor(getActivity().getColor(android.R.color.transparent));
-        txtDistance.setText(event.getDistance() + "KM");
+        txtDistance.setText(race.getDistance() + "KM");
         SimpleDateFormat formato =
                 new SimpleDateFormat("EEEE d 'de' MMMM 'de' yyyy 'a las' HH:mm", Locale.getDefault());
         SimpleDateFormat sdf =
                 new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = null;
         try {
-            date = sdf.parse(event.getDate_time_init());
+            date = sdf.parse(race.getDate_time_init());
         } catch (ParseException e) {
             e.printStackTrace();
         }
         String fecha = formato.format(date);
         txtFecha.setText(fecha);
-        txtLugar.setText(event.getPlace());
-        txtWeb.setText(event.getWeb());
-        txtDescripcion.setText(event.getDescription());
+        txtLugar.setText(race.getPlace());
+        txtWeb.setText(race.getWeb());
+        txtDescripcion.setText(race.getDescription());
         toolbar.inflateMenu(R.menu.menu_fragment_detail);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                mListener.startScreenReviews(event.getId());
+                mListener.startScreenReviews(race.getId());
                 return false;
             }
         });

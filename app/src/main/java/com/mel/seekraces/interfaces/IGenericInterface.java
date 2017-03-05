@@ -3,7 +3,7 @@ package com.mel.seekraces.interfaces;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.mel.seekraces.entities.Event;
+import com.mel.seekraces.entities.Race;
 import com.mel.seekraces.entities.Favorite;
 
 /**
@@ -26,7 +26,7 @@ public interface IGenericInterface {
 
         void setOnClickNavigationToolbar(View.OnClickListener onToolbarNavigationClickListener);
 
-        void onListFragmentInteraction(Event item);
+        void onListFragmentInteraction(Race item);
 
         void setCheckedItemNavView(int index);
 
@@ -38,7 +38,7 @@ public interface IGenericInterface {
 
         void setDrawerEnabled(boolean enabled);
 
-        void editEvent(Event event);
+        void editEvent(Race race);
 
         void showFloatingButton();
 

@@ -2,7 +2,6 @@ package com.mel.seekraces.activities.signin;
 
 import android.util.Log;
 
-import com.mel.seekraces.R;
 import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.RMapped;
 import com.mel.seekraces.commons.Utils;
@@ -31,11 +30,13 @@ public class SignInPresenterImpl implements ISignInPresenter, IListennerCallBack
         if (view!=null){
             if (!isOnline){
                 view.hideProgress();
+                view.showComponents();
                 view.showMessage("Comprueba tu conexión");
                 return;
             }
             if (!verifyDataUser(user)) {
                 view.hideProgress();
+                view.showComponents();
                 return;
             }
             interactor.signIn(user);
@@ -122,6 +123,7 @@ public class SignInPresenterImpl implements ISignInPresenter, IListennerCallBack
     public void onDestroy() {
         view=null;
         interactor.signIn(null);
+        interactor=null;
     }
 
     @Override

@@ -2,9 +2,7 @@ package com.mel.seekraces.connection;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.mel.seekraces.deserializers.EventDeserializer;
 import com.mel.seekraces.deserializers.PlacePredictionsDeserializer;
-import com.mel.seekraces.entities.Event;
 import com.mel.seekraces.entities.PlacePredictions;
 import com.mel.seekraces.interfaces.INetworkConnectionApi;
 

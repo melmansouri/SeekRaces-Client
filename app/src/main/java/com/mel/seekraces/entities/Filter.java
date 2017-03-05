@@ -9,8 +9,10 @@ import android.os.Parcelable;
 
 public class Filter implements Parcelable{
     private String user;
+    private String name;
     private String place;
-    private int distance;
+    private int distanceMin;
+    private int distanceMax;
     private String date_interval_init;
     private String date_interval_end;
 
@@ -21,7 +23,9 @@ public class Filter implements Parcelable{
     protected Filter(Parcel in) {
         user=in.readString();
         place = in.readString();
-        distance = in.readInt();
+        name = in.readString();
+        distanceMin = in.readInt();
+        distanceMax = in.readInt();
         date_interval_init = in.readString();
         date_interval_end = in.readString();
     }
@@ -46,6 +50,14 @@ public class Filter implements Parcelable{
         this.user = user;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getPlace() {
         return place;
     }
@@ -54,13 +66,20 @@ public class Filter implements Parcelable{
         this.place = place;
     }
 
-
-    public int getDistance() {
-        return distance;
+    public int getDistanceMin() {
+        return distanceMin;
     }
 
-    public void setDistance(int distance) {
-        this.distance = distance;
+    public void setDistanceMin(int distanceMin) {
+        this.distanceMin = distanceMin;
+    }
+
+    public int getDistanceMax() {
+        return distanceMax;
+    }
+
+    public void setDistanceMax(int distanceMax) {
+        this.distanceMax = distanceMax;
     }
 
     public String getDate_interval_init() {
@@ -83,10 +102,12 @@ public class Filter implements Parcelable{
     public String toString() {
         return "Filter{" +
                 "user='" + user + '\'' +
-                "place='" + place + '\'' +
-                ", distance='" + distance + '\'' +
-                ", date_interval_init=" + date_interval_init +
-                ", date_interval_end=" + date_interval_end +
+                ", name='" + name + '\'' +
+                ", place='" + place + '\'' +
+                ", distanceMin=" + distanceMin +
+                ", distanceMax=" + distanceMax +
+                ", date_interval_init='" + date_interval_init + '\'' +
+                ", date_interval_end='" + date_interval_end + '\'' +
                 '}';
     }
 
@@ -99,7 +120,9 @@ public class Filter implements Parcelable{
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(user);
         dest.writeString(place);
-        dest.writeInt(distance);
+        dest.writeString(name);
+        dest.writeInt(distanceMin);
+        dest.writeInt(distanceMax);
         dest.writeString(date_interval_init);
         dest.writeString(date_interval_end);
     }
@@ -107,7 +130,9 @@ public class Filter implements Parcelable{
     private void readFromParcel(Parcel in) {
         user = in.readString();
         place = in.readString();
-        distance = in.readInt();
+        name = in.readString();
+        distanceMin = in.readInt();
+        distanceMax = in.readInt();
         date_interval_init = in.readString();
         date_interval_end = in.readString();
     }

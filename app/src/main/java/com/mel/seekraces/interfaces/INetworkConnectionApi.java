@@ -1,6 +1,6 @@
 package com.mel.seekraces.interfaces;
 
-import com.mel.seekraces.entities.Event;
+import com.mel.seekraces.entities.Race;
 import com.mel.seekraces.entities.Favorite;
 import com.mel.seekraces.entities.PlacePredictions;
 import com.mel.seekraces.entities.Response;
@@ -24,8 +24,8 @@ public interface INetworkConnectionApi {
     // TODO: Cambiar host por "10.0.0.2" para Genymotion.
     // TODO: Cambiar host por "10.0.0.3" para AVD.
     // TODO: Cambiar host por IP de tu PC para dispositivo real.
-    String BASE_URL = "http://192.168.0.106:8080/SeekRaces/api/";
-    String BASE_URL_PICTURES = "http://192.168.0.106:8080/SeekRaces/pictures/";
+    String BASE_URL = "http://192.168.0.101:8080/SeekRaces/api/";
+    String BASE_URL_PICTURES = "http://192.168.0.101:8080/SeekRaces/pictures/";
     //String BASE_URL = "http://192.168.105.109/SeekRaces/api/";
     //String BASE_URL_PICTURES = "http://192.168.105.109/SeekRaces/pictures/";
 
@@ -46,8 +46,10 @@ public interface INetworkConnectionApi {
 
     @GET("event")
     Call<Response> getRacesPublished(@Query("user") String user,
+                                     @Query("name") String name,
                                      @Query("place") String place,
-                                     @Query("distance") int distance,
+                                     @Query("distanceMin") int distanceMin,
+                                     @Query("distanceMax") int distanceMax,
                                      @Query("date_interval_init") String date_interval_init,
                                      @Query("date_interval_end") String date_interval_end);
 
@@ -60,7 +62,7 @@ public interface INetworkConnectionApi {
 
 
     @POST("event")
-    Call<Response> addRaces(@Body Event event);
+    Call<Response> addRaces(@Body Race race);
 
     @POST("user/event/favorites")
     Call<Response> addEventToFavorites(@Body Favorite favorite);
@@ -69,7 +71,7 @@ public interface INetworkConnectionApi {
     Call<Response> deleteEventFromFavorites(@Url String url);
 
     @PUT("event")
-    Call<Response> editRace(@Body Event event);
+    Call<Response> editRace(@Body Race race);
 
     @GET
     Call<Response> getReviews(@Url String url);

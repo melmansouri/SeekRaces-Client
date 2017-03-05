@@ -4,13 +4,15 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
-import android.support.v7.widget.AppCompatSpinner;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mel.seekraces.R;
@@ -18,12 +20,13 @@ import com.mel.seekraces.adapters.AutoCompleteAdapter;
 import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.SharedPreferencesSingleton;
 import com.mel.seekraces.commons.Utils;
-import com.mel.seekraces.commons.UtilsViews;
 import com.mel.seekraces.entities.Filter;
 import com.mel.seekraces.entities.PlacePredictions;
 import com.mel.seekraces.fragments.DatePickerFragment;
 import com.mel.seekraces.interfaces.filters.IFiltersPresenter;
 import com.mel.seekraces.interfaces.filters.IFiltersView;
+
+import org.florescu.android.rangeseekbar.RangeSeekBar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,10 +42,20 @@ public class FiltersActivity extends AppCompatActivity implements IFiltersView {
     TextView dtpFechaDesde;
     @BindView(R.id.dtpFechaHasta)
     TextView dtpFechaHasta;
-    @BindView(R.id.spDistancia)
-    AppCompatSpinner spDistancia;
+    /*@BindView(R.id.spDistancia)
+    AppCompatSpinner spDistancia;*/
     @BindView(R.id.edtLugar)
     AppCompatAutoCompleteTextView edtLugar;
+    @BindView(R.id.rangeSeekBar)
+    RangeSeekBar rangeSeekBar;
+    @BindView(R.id.txtRangoDistancias)
+    TextView txtRangoDistancias;
+    @BindView(R.id.text_input_layout_lugar)
+    TextInputLayout textInputLayoutLugar;
+    @BindView(R.id.lncityCountry)
+    LinearLayout lncityCountry;
+    @BindView(R.id.edtNameRace)
+    TextInputEditText edtNameRace;
     private SharedPreferencesSingleton sharedPreferencesSingleton;
     private IFiltersPresenter presenter;
     private DialogFragment datePickerFragment;
@@ -59,7 +72,21 @@ public class FiltersActivity extends AppCompatActivity implements IFiltersView {
         presenter = new FilterPresenterImpl(this);
         dtpFechaDesde.setText(Utils.getCurrentDateSpanishString());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        spDistancia.setAdapter(UtilsViews.getSpinnerDistanceAdapter(this,R.layout.support_simple_spinner_dropdown_item,false));
+        //spDistancia.setAdapter(UtilsViews.getSpinnerDistanceAdapter(this,R.layout.support_simple_spinner_dropdown_item,false));
+        rangeSeekBar.setRangeValues(1, 100);
+
+        txtRangoDistancias.setText("1 km - 100 kms");
+
+        rangeSeekBar.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener() {
+            @Override
+            public void onRangeSeekBarValuesChanged(RangeSeekBar bar, Object minValue, Object maxValue) {
+                String kmMin = ((int) minValue == 1) ? (int) minValue + " km" : (int) minValue + " kms";
+                String kmMax = ((int) maxValue == 1) ? (int) maxValue + " km" : (int) maxValue + " kms";
+
+                txtRangoDistancias.setText(kmMin.concat(" - ").concat(kmMax));
+            }
+        });
+
     }
 
     @Override
@@ -79,12 +106,15 @@ public class FiltersActivity extends AppCompatActivity implements IFiltersView {
         Filter filter = new Filter();
         filter.setUser(sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER));
         filter.setPlace(edtLugar.getText().toString().trim());
-        String distance = spDistancia.getSelectedItem().toString();
-        try{
+        //String distance = spDistancia.getSelectedItem().toString();
+        /*try {
             filter.setDistance(Integer.valueOf(distance.replace("KM", "")));
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
+        filter.setName(edtNameRace.getText().toString().trim());
+        filter.setDistanceMin(rangeSeekBar.getSelectedMinValue().intValue());
+        filter.setDistanceMax(rangeSeekBar.getSelectedMaxValue().intValue());
         String fechaDesde = Utils.convertDateSpanishToEnglish(dtpFechaDesde.getText().toString());
         filter.setDate_interval_init(fechaDesde);
         String fechaHasta = Utils.convertDateSpanishToEnglish(dtpFechaHasta.getText().toString());

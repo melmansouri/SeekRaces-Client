@@ -1,6 +1,6 @@
 package com.mel.seekraces.interfaces.fragmentRacesPublishedFavorites;
 
-import com.mel.seekraces.entities.Event;
+import com.mel.seekraces.entities.Race;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import java.util.List;
  */
 
 public interface IListFragmentRacesPublishedFavoritesView {
-    void fillAdapterList(List<Event> races);
+    void fillAdapterList(List<Race> races);
     void showProgressBar();
     void hideProgressBar();
     void showList();

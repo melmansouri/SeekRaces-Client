@@ -103,7 +103,7 @@ public class ReviewsFragment extends Fragment implements IFragmentReviewsView {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        presenter.getReviews(idEvent);
+        presenter.getReviews(Utils.isOnline(getContext()),idEvent);
     }
 
 
@@ -186,7 +186,7 @@ public class ReviewsFragment extends Fragment implements IFragmentReviewsView {
                 review.setScore(ratingBarDialog.getRating());
                 review.setComment(edtOpinion.getText().toString());
                 review.setDateOpinion(Utils.convertDateSpanishToEnglish(Utils.getCurrentDateSpanishString()));
-                presenter.addReview(review);
+                presenter.addReview(Utils.isOnline(getContext()),review);
             }
         });
 
@@ -217,7 +217,7 @@ public class ReviewsFragment extends Fragment implements IFragmentReviewsView {
                 review.setScore(ratingBarDialog.getRating());
                 review.setComment(edtOpinion.getText().toString());
                 review.setDateOpinion(Utils.convertDateSpanishToEnglish(Utils.getCurrentDateSpanishString()));
-                presenter.editReview(review);
+                presenter.editReview(Utils.isOnline(getContext()),review);
             }
         });
 
@@ -236,7 +236,7 @@ public class ReviewsFragment extends Fragment implements IFragmentReviewsView {
 
     @Override
     public void deleteOwnReview() {
-        presenter.deleteReview(sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER), idEvent);
+        presenter.deleteReview(Utils.isOnline(getContext()),sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER), idEvent);
     }
 
     @Override

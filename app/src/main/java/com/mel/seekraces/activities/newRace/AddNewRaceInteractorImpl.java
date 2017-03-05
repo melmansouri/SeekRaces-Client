@@ -1,9 +1,7 @@
 package com.mel.seekraces.activities.newRace;
 
-import android.text.style.ReplacementSpan;
-
 import com.mel.seekraces.connection.RetrofitSingleton;
-import com.mel.seekraces.entities.Event;
+import com.mel.seekraces.entities.Race;
 import com.mel.seekraces.entities.PlacePredictions;
 import com.mel.seekraces.entities.Response;
 import com.mel.seekraces.interfaces.IListennerCallBack;
@@ -30,9 +28,9 @@ public class AddNewRaceInteractorImpl implements IAddNewRaceInteractor {
     }
 
     @Override
-    public void addRace(Event event) {
-        if (event!=null){
-            addRacesCall=networkConnectionApi.addRaces(event);
+    public void addRace(Race race) {
+        if (race !=null){
+            addRacesCall=networkConnectionApi.addRaces(race);
             addRacesCall.enqueue(new Callback<Response>() {
                 @Override
                 public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
@@ -57,7 +55,7 @@ public class AddNewRaceInteractorImpl implements IAddNewRaceInteractor {
                 public void onFailure(Call<Response> call, Throwable t) {
                     if (addRacesCall!=null && !addRacesCall.isCanceled()){
                         Response response=new Response();
-                        response.setMessage(t.getMessage());
+                        response.setMessage("Problemas para conectar al servidor");
                         listennerCallBack.onError(response);
                     }
                 }

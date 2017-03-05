@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,21 +16,25 @@ import android.view.ViewGroup;
 
 import com.mel.seekraces.R;
 import com.mel.seekraces.adapters.RVRacesPublishedAdapter;
+import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.RMapped;
+import com.mel.seekraces.commons.SharedPreferencesSingleton;
+import com.mel.seekraces.commons.Utils;
 import com.mel.seekraces.customsViews.SwipeRefreshLayoutWithEmpty;
-import com.mel.seekraces.entities.Event;
 import com.mel.seekraces.entities.Favorite;
 import com.mel.seekraces.entities.Filter;
+import com.mel.seekraces.entities.Race;
 import com.mel.seekraces.interfaces.IGenericInterface;
 import com.mel.seekraces.interfaces.fragmentRacesPublished.IListFragmentRacesPublishedPresenter;
 import com.mel.seekraces.interfaces.fragmentRacesPublished.IListFragmentRacesPublishedView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ListRacesPublishedFragment extends Fragment implements IListFragmentRacesPublishedView,IGenericInterface.OnListInteractionListener {
+public class ListRacesPublishedFragment extends Fragment implements IListFragmentRacesPublishedView,IGenericInterface.OnListInteractionListener,SearchView.OnQueryTextListener {
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.swipeRefresh)
@@ -38,6 +43,8 @@ public class ListRacesPublishedFragment extends Fragment implements IListFragmen
     private IListFragmentRacesPublishedPresenter presenter;
     private Filter filter;
     private IGenericInterface.OnFragmentInteractionListener mListener;
+    private List<Race> racesWithoutFilter;
+    private SearchView searchView;
 
     @Override
     public void onResume() {
@@ -51,6 +58,7 @@ public class ListRacesPublishedFragment extends Fragment implements IListFragmen
         super.onCreate(savedInstanceState);
         filter = getArguments().getParcelable("filter");
         presenter = new com.mel.seekraces.fragments.racesPublished.ListFragmentRacesPublishedPresenterImpl(this);
+        racesWithoutFilter=new ArrayList<>();
     }
 
     @Override
@@ -68,7 +76,9 @@ public class ListRacesPublishedFragment extends Fragment implements IListFragmen
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                presenter.getRacesPublished(filter);
+                filter=new Filter();
+                filter.setUser(SharedPreferencesSingleton.getInstance(getContext()).getStringSP(Constantes.KEY_USER));
+                presenter.getRacesPublished(Utils.isOnline(getContext()),filter);
             }
         });
         setHasOptionsMenu(true);
@@ -78,13 +88,30 @@ public class ListRacesPublishedFragment extends Fragment implements IListFragmen
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        presenter.getRacesPublished(filter);
+        presenter.getRacesPublished(Utils.isOnline(getContext()),filter);
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
         inflater.inflate(R.menu.menu_fragment_list_races_published, menu);
+        /*final MenuItem item = menu.findItem(R.id.action_search);
+        searchView = (SearchView) MenuItemCompat.getActionView(item);
+        searchView.setOnQueryTextListener(this);
+        MenuItemCompat.setOnActionExpandListener(item,
+                new MenuItemCompat.OnActionExpandListener() {
+                    @Override
+                    public boolean onMenuItemActionCollapse(MenuItem item) {
+                        adapter.filter(racesWithoutFilter,"");
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onMenuItemActionExpand(MenuItem item) {
+
+                        return true;
+                    }
+                });*/
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -96,12 +123,14 @@ public class ListRacesPublishedFragment extends Fragment implements IListFragmen
     }
 
     @Override
-    public void fillAdapterList(List<Event> races) {
+    public void fillAdapterList(List<Race> races) {
         hideProgressBar();
+        /*racesWithoutFilter.clear();
+        racesWithoutFilter.addAll(races);*/
+
         adapter = new RVRacesPublishedAdapter(races, this,mListener);
         recyclerView.setAdapter(adapter);
     }
-
     @Override
     public void showProgressBar() {
         swipeRefresh.setRefreshing(true);
@@ -158,16 +187,27 @@ public class ListRacesPublishedFragment extends Fragment implements IListFragmen
 
     @Override
     public void addEventToFavorite(Favorite item) {
-        presenter.addEventToFavorite(item);
+        presenter.addEventToFavorite(Utils.isOnline(getContext()),item);
     }
 
     @Override
     public void deleteEventFromFavorite(String user, int id) {
-        presenter.deleteEventFromFavorite(user,id);
+        presenter.deleteEventFromFavorite(Utils.isOnline(getContext()),user,id);
     }
 
     @Override
     public void onItemLongClickListener(Object object) {
 
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        presenter.filter(adapter,racesWithoutFilter,newText);
+        return true;
     }
 }

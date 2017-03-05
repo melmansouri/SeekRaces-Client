@@ -55,7 +55,7 @@ public class ListFragmentRacesPublishedFavoritesInteractorImpl implements IListF
                 public void onFailure(Call<Response> call, Throwable t) {
                     if (racesPublishedFavoritesCall!=null && !racesPublishedFavoritesCall.isCanceled()){
                         Response response=new Response();
-                        response.setMessage(t.getMessage());
+                        response.setMessage("Problemas para conectar con el servidor. Intentalo más tarde");
                         listennerCallBack.onError(response);
                     }
                 }
@@ -100,7 +100,7 @@ public class ListFragmentRacesPublishedFavoritesInteractorImpl implements IListF
                 public void onFailure(Call<Response> call, Throwable t) {
                     if (deleteEventFromFavoritesCall!=null && !deleteEventFromFavoritesCall.isCanceled()){
                         Response response=new Response();
-                        response.setMessage(t.getMessage());
+                        response.setMessage("Problemas para conectar con el servidor. Intentalo más tarde");
                         listennerCallBack.onError(response);
                     }
                 }

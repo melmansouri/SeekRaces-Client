@@ -32,8 +32,15 @@ public interface ILoginView {
 
     void loginFacebook();
 
+    void signInGoogle();
+
+    void checkSignInGoogle();
+
+    void loginGoogle();
+
     void fogotPassword();
 
     void finishActivity();
 
+    void revokeAccessSignInGoogle();
 }

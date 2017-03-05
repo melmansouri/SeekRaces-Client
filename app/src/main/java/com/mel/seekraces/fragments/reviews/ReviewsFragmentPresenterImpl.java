@@ -32,10 +32,16 @@ public class ReviewsFragmentPresenterImpl implements IFragmentReviewsPresenter, 
     }
 
     @Override
-    public void getReviews(int idEvent) {
+    public void getReviews(boolean isOnline, int idEvent) {
         if (view != null) {
             view.hideList();
             view.showProgressBar();
+            if (!isOnline){
+                view.showList();
+                view.hideProgressBar();
+                view.showMessage("Comprueba tu conexión");
+                return;
+            }
             interactor.getReviws(idEvent);
         }
     }
@@ -60,31 +66,50 @@ public class ReviewsFragmentPresenterImpl implements IFragmentReviewsPresenter, 
         interactor.addReview(null);
         interactor.editReview(null);
         interactor.deleteReview(null, 0);
+        interactor=null;
     }
 
     @Override
-    public void addReview(Review review) {
+    public void addReview(boolean isOnline,Review review) {
         if (view != null) {
             view.hideList();
             view.showProgressBar();
+            if (!isOnline){
+                view.showList();
+                view.hideProgressBar();
+                view.showMessage("Comprueba tu conexión");
+                return;
+            }
             interactor.addReview(review);
         }
     }
 
     @Override
-    public void editReview(Review review) {
+    public void editReview(boolean isOnline,Review review) {
         if (view != null) {
             view.hideList();
             view.showProgressBar();
+            if (!isOnline){
+                view.showList();
+                view.hideProgressBar();
+                view.showMessage("Comprueba tu conexión");
+                return;
+            }
             interactor.editReview(review);
         }
     }
 
     @Override
-    public void deleteReview(String user, int idEvent) {
+    public void deleteReview(boolean isOnline,String user, int idEvent) {
         if (view != null) {
             view.hideList();
             view.showProgressBar();
+            if (!isOnline){
+                view.showList();
+                view.hideProgressBar();
+                view.showMessage("Comprueba tu conexión");
+                return;
+            }
             interactor.deleteReview(user, idEvent);
         }
     }
@@ -155,9 +180,9 @@ public class ReviewsFragmentPresenterImpl implements IFragmentReviewsPresenter, 
         if (view != null) {
             view.hideProgressBar();
             fillViewOwnReview(null);
-            /*if (view.getAdapter()!=null){
+            if (view.getAdapter()!=null){
                 view.showList();
-            }*/
+            }
             view.showMessage(response.getMessage());
         }
     }

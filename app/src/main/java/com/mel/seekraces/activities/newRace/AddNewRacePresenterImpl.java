@@ -1,16 +1,14 @@
 package com.mel.seekraces.activities.newRace;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.RMapped;
 import com.mel.seekraces.commons.Utils;
-import com.mel.seekraces.entities.Event;
+import com.mel.seekraces.entities.Race;
 import com.mel.seekraces.entities.PlacePredictions;
 import com.mel.seekraces.entities.Response;
 import com.mel.seekraces.interfaces.IListennerCallBack;
-import com.mel.seekraces.interfaces.fragmentRacesPublishedFavorites.IListFragmentRacesPublishedFavoritesPresenter;
 import com.mel.seekraces.interfaces.newRace.IAddNewRaceInteractor;
 import com.mel.seekraces.interfaces.newRace.IAddNewRacePresenter;
 import com.mel.seekraces.interfaces.newRace.IAddNewRaceView;
@@ -29,18 +27,20 @@ public class AddNewRacePresenterImpl implements IAddNewRacePresenter, IListenner
     }
 
     @Override
-    public void addRace(boolean isOnline,Event event) {
+    public void addRace(boolean isOnline,Race race) {
         if (view!=null){
             if (!isOnline){
                 view.hideProgress();
+                view.showComponents();
                 view.showMessage("Comprueba tu conexión");
                 return;
             }
-            if (!verifyDataUser(event)) {
+            if (!verifyDataUser(race)) {
                 view.hideProgress();
+                view.showComponents();
                 return;
             }
-            interactor.addRace(event);
+            interactor.addRace(race);
         }
     }
 
@@ -52,17 +52,17 @@ public class AddNewRacePresenterImpl implements IAddNewRacePresenter, IListenner
         }
     }
 
-    private boolean verifyDataUser(Event event) {
+    private boolean verifyDataUser(Race race) {
         boolean result = true;
-        if (TextUtils.isEmpty(event.getPlace())){
+        if (TextUtils.isEmpty(race.getPlace())){
             view.showErrorPlaces("Debe de introducir el lugar de la carrera");
             result=false;
         }
-        if (TextUtils.isEmpty(event.getName())) {
+        if (TextUtils.isEmpty(race.getName())) {
             view.showErrorName("La carrera debe de tener un nombre");
             result = false;
         }
-        if (event.getDistance()==0){
+        if (race.getDistance()==0){
             view.showMessage("La distancia mínima es 1 KM");
             result = false;
         }
@@ -115,6 +115,7 @@ public class AddNewRacePresenterImpl implements IAddNewRacePresenter, IListenner
         view=null;
         interactor.getAutoCompletePlaces(null);
         interactor.addRace(null);
+        interactor=null;
     }
 
     @Override
@@ -143,7 +144,7 @@ public class AddNewRacePresenterImpl implements IAddNewRacePresenter, IListenner
         if (view!=null){
             if (object instanceof Response){
                 view.hideProgress();
-                view.showMessage(((Response)object).getMessage());
+                //view.showMessage(((Response)object).getMessage());
                 view.returnToMainScreen(((Response)object).getMessage());
             }else if (object instanceof PlacePredictions){
                 if (((PlacePredictions)object).getStatus().equals("OK")){
@@ -161,6 +162,7 @@ public class AddNewRacePresenterImpl implements IAddNewRacePresenter, IListenner
     public void onError(Response response) {
         if (view!=null){
             view.hideProgress();
+            view.showComponents();
             view.showMessage(response.getMessage());
         }
     }

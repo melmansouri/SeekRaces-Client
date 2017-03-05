@@ -1,7 +1,7 @@
 package com.mel.seekraces.fragments.editRace;
 
 import com.mel.seekraces.connection.RetrofitSingleton;
-import com.mel.seekraces.entities.Event;
+import com.mel.seekraces.entities.Race;
 import com.mel.seekraces.entities.PlacePredictions;
 import com.mel.seekraces.entities.Response;
 import com.mel.seekraces.interfaces.IListennerCallBack;
@@ -28,9 +28,9 @@ public class EditRaceFragmentInteractorImpl implements IEditRaceInteractor {
     }
 
     @Override
-    public void editRace(Event event) {
-        if (event!=null){
-            editRaceCall=networkConnectionApi.editRace(event);
+    public void editRace(Race race) {
+        if (race !=null){
+            editRaceCall=networkConnectionApi.editRace(race);
             editRaceCall.enqueue(new Callback<Response>() {
                 @Override
                 public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
@@ -55,7 +55,7 @@ public class EditRaceFragmentInteractorImpl implements IEditRaceInteractor {
                 public void onFailure(Call<Response> call, Throwable t) {
                     if (editRaceCall!=null && !editRaceCall.isCanceled()){
                         Response response=new Response();
-                        response.setMessage(t.getMessage());
+                        response.setMessage("Problemas para conectar con el servidor. Intentalo más tarde");
                         listennerCallBack.onError(response);
                     }
                 }

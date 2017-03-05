@@ -5,9 +5,10 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.mel.seekraces.adapters.RVRacesPublishedAdapter;
 import com.mel.seekraces.commons.RMapped;
 import com.mel.seekraces.deserializers.EventDeserializer;
-import com.mel.seekraces.entities.Event;
+import com.mel.seekraces.entities.Race;
 import com.mel.seekraces.entities.Favorite;
 import com.mel.seekraces.entities.Filter;
 import com.mel.seekraces.entities.Response;
@@ -35,9 +36,14 @@ public class ListFragmentRacesPublishedPresenterImpl implements IListFragmentRac
 
 
     @Override
-    public void getRacesPublished(Filter filter) {
+    public void getRacesPublished(boolean isOnline, Filter filter) {
         if (view!=null){
             view.showProgressBar();
+            if (!isOnline){
+                view.hideProgressBar();
+                view.showMessage("Comprueba tu conexión");
+                return;
+            }
             //view.showList();
             interactor.getRacesPublished(filter);
         }
@@ -63,13 +69,37 @@ public class ListFragmentRacesPublishedPresenterImpl implements IListFragmentRac
     }
 
     @Override
-    public void addEventToFavorite(Favorite item) {
-        interactor.addEventToFavorites(item);
+    public void addEventToFavorite(boolean online, Favorite item) {
+        if (view!=null){
+            view.showProgressBar();
+            if (!online){
+                view.hideProgressBar();
+                view.showMessage("Comprueba tu conexión");
+                return;
+            }
+            interactor.addEventToFavorites(item);
+        }
+
     }
 
     @Override
-    public void deleteEventFromFavorite(String user, int id) {
-        interactor.deleteEventFromFavorite(user,id);
+    public void deleteEventFromFavorite(boolean online, String user, int id) {
+        if (view!=null){
+            view.showProgressBar();
+            if (!online){
+                view.hideProgressBar();
+                view.showMessage("Comprueba tu conexión");
+                return;
+            }
+            interactor.deleteEventFromFavorite(user,id);
+        }
+    }
+
+    @Override
+    public void filter(RVRacesPublishedAdapter adapter, List<Race> racesWithoutFilter, String newText) {
+        if (adapter!=null){
+            adapter.filter(racesWithoutFilter,newText);
+        }
     }
 
     @Override
@@ -78,10 +108,10 @@ public class ListFragmentRacesPublishedPresenterImpl implements IListFragmentRac
                 view.hideProgressBar();
                 GsonBuilder gsonBuilder = new GsonBuilder()
                         .setLenient();
-                gsonBuilder.registerTypeAdapter(Event.class,new EventDeserializer());
+                gsonBuilder.registerTypeAdapter(Race.class,new EventDeserializer());
                 Gson gson=gsonBuilder.create();
-                Type founderListType = new TypeToken<ArrayList<Event>>(){}.getType();
-                List<Event> carreras=gson.fromJson(((Response)object).getContent(),founderListType);
+                Type founderListType = new TypeToken<ArrayList<Race>>(){}.getType();
+                List<Race> carreras=gson.fromJson(((Response)object).getContent(),founderListType);
                 view.fillAdapterList(carreras);
                 view.showList();
         }

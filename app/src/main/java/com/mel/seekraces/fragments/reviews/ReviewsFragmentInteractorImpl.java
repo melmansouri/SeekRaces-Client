@@ -56,7 +56,7 @@ public class ReviewsFragmentInteractorImpl implements IFragmentReviewsInteractor
                 public void onFailure(Call<Response> call, Throwable t) {
                     if (getReviewsCall!=null && !getReviewsCall.isCanceled()) {
                         Response response=new Response();
-                        response.setMessage(t.getMessage());
+                        response.setMessage("Problemas para conectar con el servidor. Intentalo más tarde");
                         listennerCallBack.onError(response);
                     }
                 }
@@ -99,7 +99,7 @@ public class ReviewsFragmentInteractorImpl implements IFragmentReviewsInteractor
                 public void onFailure(Call<Response> call, Throwable t) {
                     if (addReviewsCall!=null && !addReviewsCall.isCanceled()) {
                         Response response=new Response();
-                        response.setMessage(t.getMessage());
+                        response.setMessage("Problemas para conectar con el servidor. Intentalo más tarde");
                         listennerCallBack.onError(response);
                     }
                 }
@@ -142,7 +142,7 @@ public class ReviewsFragmentInteractorImpl implements IFragmentReviewsInteractor
                 public void onFailure(Call<Response> call, Throwable t) {
                     if (editReviewsCall!=null && !editReviewsCall.isCanceled()) {
                         Response response=new Response();
-                        response.setMessage(t.getMessage());
+                        response.setMessage("Problemas para conectar con el servidor. Intentalo más tarde");
                         listennerCallBack.onError(response);
                     }
                 }
@@ -186,7 +186,7 @@ public class ReviewsFragmentInteractorImpl implements IFragmentReviewsInteractor
                 public void onFailure(Call<Response> call, Throwable t) {
                     if (deleteReviewsCall!=null && !deleteReviewsCall.isCanceled()) {
                         Response response=new Response();
-                        response.setMessage(t.getMessage());
+                        response.setMessage("Problemas para conectar con el servidor. Intentalo más tarde");
                         listennerCallBack.onError(response);
                     }
                 }

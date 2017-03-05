@@ -13,7 +13,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -27,8 +26,8 @@ import com.mel.seekraces.activities.newRace.AddNewRaceActivity;
 import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.SharedPreferencesSingleton;
 import com.mel.seekraces.commons.UtilsViews;
-import com.mel.seekraces.entities.Event;
 import com.mel.seekraces.entities.Filter;
+import com.mel.seekraces.entities.Race;
 import com.mel.seekraces.fragments.detailRace.DetailRaceFragment;
 import com.mel.seekraces.fragments.editRace.EditRaceFragment;
 import com.mel.seekraces.fragments.ownRacesPublished.ListOwnRacesPublishedFragment;
@@ -110,7 +109,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void backToPreviousFragmentById(int id) {
-        getSupportFragmentManager().popBackStack(getSupportFragmentManager().getBackStackEntryAt(id).getId(),getSupportFragmentManager().POP_BACK_STACK_INCLUSIVE);
+        getSupportFragmentManager().popBackStackImmediate(getSupportFragmentManager().getBackStackEntryAt(id).getId(),getSupportFragmentManager().POP_BACK_STACK_INCLUSIVE);
     }
 
     @Override
@@ -126,11 +125,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean actualFragmentActiveInstanceOf(Class clase) {
         return (actualFragmentActive!=null && clase.isAssignableFrom(actualFragmentActive.getClass()));
-    }
-
-    @Override
-    public void clearPopBackStack() {
-        getSupportFragmentManager().popBackStack(null,getSupportFragmentManager().POP_BACK_STACK_INCLUSIVE);
     }
 
 
@@ -169,8 +163,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void returnBack() {
-        super.onBackPressed();
-        //finish();
+        //super.onBackPressed();
+        finish();
     }
 
     @Override
@@ -232,14 +226,13 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void editEvent(Event event) {
+    public void editEvent(Race race) {
         EditRaceFragment fragment;
         fragment = new EditRaceFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelable("event", event);
+        bundle.putParcelable("race", race);
         fragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment).addToBackStack("edit").commit();
-        Log.e("asdasdasd","editEvent "+getSupportFragmentManager().getBackStackEntryCount());
     }
 
     @Override
@@ -255,7 +248,6 @@ public class MainActivity extends AppCompatActivity
         bundle.putInt("idEvent", idEvent);
         fragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment,Constantes.TAG_REVIEWS_FRAGMENT).addToBackStack("review").commit();
-        Log.e("asdasdasd","startScreenReviews "+getSupportFragmentManager().getBackStackEntryCount());
     }
 
     @Override
@@ -291,21 +283,18 @@ public class MainActivity extends AppCompatActivity
         bundle.putParcelable("filter", filter);
         fragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment,Constantes.TAG_RACES_PUBLISHED_FRAGMENT).commit();
-        Log.e("asdasdasd","chargeFragmentRacesPublished "+getSupportFragmentManager().getBackStackEntryCount());
     }
 
     @Override
     public void chargeFragmentMyRacesPublished() {
         ListOwnRacesPublishedFragment fragment = new ListOwnRacesPublishedFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment,Constantes.TAG_MY_RACES_PUBLISHED_FRAGMENT).addToBackStack("myRaces").commit();
-        Log.e("asdasdasd","chargeFragmentMyRacesPublished "+getSupportFragmentManager().getBackStackEntryCount());
     }
 
     @Override
     public void chargeFragmentRacesFavorites() {
         ListRacesPublishedFavoritesFragment fragment = new ListRacesPublishedFavoritesFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment,Constantes.TAG_RACES_FAVORITES_FRAGMENT).addToBackStack("races").commit();
-        Log.e("asdasdasd","chargeFragmentRacesFavorites "+getSupportFragmentManager().getBackStackEntryCount());
     }
 
     @Override
@@ -338,14 +327,13 @@ public class MainActivity extends AppCompatActivity
 
 
     @Override
-    public void onListFragmentInteraction(Event item) {
+    public void onListFragmentInteraction(Race item) {
         DetailRaceFragment fragment;
         fragment = new DetailRaceFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelable("event", item);
+        bundle.putParcelable("race", item);
         fragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment,Constantes.TAG_DETAIL_RACES_FRAGMENT).addToBackStack("detail").commit();
-        Log.e("asdasdasd","DetailRaceFragment "+getSupportFragmentManager().getBackStackEntryCount());
     }
 
     @Override

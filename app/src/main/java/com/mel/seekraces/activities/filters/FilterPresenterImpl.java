@@ -50,6 +50,7 @@ public class FilterPresenterImpl implements IFiltersPresenter,IListennerCallBack
     public void onDestroy() {
         view=null;
         interactor.getAutoCompletePlaces(null);
+        interactor=null;
     }
 
     @Override

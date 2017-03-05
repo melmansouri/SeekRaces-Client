@@ -15,7 +15,6 @@ import com.mel.seekraces.interfaces.INetworkConnectionApi;
 import com.mel.seekraces.interfaces.login.ILoginInteractor;
 import com.mel.seekraces.interfaces.login.ILoginPresenter;
 import com.mel.seekraces.interfaces.login.ILoginView;
-import com.mel.seekraces.tasks.SaveUserLoginTask;
 
 /**
  * Created by moha on 10/01/17.
@@ -34,19 +33,19 @@ public class LoginPresenterImpl implements ILoginPresenter, IListennerCallBack {
     }
 
     @Override
-    public void login(boolean isOnline, User user) {
+    public void login(boolean isOnline, boolean verifyDataUser, User user) {
         if (view!=null){
                 if (!isOnline) {
                     view.showMessage("Comprueba tu conexión");
                     return;
                 }
                 view.showProgress();
-                if (!validateDataLogin(user)) {
+                if (!validateDataLogin(verifyDataUser,user)) {
                     view.hideProgress();
+                    view.showComponentScreen();
                     return;
                 }
                 loginInteractor.login(user);
-
         }
     }
 
@@ -66,8 +65,11 @@ public class LoginPresenterImpl implements ILoginPresenter, IListennerCallBack {
         }
     }
 
-    private boolean validateDataLogin(User user) {
+    private boolean validateDataLogin(boolean verifyDataUser, User user) {
         boolean result = true;
+        if (!verifyDataUser){
+            return result;
+        }
         if (user.getEmail().isEmpty()) {
             view.showEmailError("El email no puede estar vacio");
             result = false;
@@ -90,7 +92,12 @@ public class LoginPresenterImpl implements ILoginPresenter, IListennerCallBack {
                     view.showMessage("Se le ha enviado un correo de confirmación.");
                 } else if (requestCode == Constantes.REQUEST_START_MAIN_FOR_RESULT) {
                     view.finishActivity();
+                }else if(requestCode==Constantes.REQUEST_START_SIGNIN_GOOGLE_FOR_RESULT){
+                    view.checkSignInGoogle();
+
                 }
+            }else{
+                //view.revokeAccessSignInGoogle();
             }
         }
     }
@@ -105,6 +112,7 @@ public class LoginPresenterImpl implements ILoginPresenter, IListennerCallBack {
             view.showProgress();
             if (!validateDataForgotPwd(email)) {
                 view.hideProgress();
+                view.showComponentScreen();
                 return;
             }
             String url = INetworkConnectionApi.BASE_URL + "user/" + email + "/forgotPassword";
@@ -130,6 +138,20 @@ public class LoginPresenterImpl implements ILoginPresenter, IListennerCallBack {
         view = null;
         loginInteractor.login(null);
         loginInteractor.forgotPwd(null);
+        loginInteractor=null;
+        sharedPreferencesSingleton=null;
+    }
+
+    @Override
+    public void checkSignInGoogle(boolean success) {
+        if (success){
+            view.revokeAccessSignInGoogle();
+            view.loginGoogle();
+        }else{
+            Response response=new Response();
+            response.setMessage("Error al iniciar sesión con google");
+            onError(response);
+        }
     }
 
 
@@ -137,6 +159,7 @@ public class LoginPresenterImpl implements ILoginPresenter, IListennerCallBack {
     public void onSuccess(Object object) {
         if (view!=null){
             view.hideProgress();
+            view.showComponentScreen();
             if (object instanceof String){
                 view.showMessage((String)object);
                 return;
@@ -154,6 +177,7 @@ public class LoginPresenterImpl implements ILoginPresenter, IListennerCallBack {
     public void onError(Response response) {
         if (view!=null){
             view.hideProgress();
+            view.showComponentScreen();
             view.showMessage(response.getMessage());
             Log.e("tag", response.toString());
         }

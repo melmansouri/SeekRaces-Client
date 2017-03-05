@@ -13,7 +13,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
@@ -36,7 +35,7 @@ import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.SharedPreferencesSingleton;
 import com.mel.seekraces.commons.Utils;
 import com.mel.seekraces.commons.UtilsViews;
-import com.mel.seekraces.entities.Event;
+import com.mel.seekraces.entities.Race;
 import com.mel.seekraces.entities.PlacePredictions;
 import com.mel.seekraces.fragments.DatePickerFragment;
 import com.mel.seekraces.fragments.TimePickerFragment;
@@ -164,7 +163,7 @@ public class AddNewRaceActivity extends AppCompatActivity implements IAddNewRace
     @Override
     public void hideProgress() {
         progressBar.setVisibility(View.GONE);
-        showComponents();
+        //showComponents();
         UtilsViews.enableSreen(this);
     }
 
@@ -268,7 +267,9 @@ public class AddNewRaceActivity extends AppCompatActivity implements IAddNewRace
     @Override
     public void fillImageViewFromGallery() {
         Uri uriImage = intentOnActivityResult.getData();
-        imageBitmap = Utils.getBitmapFromUriImage(this, uriImage);
+        Bitmap bitmaptmp=Utils.getBitmapFromUriImage(this,uriImage);
+        imageBitmap = Bitmap.createScaledBitmap(bitmaptmp,(int)(bitmaptmp.getWidth()*0.5), (int)(bitmaptmp.getHeight()*0.5), true);
+        //imageBitmap= Utils.getBitmapFromUriImage(this,uriImage);
         imgRace.setImageBitmap(imageBitmap);
     }
 
@@ -306,23 +307,23 @@ public class AddNewRaceActivity extends AppCompatActivity implements IAddNewRace
     public void addRace() {
         showProgress();
 
-        final Event event = new Event();
+        final Race race = new Race();
         new EncodeImageTask(this, imageBitmap) {
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                event.setName(edtNameRace.getText().toString().trim());
+                race.setName(edtNameRace.getText().toString().trim());
                 String distance = spDistancia.getSelectedItem().toString();
-                event.setDistance(Integer.valueOf(distance.replace("KM","")));
-                event.setPlace(edtLugar.getText().toString().trim());
+                race.setDistance(Integer.valueOf(distance.replace("KM","")));
+                race.setPlace(edtLugar.getText().toString().trim());
                 String fecha = Utils.convertDateSpanishToEnglish(dtpFechaDesde.getText().toString());
                 String hora = tipHora.getText().toString();
-                event.setDate_time_init(fecha.concat(" ").concat(hora));
-                event.setImageBase64(s);
-                event.setWeb(edtWeb.getText().toString().trim());
-                event.setDescription(edtDescription.getText().toString());
-                event.setUser(sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER));
-                presenter.addRace(Utils.isOnline(AddNewRaceActivity.this), event);
+                race.setDate_time_init(fecha.concat(" ").concat(hora));
+                race.setImageBase64(s);
+                race.setWeb(edtWeb.getText().toString().trim());
+                race.setDescription(edtDescription.getText().toString());
+                race.setUser(sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER));
+                presenter.addRace(Utils.isOnline(AddNewRaceActivity.this), race);
             }
         }.execute();
     }

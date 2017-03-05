@@ -16,19 +16,35 @@
         <ImageView
             android:id="@+id/imgRace"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="200dp"
             android:layout_marginBottom="5dp"
-            android:background="?attr/selectableItemBackgroundBorderless"/>
-
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:scaleType="fitXY"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/lnName"
+            android:layout_below="@+id/imgRace"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:weightSum="1">
         <TextView
             android:id="@+id/txtNameRace"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/imgRace"
-            android:layout_marginBottom="6dp"
-            android:layout_marginLeft="10dp"
             android:text="Nombre Carrera"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_weight="1"/>
+        <ImageButton
+            android:id="@+id/imgBtnLikeRace"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_not_favorite"
+            style="?android:attr/borderlessButtonStyle"/>
+        </LinearLayout>
 
         <TextView
             android:id="@+id/txtDistance"
@@ -36,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_alignEnd="@+id/imgRace"
             android:layout_alignRight="@+id/txtCountryCity"
-            android:layout_below="@+id/txtNameRace"
+            android:layout_below="@+id/lnName"
             android:layout_marginRight="10dp"
             android:text="distancia"
             android:textAppearance="?android:attr/textAppearanceSmall" />
@@ -45,8 +61,8 @@
             android:id="@+id/txtCountryCity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/txtNameRace"
-            android:layout_below="@+id/txtNameRace"
+            android:layout_alignLeft="@+id/lnName"
+            android:layout_below="@+id/lnName"
             android:layout_marginBottom="6dp"
             android:text="Lugar"
             android:textAppearance="?android:attr/textAppearanceSmall" />
@@ -55,32 +71,23 @@
             android:id="@+id/txtDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/txtNameRace"
+            android:layout_alignLeft="@+id/lnName"
             android:layout_below="@+id/txtCountryCity"
             android:layout_marginBottom="10dp"
             android:text="Fecha"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
-        <TextView
-            android:id="@+id/txtPublicadoPor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/txtNameRace"
-            android:layout_below="@+id/txtDate"
-            android:text="Publicado por Manolo"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            <TextView
+                android:id="@+id/txtPublicadoPor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtDate"
+                android:layout_alignLeft="@id/lnName"
+                android:text="Publicado por Manolo"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_marginBottom="10dp"/>
 
-        <!--ImageButton
-            android:id="@+id/imgBtnLikeRace"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_not_favorite"
-            android:layout_below="@+id/txtPublicadoPor"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
-            style="?android:attr/borderlessButtonStyle" /-->
-
-        <com.like.LikeButton
+        <!--com.like.LikeButton
             app:icon_type="heart"
             app:icon_size="25dp"
             android:id="@+id/imgBtnLikeRace"
@@ -89,7 +96,7 @@
             android:layout_below="@+id/txtPublicadoPor"
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
-            app:anim_scale_factor="2"/>
+            app:anim_scale_factor="2"/-->
 
 
     </RelativeLayout>

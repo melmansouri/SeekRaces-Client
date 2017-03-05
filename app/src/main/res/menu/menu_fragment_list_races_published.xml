@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/filter"
-        android:orderInCategory="100"
-        android:title="@string/filter"
-        android:icon="@drawable/ic_filter"
-        app:showAsAction="always" />
+    <group
+        android:id="@+id/group_filter">
+        <item
+            android:id="@+id/filter"
+            android:orderInCategory="100"
+            android:title="@string/filter"
+            android:icon="@drawable/ic_filter"
+            app:showAsAction="always" />
+        </group>
+    <group
+        android:id="@+id/group_search"
+        android:visible="false">
+        <item android:id="@+id/action_search"
+            android:orderInCategory="5"
+            android:title="Search"
+            android:icon="@drawable/ic_search"
+            app:showAsAction="ifRoom|collapseActionView"
+            app:actionViewClass="android.support.v7.widget.SearchView" />
+    </group>
 </menu>

@@ -2,21 +2,20 @@ package com.mel.seekraces.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.like.LikeButton;
-import com.like.OnLikeListener;
 import com.mel.seekraces.R;
 import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.SharedPreferencesSingleton;
-import com.mel.seekraces.entities.Event;
 import com.mel.seekraces.entities.Favorite;
-import com.mel.seekraces.fragments.racesPublishedFavorites.ListRacesPublishedFavoritesFragment;
+import com.mel.seekraces.entities.Race;
 import com.mel.seekraces.interfaces.IGenericInterface;
 
 import java.text.ParseException;
@@ -30,19 +29,20 @@ import butterknife.ButterKnife;
 
 public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublishedAdapter.ViewHolder> {
 
-    private List<Event> mValues;
+    private List<Race> list;
     private IGenericInterface.OnListInteractionListener mListenerListInteracion;
     private IGenericInterface.OnFragmentInteractionListener mListenerFragmentInteracion;
     private Context c;
 
-    public RVRacesPublishedAdapter(List<Event> items,IGenericInterface.OnListInteractionListener listListener,IGenericInterface.OnFragmentInteractionListener fragmentListener) {
-        mValues = items;
+
+    public RVRacesPublishedAdapter(List<Race> items, IGenericInterface.OnListInteractionListener listListener, IGenericInterface.OnFragmentInteractionListener fragmentListener) {
+        list = items;
         mListenerListInteracion = listListener;
         mListenerFragmentInteracion=fragmentListener;
     }
 
-    public RVRacesPublishedAdapter(Context context,List<Event> items, IGenericInterface.OnListInteractionListener listener,IGenericInterface.OnFragmentInteractionListener fragmentListener) {
-        mValues = items;
+    public RVRacesPublishedAdapter(Context context, List<Race> items, IGenericInterface.OnListInteractionListener listener, IGenericInterface.OnFragmentInteractionListener fragmentListener) {
+        list = items;
         mListenerListInteracion = listener;
         c=context;
         mListenerFragmentInteracion=fragmentListener;
@@ -57,7 +57,7 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
+        holder.mItem = list.get(position);
         holder.imgRace.setImageBitmap(holder.mItem.getBitmap());
         holder.txtNameRace.setText(holder.mItem.getName());
         holder.txtCountryCity.setText(holder.mItem.getPlace());
@@ -78,18 +78,18 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
 
         if (!SharedPreferencesSingleton.getInstance(c).getStringSP(Constantes.KEY_USER).equals(holder.mItem.getUser())){
             holder.imgBtnLikeRace.setVisibility(View.VISIBLE);
-            /*if (holder.mItem.isFavorite()){
+            if (holder.mItem.isFavorite()){
                 holder.imgBtnLikeRace.setImageResource(R.drawable.ic_favorite);
             }else{
                 holder.imgBtnLikeRace.setImageResource(R.drawable.ic_not_favorite);
-            }*/
-            holder.imgBtnLikeRace.setLiked(holder.mItem.isFavorite());
+            }
+            //holder.imgBtnLikeRace.setLiked(holder.mItem.isFavorite());
         }else{
             holder.imgBtnLikeRace.setVisibility(View.INVISIBLE);
         }
 
 
-        /*holder.imgBtnLikeRace.setOnClickListener(new View.OnClickListener() {
+        holder.imgBtnLikeRace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!SharedPreferencesSingleton.getInstance(c).getStringSP(Constantes.KEY_USER).equals(holder.mItem.getUser())){
@@ -107,9 +107,9 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
                     }
                 }
             }
-        });*/
+        });
 
-        if (!(mListenerListInteracion instanceof ListRacesPublishedFavoritesFragment)){
+        /*if (!(mListenerListInteracion instanceof ListRacesPublishedFavoritesFragment)){
             holder.imgBtnLikeRace.setOnLikeListener(new OnLikeListener() {
                 @Override
                 public void liked(LikeButton likeButton) {
@@ -129,7 +129,7 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
             });
         }else{
             holder.imgBtnLikeRace.setEnabled(false);
-        }
+        }*/
 
         holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -156,9 +156,24 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
         });
     }
 
+    public void filter(List<Race> racesWithoutFilter,String query){
+        list.clear();
+        if (!TextUtils.isEmpty(query)){
+            for (Race race :
+                    racesWithoutFilter) {
+                if (race.getName().toLowerCase().contains(query.toLowerCase())){
+                    list.add(race);
+                }
+            }
+        }else{
+            list.addAll(racesWithoutFilter);
+        }
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return list.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -176,8 +191,8 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
         @BindView(R.id.txtPublicadoPor)
         TextView txtPublicadoPor;
         @BindView(R.id.imgBtnLikeRace)
-        LikeButton imgBtnLikeRace;
-        public Event mItem;
+        ImageButton imgBtnLikeRace;
+        public Race mItem;
 
         public ViewHolder(View view) {
             super(view);

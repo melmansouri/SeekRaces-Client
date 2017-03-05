@@ -38,7 +38,7 @@ import com.mel.seekraces.R;
 import com.mel.seekraces.adapters.AutoCompleteAdapter;
 import com.mel.seekraces.commons.Utils;
 import com.mel.seekraces.commons.UtilsViews;
-import com.mel.seekraces.entities.Event;
+import com.mel.seekraces.entities.Race;
 import com.mel.seekraces.entities.PlacePredictions;
 import com.mel.seekraces.fragments.DatePickerFragment;
 import com.mel.seekraces.fragments.TimePickerFragment;
@@ -98,7 +98,7 @@ public class EditRaceFragment extends Fragment implements IEditRaceView{
     FloatingActionButton fab;
     @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
-    private Event eventFromList;
+    private Race raceFromList;
     private IGenericInterface.OnFragmentInteractionListener mListener;
     private IEditRacePresenter presenter;
     private Intent intentOnActivityResult;
@@ -108,7 +108,7 @@ public class EditRaceFragment extends Fragment implements IEditRaceView{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        eventFromList = getArguments().getParcelable("event");
+        raceFromList = getArguments().getParcelable("race");
         mListener.changeTitleActionBar(R.string.title_edit_race);
         mListener.setDrawerEnabled(false);
         mListener.hideFloatingButton();
@@ -128,18 +128,18 @@ public class EditRaceFragment extends Fragment implements IEditRaceView{
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         spDistancia.setAdapter(UtilsViews.getSpinnerDistanceAdapter(getContext(),R.layout.support_simple_spinner_dropdown_item,true));
-        imgRace.setImageBitmap(eventFromList.getBitmap());
-        imageBitmap=eventFromList.getBitmap();
-        edtNameRace.setText(eventFromList.getName());
-        edtLugar.setText(eventFromList.getPlace());
-        edtWeb.setText(eventFromList.getWeb());
-        edtDescription.setText(eventFromList.getDescription());
-        String[] fechaHora=eventFromList.getDate_time_init().split(" ");
+        imgRace.setImageBitmap(raceFromList.getBitmap());
+        imageBitmap= raceFromList.getBitmap();
+        edtNameRace.setText(raceFromList.getName());
+        edtLugar.setText(raceFromList.getPlace());
+        edtWeb.setText(raceFromList.getWeb());
+        edtDescription.setText(raceFromList.getDescription());
+        String[] fechaHora= raceFromList.getDate_time_init().split(" ");
         String fecha=fechaHora[0];
         String hora=fechaHora[1];
         dtpFechaDesde.setText(Utils.convertDateEnglishToSpanish(fecha));
         tipHora.setText(hora);
-        int positionSelectedSpinnerDistance=eventFromList.getDistance()-1;
+        int positionSelectedSpinnerDistance= raceFromList.getDistance()-1;
         spDistancia.setSelection(positionSelectedSpinnerDistance);
     }
 
@@ -318,7 +318,9 @@ public class EditRaceFragment extends Fragment implements IEditRaceView{
     @Override
     public void fillImageViewFromGallery() {
         Uri uriImage = intentOnActivityResult.getData();
-        imageBitmap = Utils.getBitmapFromUriImage(getContext(), uriImage);
+        Bitmap bitmaptmp = Utils.getBitmapFromUriImage(getContext(), uriImage);
+        imageBitmap = Bitmap.createScaledBitmap(bitmaptmp, (int) (bitmaptmp.getWidth() * 0.5), (int) (bitmaptmp.getHeight() * 0.5), true);
+        //imageBitmap= Utils.getBitmapFromUriImage(this,uriImage);
         imgRace.setImageBitmap(imageBitmap);
     }
 
@@ -355,24 +357,24 @@ public class EditRaceFragment extends Fragment implements IEditRaceView{
     public void editRace() {
         showProgress();
 
-        final Event event = new Event();
+        final Race race = new Race();
         new EncodeImageTask(getContext(), imageBitmap) {
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                event.setId(eventFromList.getId());
-                event.setName(edtNameRace.getText().toString().trim());
+                race.setId(raceFromList.getId());
+                race.setName(edtNameRace.getText().toString().trim());
                 String distance = spDistancia.getSelectedItem().toString();
-                event.setDistance(Integer.valueOf(distance.replace("KM","")));
-                event.setPlace(edtLugar.getText().toString().trim());
+                race.setDistance(Integer.valueOf(distance.replace("KM","")));
+                race.setPlace(edtLugar.getText().toString().trim());
                 String fecha = Utils.convertDateSpanishToEnglish(dtpFechaDesde.getText().toString());
                 String hora = tipHora.getText().toString();
-                event.setDate_time_init(fecha.concat(" ").concat(hora));
-                event.setImageBase64(s);
-                event.setWeb(edtWeb.getText().toString().trim());
-                event.setDescription(edtDescription.getText().toString());
-                event.setUser(eventFromList.getUser());
-                presenter.editRace(Utils.isOnline(getContext()), event);
+                race.setDate_time_init(fecha.concat(" ").concat(hora));
+                race.setImageBase64(s);
+                race.setWeb(edtWeb.getText().toString().trim());
+                race.setDescription(edtDescription.getText().toString());
+                race.setUser(raceFromList.getUser());
+                presenter.editRace(Utils.isOnline(getContext()), race);
             }
         }.execute();
     }

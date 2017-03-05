@@ -7,13 +7,14 @@ import com.mel.seekraces.entities.Review;
  */
 
 public interface IFragmentReviewsPresenter {
-    void getReviews(int idEvent);
+    void getReviews(boolean isOnline, int idEvent);
+
     void onOptionsItemSelected(int itemSelected);
     void onDestroy();
 
-    void addReview(Review review);
+    void addReview(boolean isOnline, Review review);
 
-    void editReview(Review review);
+    void editReview(boolean isOnline, Review review);
 
-    void deleteReview(String user, int idEvent);
+    void deleteReview(boolean isOnline, String user, int idEvent);
 }

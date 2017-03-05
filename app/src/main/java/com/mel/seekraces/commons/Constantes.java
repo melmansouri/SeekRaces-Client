@@ -32,6 +32,7 @@ public class Constantes {
     public static final int REQUEST_START_FILTERS_FOR_RESULT = 202;
     public static final int REQUEST_START_ADD_RACE_FOR_RESULT = 203;
     public static final int REQUEST_START_EDIT_PROFILE_FOR_RESULT = 204;
+    public static final int REQUEST_START_SIGNIN_GOOGLE_FOR_RESULT = 205;
 
     //SharedPreferences
     public static final String FILE_SP = "seekraces_preferences";

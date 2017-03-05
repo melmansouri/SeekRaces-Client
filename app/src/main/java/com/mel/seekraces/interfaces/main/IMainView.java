@@ -19,8 +19,6 @@ public interface IMainView {
 
     boolean actualFragmentActiveInstanceOf(Class clase);
 
-    void clearPopBackStack();
-
     void closeDrawerLayout();
 
     void fillNavHeaderTxtUserName(String username);

@@ -7,7 +7,6 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,10 +15,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.mel.seekraces.R;
 import com.mel.seekraces.activities.main.MainActivity;
 import com.mel.seekraces.activities.signin.SignInActivity;
@@ -30,6 +34,7 @@ import com.mel.seekraces.commons.UtilsViews;
 import com.mel.seekraces.entities.User;
 import com.mel.seekraces.interfaces.login.ILoginPresenter;
 import com.mel.seekraces.interfaces.login.ILoginView;
+import com.mel.seekraces.tasks.EncodeImageTask;
 
 import java.util.Arrays;
 
@@ -38,7 +43,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 
-public class LoginActivity extends AppCompatActivity implements ILoginView {
+public class LoginActivity extends AppCompatActivity implements ILoginView, GoogleApiClient.OnConnectionFailedListener {
 
     @BindView(R.id.edtEmail)
     TextInputEditText edtEmail;
@@ -58,6 +63,10 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
     TextView txtSignIn;
     @BindView(R.id.activity_login)
     RelativeLayout activityLogin;
+    @BindView(R.id.txtForgotPwd)
+    TextView txtForgotPwd;
+    @BindView(R.id.btnSignInGoogle)
+    Button btnSignInGoogle;
 
     private ILoginPresenter loginPresenter;
 
@@ -66,6 +75,12 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
     private LoginManager loginManagerFacebook;
     private CallbackManager callbackManager;
 
+    private GoogleSignInOptions gso;
+
+    private GoogleApiClient mGoogleApiClient;
+    private Intent intentActivityResult;
+    private GoogleSignInResult resultSignInGoogle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,36 +88,29 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
         ButterKnife.bind(this);
         sharedPreferencesSingleton = SharedPreferencesSingleton.getInstance(this);
         loginPresenter = new LoginPresenterImpl(this, sharedPreferencesSingleton);
-        loginManagerFacebook=LoginManager.getInstance();
-        callbackManager=CallbackManager.Factory.create();
-        loginManagerFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                Log.e("LoginFacebook",loginResult.getAccessToken().toString());
-            }
 
-            @Override
-            public void onCancel() {
-            }
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
 
-            @Override
-            public void onError(FacebookException error) {
-            }
-        });
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+
         loginPresenter.checkSession();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
+        intentActivityResult = data;
         loginPresenter.activityResult(requestCode, resultCode);
     }
 
     @Override
     @OnClick(R.id.txtSignIn)
     public void goToSignIn() {
-
         loginPresenter.startActivitySignIn();
     }
 
@@ -120,8 +128,8 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
         user.setEmail(edtEmail.getText().toString());
         user.setPwd(edtPassword.getText().toString());
         user.setToken_push(sharedPreferencesSingleton.getStringSP(Constantes.KEY_TOKEN_PUSH));
-        sharedPreferencesSingleton.removeValueSP(Constantes.KEY_TOKEN_PUSH);
-        loginPresenter.login(Utils.isOnline(this), user);
+        //sharedPreferencesSingleton.removeValueSP(Constantes.KEY_TOKEN_PUSH);
+        loginPresenter.login(Utils.isOnline(this), false, user);
     }
 
     @Override
@@ -161,7 +169,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
     @Override
     public void hideProgress() {
         progressBar.setVisibility(View.GONE);
-        showComponentScreen();
+        //showComponentScreen();
         //UtilsViews.enableSreen(this);
     }
 
@@ -171,6 +179,8 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
         txtSignIn.setVisibility(View.VISIBLE);
         textInputLayoutEmail.setVisibility(View.VISIBLE);
         textInputLayoutPass.setVisibility(View.VISIBLE);
+        txtForgotPwd.setVisibility(View.VISIBLE);
+        btnSignInGoogle.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -179,6 +189,8 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
         txtSignIn.setVisibility(View.GONE);
         textInputLayoutEmail.setVisibility(View.GONE);
         textInputLayoutPass.setVisibility(View.GONE);
+        txtForgotPwd.setVisibility(View.GONE);
+        btnSignInGoogle.setVisibility(View.GONE);
     }
 
     @Override
@@ -190,7 +202,40 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
     @Override
     //@OnClick(R.id.btnLoginFacebook)
     public void loginFacebook() {
-        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile","email"));
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
+    }
+
+    @Override
+    @OnClick(R.id.btnSignInGoogle)
+    public void signInGoogle() {
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInIntent, Constantes.REQUEST_START_SIGNIN_GOOGLE_FOR_RESULT);
+    }
+
+    @Override
+    public void checkSignInGoogle() {
+        resultSignInGoogle = Auth.GoogleSignInApi.getSignInResultFromIntent(intentActivityResult);
+        loginPresenter.checkSignInGoogle(resultSignInGoogle.isSuccess());
+    }
+
+    @Override
+    public void loginGoogle() {
+        showProgress();
+        final GoogleSignInAccount acct = resultSignInGoogle.getSignInAccount();
+        final User user = new User();
+        new EncodeImageTask(this, acct.getPhotoUrl()) {
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                user.setEmail(acct.getEmail());
+                user.setUsername(acct.getDisplayName());
+                user.setPhotoBase64(s);
+                user.setToken_push(sharedPreferencesSingleton.getStringSP(Constantes.KEY_TOKEN_PUSH));
+                user.setIdTokenGoogle(acct.getId());
+                loginPresenter.login(Utils.isOnline(LoginActivity.this), false, user);
+            }
+        }.execute();
+
     }
 
     @Override
@@ -205,6 +250,22 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
         finish();
     }
 
+
+    @Override
+    public void revokeAccessSignInGoogle() {
+        try{
+            Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(
+                    new ResultCallback<Status>() {
+                        @Override
+                        public void onResult(Status status) {
+                            Log.e("LoginActivity","desconectado de google");
+                        }
+                    });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -212,4 +273,8 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
     }
 
 
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        showMessage(connectionResult.getErrorMessage());
+    }
 }

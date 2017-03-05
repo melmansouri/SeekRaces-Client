@@ -8,7 +8,7 @@ import android.os.Parcelable;
  * Created by void on 18/01/2017.
  */
 
-public class Event implements Parcelable{
+public class Race implements Parcelable{
     private int id;
     private String user;
     private String userName;
@@ -26,10 +26,10 @@ public class Event implements Parcelable{
     private double rating;
     private boolean isFavorite;
 
-    public Event(){
+    public Race(){
     }
 
-    protected Event(Parcel in) {
+    protected Race(Parcel in) {
         id = in.readInt();
         user = in.readString();
         name = in.readString();
@@ -47,15 +47,15 @@ public class Event implements Parcelable{
         isFavorite=in.readByte() != 0;
     }
 
-    public static final Creator<Event> CREATOR = new Creator<Event>() {
+    public static final Creator<Race> CREATOR = new Creator<Race>() {
         @Override
-        public Event createFromParcel(Parcel in) {
-            return new Event(in);
+        public Race createFromParcel(Parcel in) {
+            return new Race(in);
         }
 
         @Override
-        public Event[] newArray(int size) {
-            return new Event[size];
+        public Race[] newArray(int size) {
+            return new Race[size];
         }
     };
 

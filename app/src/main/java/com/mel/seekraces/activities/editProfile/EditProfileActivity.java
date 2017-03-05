@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
@@ -48,6 +49,8 @@ public class EditProfileActivity extends AppCompatActivity implements IEditProfi
     ImageView imgProfileUser;
     @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
     private SharedPreferencesSingleton sharedPreferencesSingleton;
     private MenuItem item;
     private IEditProfilePresenter presenter;
@@ -63,14 +66,14 @@ public class EditProfileActivity extends AppCompatActivity implements IEditProfi
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         imgProfileUser.setVisibility(View.INVISIBLE);
         edtUserName.setVisibility(View.INVISIBLE);
-        sharedPreferencesSingleton=SharedPreferencesSingleton.getInstance(this);
-        presenter=new EditProfilePresenterImpl(this,sharedPreferencesSingleton);
+        sharedPreferencesSingleton = SharedPreferencesSingleton.getInstance(this);
+        presenter = new EditProfilePresenterImpl(this, sharedPreferencesSingleton);
 
-        String username=sharedPreferencesSingleton.getStringSP(Constantes.KEY_USERNAME);
-        String usernamePicture=sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER_NAME_PICTURE);
-        email=sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER);
+        String username = sharedPreferencesSingleton.getStringSP(Constantes.KEY_USERNAME);
+        String usernamePicture = sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER_NAME_PICTURE);
+        email = sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER);
 
-        Glide.with(getApplicationContext()).load(INetworkConnectionApi.BASE_URL_PICTURES + usernamePicture).error(R.drawable.ic_default_user).into(imgProfileUser);
+        Glide.with(getApplicationContext()).load(INetworkConnectionApi.BASE_URL_PICTURES + usernamePicture).error(R.drawable.user_default).into(imgProfileUser);
         edtUserName.setText(username);
 
         imgProfileUser.setVisibility(View.VISIBLE);
@@ -95,7 +98,7 @@ public class EditProfileActivity extends AppCompatActivity implements IEditProfi
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         intentOnActivityResult = data;
-        presenter.activityResult(requestCode,resultCode);
+        presenter.activityResult(requestCode, resultCode);
     }
 
     @Override
@@ -123,7 +126,6 @@ public class EditProfileActivity extends AppCompatActivity implements IEditProfi
     @Override
     public void hideProgress() {
         progressBar.setVisibility(View.GONE);
-        showComponents();
         UtilsViews.enableSreen(this);
     }
 
@@ -138,7 +140,7 @@ public class EditProfileActivity extends AppCompatActivity implements IEditProfi
     }
 
     @Override
-    @OnTextChanged(value = R.id.edtUserName,callback = OnTextChanged.Callback.BEFORE_TEXT_CHANGED)
+    @OnTextChanged(value = R.id.edtUserName, callback = OnTextChanged.Callback.BEFORE_TEXT_CHANGED)
     public void hideErrorUserName() {
         textInputLayoutUsername.setErrorEnabled(false);
     }
@@ -147,19 +149,21 @@ public class EditProfileActivity extends AppCompatActivity implements IEditProfi
     public void showComponents() {
         imgProfileUser.setVisibility(View.VISIBLE);
         textInputLayoutUsername.setVisibility(View.VISIBLE);
+        fab.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideComponents() {
         imgProfileUser.setVisibility(View.GONE);
         textInputLayoutUsername.setVisibility(View.GONE);
+        fab.setVisibility(View.INVISIBLE);
     }
 
     @Override
     public void returnToMainScreen(String response) {
-        Intent intent=new Intent();
-        intent.putExtra("editProfile",response);
-        setResult(RESULT_OK,intent);
+        Intent intent = new Intent();
+        intent.putExtra("editProfile", response);
+        setResult(RESULT_OK, intent);
         finish();
     }
 
@@ -175,9 +179,9 @@ public class EditProfileActivity extends AppCompatActivity implements IEditProfi
     @Override
     public void fillImageViewFromGallery() {
         Uri uriImage = intentOnActivityResult.getData();
-        //Bitmap bitmaptmp=Utils.getBitmapFromUriImage(this,uriImage);
-        //imageBitmap = Bitmap.createScaledBitmap(bitmaptmp,(int)(bitmaptmp.getWidth()*0.8), (int)(bitmaptmp.getHeight()*0.8), true);
-        imageBitmap= Utils.getBitmapFromUriImage(this,uriImage);
+        Bitmap bitmaptmp = Utils.getBitmapFromUriImage(this, uriImage);
+        imageBitmap = Bitmap.createScaledBitmap(bitmaptmp, (int) (bitmaptmp.getWidth() * 0.5), (int) (bitmaptmp.getHeight() * 0.5), true);
+        //imageBitmap= Utils.getBitmapFromUriImage(this,uriImage);
         imgProfileUser.setImageBitmap(imageBitmap);
     }
 
@@ -195,16 +199,16 @@ public class EditProfileActivity extends AppCompatActivity implements IEditProfi
     @Override
     public void editProfile() {
         showProgress();
-        new EncodeImageTask(this,imageBitmap){
+        new EncodeImageTask(this, imageBitmap) {
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                User user=new User();
+                User user = new User();
                 user.setEmail(email);
                 user.setUsername(edtUserName.getText().toString());
                 user.setPhoto_url(String.valueOf(new Date().getTime()));
                 user.setPhotoBase64(s);
-                presenter.editProfile(Utils.isOnline(EditProfileActivity.this),user);
+                presenter.editProfile(Utils.isOnline(EditProfileActivity.this), user);
             }
         }.execute();
 

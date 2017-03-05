@@ -1,6 +1,6 @@
 package com.mel.seekraces.interfaces.fragmentRacesPublished;
 
-import com.mel.seekraces.entities.Event;
+import com.mel.seekraces.entities.Race;
 
 import java.util.List;
 
@@ -9,11 +9,12 @@ import java.util.List;
  */
 
 public interface IListFragmentRacesPublishedView {
-    void fillAdapterList(List<Event> races);
+    void fillAdapterList(List<Race> races);
     void showProgressBar();
     void hideProgressBar();
     void showList();
     void hideList();
+
     void showMessage(String message);
 
     void startScreenFilter();

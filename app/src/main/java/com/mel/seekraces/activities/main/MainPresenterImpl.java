@@ -118,7 +118,6 @@ public class MainPresenterImpl implements IMainPresenter, IListennerCallBack {
             if (view.actualFragmentActiveInstanceOf(ListOwnRacesPublishedFragment.class) || view.actualFragmentActiveInstanceOf(ListRacesPublishedFavoritesFragment.class)){
                 view.backToPreviousFragmentById(0);
             }else if (view.actualFragmentActiveInstanceOf(ListRacesPublishedFragment.class)){
-                view.clearPopBackStack();
                 view.setResult();
                 view.returnBack();
             }else{

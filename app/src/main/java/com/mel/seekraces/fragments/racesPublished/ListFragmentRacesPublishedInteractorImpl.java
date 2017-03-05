@@ -1,6 +1,5 @@
 package com.mel.seekraces.fragments.racesPublished;
 
-import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.connection.RetrofitSingleton;
 import com.mel.seekraces.entities.Favorite;
 import com.mel.seekraces.entities.Filter;
@@ -34,7 +33,7 @@ public class ListFragmentRacesPublishedInteractorImpl implements IListFragmentRa
             Retrofit retrofit= RetrofitSingleton.getInstance().getRetrofit();
             networkConnectionApi=retrofit.create(INetworkConnectionApi.class);
 
-            racesPublishedCall=networkConnectionApi.getRacesPublished(filter.getUser(),filter.getPlace(),filter.getDistance(),filter.getDate_interval_init(),filter.getDate_interval_end());
+            racesPublishedCall=networkConnectionApi.getRacesPublished(filter.getUser(),filter.getName(),filter.getPlace(),filter.getDistanceMin(),filter.getDistanceMax(),filter.getDate_interval_init(),filter.getDate_interval_end());
             racesPublishedCall.enqueue(new Callback<Response>() {
                 @Override
                 public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
@@ -59,7 +58,7 @@ public class ListFragmentRacesPublishedInteractorImpl implements IListFragmentRa
                 public void onFailure(Call<Response> call, Throwable t) {
                     if (racesPublishedCall!=null && !racesPublishedCall.isCanceled()){
                         Response response=new Response();
-                        response.setMessage(t.getMessage());
+                        response.setMessage("Problemas para conectar con el servidor. Intentalo más tarde");
                         listennerCallBack.onError(response);
                     }
                 }
@@ -104,7 +103,7 @@ public class ListFragmentRacesPublishedInteractorImpl implements IListFragmentRa
                 public void onFailure(Call<Response> call, Throwable t) {
                     if (addEventToFavoritesCall!=null && !addEventToFavoritesCall.isCanceled()){
                         Response response=new Response();
-                        response.setMessage(t.getMessage());
+                        response.setMessage("Problemas para conectar con el servidor. Intentalo más tarde");
                         listennerCallBack.onError(response);
                     }
                 }
@@ -151,7 +150,7 @@ public class ListFragmentRacesPublishedInteractorImpl implements IListFragmentRa
                 public void onFailure(Call<Response> call, Throwable t) {
                     if (deleteEventFromFavoritesCall!=null && !deleteEventFromFavoritesCall.isCanceled()){
                         Response response=new Response();
-                        response.setMessage(t.getMessage());
+                        response.setMessage("Problemas para conectar con el servidor. Intentalo más tarde");
                         listennerCallBack.onError(response);
                     }
                 }

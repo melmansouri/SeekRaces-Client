@@ -8,6 +8,7 @@
             android:title="@string/title_carreras_publicadas" />
         <item
             android:id="@+id/itemListMyEventsPublished"
+            android:icon="@drawable/ic_send"
             android:title="@string/title_mis_carreras_publicadas" />
         <item
             android:id="@+id/itemListEventsFavorites"

@@ -1,13 +1,10 @@
 package com.mel.seekraces.activities.filters;
 
 import com.mel.seekraces.connection.RetrofitSingleton;
-import com.mel.seekraces.entities.Event;
 import com.mel.seekraces.entities.PlacePredictions;
-import com.mel.seekraces.entities.Response;
 import com.mel.seekraces.interfaces.IListennerCallBack;
 import com.mel.seekraces.interfaces.INetworkConnectionApi;
 import com.mel.seekraces.interfaces.filters.IFiltersInteractor;
-import com.mel.seekraces.interfaces.newRace.IAddNewRaceInteractor;
 
 import retrofit2.Call;
 import retrofit2.Callback;

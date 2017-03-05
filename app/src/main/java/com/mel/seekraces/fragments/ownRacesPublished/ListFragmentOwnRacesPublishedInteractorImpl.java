@@ -54,7 +54,7 @@ public class ListFragmentOwnRacesPublishedInteractorImpl implements IListFragmen
                 public void onFailure(Call<Response> call, Throwable t) {
                     if (ownRacesPublishedCall!=null && !ownRacesPublishedCall.isCanceled()) {
                         Response response=new Response();
-                        response.setMessage(t.getMessage());
+                        response.setMessage("Problemas para conectar con el servidor. Intentalo más tarde");
                         listennerCallBack.onError(response);
                     }
                 }
@@ -100,7 +100,7 @@ public class ListFragmentOwnRacesPublishedInteractorImpl implements IListFragmen
                 public void onFailure(Call<Response> call, Throwable t) {
                     if (deleteOwnRacePublished!=null && !deleteOwnRacePublished.isCanceled()) {
                         Response response=new Response();
-                        response.setMessage(t.getMessage());
+                        response.setMessage("Problemas para conectar con el servidor. Intentalo más tarde");
                         listennerCallBack.onError(response);
                     }
                 }

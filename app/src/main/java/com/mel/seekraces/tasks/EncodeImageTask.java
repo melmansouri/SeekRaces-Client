@@ -5,7 +5,10 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 
+import com.bumptech.glide.Glide;
 import com.mel.seekraces.commons.Utils;
+
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by void on 15/01/2017.
@@ -28,6 +31,20 @@ public class EncodeImageTask extends AsyncTask<Void,Void,String> {
 
     @Override
     protected String doInBackground(Void... params) {
+        if (fileUri!=null){
+            try {
+                bitmap= Glide.
+                        with(context).
+                        load(fileUri).
+                        asBitmap().
+                        into(100, 100). // Width and height
+                        get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
         return Utils.convertUriImageToBase64(bitmap);
     }
 }

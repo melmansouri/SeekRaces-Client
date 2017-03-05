@@ -5,7 +5,7 @@ import android.text.TextUtils;
 import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.RMapped;
 import com.mel.seekraces.commons.Utils;
-import com.mel.seekraces.entities.Event;
+import com.mel.seekraces.entities.Race;
 import com.mel.seekraces.entities.PlacePredictions;
 import com.mel.seekraces.entities.Response;
 import com.mel.seekraces.interfaces.IListennerCallBack;
@@ -27,18 +27,20 @@ public class EditRaceFragmentPresenterImpl implements IEditRacePresenter, IListe
     }
 
     @Override
-    public void editRace(boolean isOnline,Event event) {
+    public void editRace(boolean isOnline,Race race) {
         if (view!=null){
             if (!isOnline){
                 view.hideProgress();
+                view.showComponents();
                 view.showMessage("Comprueba tu conexión");
                 return;
             }
-            if (!verifyDataUser(event)) {
+            if (!verifyDataUser(race)) {
                 view.hideProgress();
+                view.showComponents();
                 return;
             }
-            interactor.editRace(event);
+            interactor.editRace(race);
         }
     }
 
@@ -50,17 +52,17 @@ public class EditRaceFragmentPresenterImpl implements IEditRacePresenter, IListe
         }
     }
 
-    private boolean verifyDataUser(Event event) {
+    private boolean verifyDataUser(Race race) {
         boolean result = true;
-        if (TextUtils.isEmpty(event.getPlace())){
+        if (TextUtils.isEmpty(race.getPlace())){
             view.showErrorPlaces("Debe de introducir el lugar de la carrera");
             result=false;
         }
-        if (TextUtils.isEmpty(event.getName())) {
+        if (TextUtils.isEmpty(race.getName())) {
             view.showErrorName("La carrera debe de tener un nombre");
             result = false;
         }
-        if (event.getDistance()==0){
+        if (race.getDistance()==0){
             view.showMessage("La distancia mínima es 1 KM");
             result = false;
         }
@@ -107,6 +109,7 @@ public class EditRaceFragmentPresenterImpl implements IEditRacePresenter, IListe
         view=null;
         interactor.getAutoCompletePlaces(null);
         interactor.editRace(null);
+        interactor=null;
     }
 
     @Override

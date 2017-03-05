@@ -1,7 +1,6 @@
 package com.mel.seekraces.activities.editProfile;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.mel.seekraces.commons.Constantes;
@@ -35,11 +34,13 @@ public class EditProfilePresenterImpl implements IEditProfilePresenter, IListenn
         if(view!=null){
             if (!isOnline){
                 view.hideProgress();
+                view.showComponents();
                 view.showMessage("Comprueba tu conexión");
                 return;
             }
             if (!verifyDataUser(user)) {
                 view.hideProgress();
+                view.showComponents();
                 return;
             }
             if (TextUtils.isEmpty(user.getPhotoBase64())){
@@ -102,6 +103,8 @@ public class EditProfilePresenterImpl implements IEditProfilePresenter, IListenn
     public void onDestroy() {
         view=null;
         interactor.editProfile(null);
+        interactor=null;
+        sharedPreferencesSingleton=null;
     }
 
     @Override
@@ -122,6 +125,7 @@ public class EditProfilePresenterImpl implements IEditProfilePresenter, IListenn
     public void onError(Response response) {
         if (view!=null){
             view.hideProgress();
+            view.showComponents();
             view.showMessage(response.getMessage());
         }
     }

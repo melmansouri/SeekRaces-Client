@@ -65,12 +65,12 @@
     <string name="delete_opinion">Eliminar</string>
     <!--Menus-->
 
-    <!--Long Click Event-->
+    <!--Long Click Race-->
     <string-array name="option_long_click_event">
         <item>Editar</item>
         <item>Eliminar</item>
     </string-array>
-    <!--Long Click Event-->
+    <!--Long Click Race-->
 
     <!--Reviews-->
     <string name="breve_opinion">Breve opinión</string>
