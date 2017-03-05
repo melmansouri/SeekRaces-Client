@@ -180,9 +180,11 @@ public class EditProfileActivity extends AppCompatActivity implements IEditProfi
     public void fillImageViewFromGallery() {
         Uri uriImage = intentOnActivityResult.getData();
         Bitmap bitmaptmp = Utils.getBitmapFromUriImage(this, uriImage);
-        imageBitmap = Bitmap.createScaledBitmap(bitmaptmp, (int) (bitmaptmp.getWidth() * 0.5), (int) (bitmaptmp.getHeight() * 0.5), true);
-        //imageBitmap= Utils.getBitmapFromUriImage(this,uriImage);
-        imgProfileUser.setImageBitmap(imageBitmap);
+        //imageBitmap = Bitmap.createScaledBitmap(bitmaptmp, (int) (bitmaptmp.getWidth() * 0.5), (int) (bitmaptmp.getHeight() * 0.5), true);
+        if (bitmaptmp!=null){
+            imageBitmap= bitmaptmp;
+            imgProfileUser.setImageBitmap(imageBitmap);
+        }
     }
 
     @Override

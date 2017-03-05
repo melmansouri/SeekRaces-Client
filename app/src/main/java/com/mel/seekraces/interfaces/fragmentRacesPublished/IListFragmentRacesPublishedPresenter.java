@@ -23,4 +23,8 @@ public interface IListFragmentRacesPublishedPresenter {
     void deleteEventFromFavorite(boolean online, String user, int id);
 
     void filter(RVRacesPublishedAdapter adapter, List<Race> racesWithoutFilter, String newText);
+
+    void deleteOwnRacePublished(boolean online, String user, int id);
+
+    void selectOptionDialogLongClickList(String[] options, int i, Race object);
 }

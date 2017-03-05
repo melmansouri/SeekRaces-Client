@@ -24,6 +24,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.firebase.crash.FirebaseCrash;
 import com.mel.seekraces.R;
 import com.mel.seekraces.activities.main.MainActivity;
 import com.mel.seekraces.activities.signin.SignInActivity;
@@ -123,13 +124,18 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, Goog
     @Override
     @OnClick(R.id.btnLogin)
     public void login() {
-        UtilsViews.closeKeyBoard(this);
-        User user = new User();
-        user.setEmail(edtEmail.getText().toString());
-        user.setPwd(edtPassword.getText().toString());
-        user.setToken_push(sharedPreferencesSingleton.getStringSP(Constantes.KEY_TOKEN_PUSH));
-        //sharedPreferencesSingleton.removeValueSP(Constantes.KEY_TOKEN_PUSH);
-        loginPresenter.login(Utils.isOnline(this), false, user);
+        try{
+            UtilsViews.closeKeyBoard(this);
+            User user = new User();
+            user.setEmail(edtEmail.getText().toString());
+            user.setPwd(edtPassword.getText().toString());
+            user.setToken_push(sharedPreferencesSingleton.getStringSP(Constantes.KEY_TOKEN_PUSH));
+            //sharedPreferencesSingleton.removeValueSP(Constantes.KEY_TOKEN_PUSH);
+            loginPresenter.login(Utils.isOnline(this), false, user);
+        }catch (Exception e){
+            FirebaseCrash.report(e);
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -221,21 +227,27 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, Goog
     @Override
     public void loginGoogle() {
         showProgress();
-        final GoogleSignInAccount acct = resultSignInGoogle.getSignInAccount();
-        final User user = new User();
-        new EncodeImageTask(this, acct.getPhotoUrl()) {
-            @Override
-            protected void onPostExecute(String s) {
-                super.onPostExecute(s);
-                user.setEmail(acct.getEmail());
-                user.setUsername(acct.getDisplayName());
-                user.setPhotoBase64(s);
-                user.setToken_push(sharedPreferencesSingleton.getStringSP(Constantes.KEY_TOKEN_PUSH));
-                user.setIdTokenGoogle(acct.getId());
-                loginPresenter.login(Utils.isOnline(LoginActivity.this), false, user);
-            }
-        }.execute();
-
+        try{
+            final GoogleSignInAccount acct = resultSignInGoogle.getSignInAccount();
+            final User user = new User();
+            new EncodeImageTask(this, acct.getPhotoUrl()) {
+                @Override
+                protected void onPostExecute(String s) {
+                    super.onPostExecute(s);
+                    user.setEmail(acct.getEmail());
+                    user.setUsername(acct.getDisplayName());
+                    user.setPhotoBase64(s);
+                    user.setToken_push(sharedPreferencesSingleton.getStringSP(Constantes.KEY_TOKEN_PUSH));
+                    user.setIdTokenGoogle(acct.getId());
+                    loginPresenter.login(Utils.isOnline(LoginActivity.this), false, user);
+                }
+            }.execute();
+        }catch (Exception e){
+            e.printStackTrace();
+            FirebaseCrash.report(e);
+        }
+        hideProgress();
+        showComponentScreen();
     }
 
     @Override
@@ -262,6 +274,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, Goog
                         }
                     });
         }catch (Exception e){
+            FirebaseCrash.report(e);
             e.printStackTrace();
         }
     }

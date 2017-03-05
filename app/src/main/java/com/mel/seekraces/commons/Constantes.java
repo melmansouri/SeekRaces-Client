@@ -11,7 +11,7 @@ import java.io.File;
 public class Constantes {
     public static final String KEY_GOOGLE_API = "AIzaSyDmZRb02-RcKK3I080i5D7nqkMpfOJLHVU";
 
-    public static final int MIN_LENGTH_PASSWORD = 1;
+    public static final int MIN_LENGTH_PASSWORD = 6;
 
     //Paths
     public static final String RUTA_IMAGENES = Environment.getExternalStorageDirectory() + File.separator + "Seekraces" + File.separator + "pictures" + File.separator;

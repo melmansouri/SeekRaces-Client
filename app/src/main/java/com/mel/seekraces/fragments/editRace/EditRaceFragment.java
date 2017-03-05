@@ -14,7 +14,6 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -38,8 +37,8 @@ import com.mel.seekraces.R;
 import com.mel.seekraces.adapters.AutoCompleteAdapter;
 import com.mel.seekraces.commons.Utils;
 import com.mel.seekraces.commons.UtilsViews;
-import com.mel.seekraces.entities.Race;
 import com.mel.seekraces.entities.PlacePredictions;
+import com.mel.seekraces.entities.Race;
 import com.mel.seekraces.fragments.DatePickerFragment;
 import com.mel.seekraces.fragments.TimePickerFragment;
 import com.mel.seekraces.interfaces.IGenericInterface;
@@ -112,6 +111,14 @@ public class EditRaceFragment extends Fragment implements IEditRaceView{
         mListener.changeTitleActionBar(R.string.title_edit_race);
         mListener.setDrawerEnabled(false);
         mListener.hideFloatingButton();
+        mListener.showHamburgerIconDrawer(false);
+        mListener.setNavigationIcon();
+        mListener.setOnClickNavigationToolbar(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
         presenter=new EditRaceFragmentPresenterImpl(this);
     }
 
@@ -279,7 +286,8 @@ public class EditRaceFragment extends Fragment implements IEditRaceView{
                 dtpFechaDesde.setText(Utils.getCorrectFormatDateSpanish(dayOfMonth, month, year));
             }
         };
-        DialogFragment datePickerFragment = new DatePickerFragment(onDateSetListener);
+        DatePickerFragment datePickerFragment = new DatePickerFragment();
+        datePickerFragment.setOnDateSetListener(onDateSetListener);
         datePickerFragment.show(getActivity().getSupportFragmentManager(), "datePicker");
     }
 
@@ -292,7 +300,8 @@ public class EditRaceFragment extends Fragment implements IEditRaceView{
                 tipHora.setText(Utils.getCorrectFormatTime(hourOfDay, minute));
             }
         };
-        DialogFragment newFragment = new TimePickerFragment(onTimeSetListener);
+        TimePickerFragment newFragment = new TimePickerFragment();
+        newFragment.setOnTimeSetListener(onTimeSetListener);
         newFragment.show(getActivity().getSupportFragmentManager(), "TimePicker");
     }
 
@@ -319,9 +328,11 @@ public class EditRaceFragment extends Fragment implements IEditRaceView{
     public void fillImageViewFromGallery() {
         Uri uriImage = intentOnActivityResult.getData();
         Bitmap bitmaptmp = Utils.getBitmapFromUriImage(getContext(), uriImage);
-        imageBitmap = Bitmap.createScaledBitmap(bitmaptmp, (int) (bitmaptmp.getWidth() * 0.5), (int) (bitmaptmp.getHeight() * 0.5), true);
-        //imageBitmap= Utils.getBitmapFromUriImage(this,uriImage);
-        imgRace.setImageBitmap(imageBitmap);
+        //imageBitmap = Bitmap.createScaledBitmap(bitmaptmp, (int) (bitmaptmp.getWidth() * 0.5), (int) (bitmaptmp.getHeight() * 0.5), true);
+        if (bitmaptmp!=null){
+            imageBitmap= bitmaptmp;
+            imgRace.setImageBitmap(imageBitmap);
+        }
     }
 
     @Override

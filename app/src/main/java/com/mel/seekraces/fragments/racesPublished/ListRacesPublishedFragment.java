@@ -1,10 +1,12 @@
 package com.mel.seekraces.fragments.racesPublished;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
@@ -20,6 +22,7 @@ import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.RMapped;
 import com.mel.seekraces.commons.SharedPreferencesSingleton;
 import com.mel.seekraces.commons.Utils;
+import com.mel.seekraces.commons.UtilsViews;
 import com.mel.seekraces.customsViews.SwipeRefreshLayoutWithEmpty;
 import com.mel.seekraces.entities.Favorite;
 import com.mel.seekraces.entities.Filter;
@@ -196,8 +199,41 @@ public class ListRacesPublishedFragment extends Fragment implements IListFragmen
     }
 
     @Override
-    public void onItemLongClickListener(Object object) {
+    public void editEvent(Race race) {
+        mListener.editEvent(race);
+    }
 
+    @Override
+    public void deleteOwnRacePublished(final String user,final int id) {
+        AlertDialog.Builder builder = UtilsViews.createAlertDialog(getContext(), "Importante");
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                presenter.deleteOwnRacePublished(Utils.isOnline(getContext()),user,id);
+            }
+        });
+
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        builder.setMessage("¿Está seguro de eliminar esta carrera?");
+        builder.show();
+    }
+
+    @Override
+    public void onItemLongClickListener(final Object object) {
+        final String[] options={"Editar","Eliminar"};
+        AlertDialog.Builder builder = UtilsViews.createAlertDialog(getContext(), null);
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                presenter.selectOptionDialogLongClickList(options, i,(Race)object);
+            }
+        });
+
+        builder.show();
     }
 
     @Override

@@ -73,10 +73,10 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
         }
         String fecha = formato.format(date);
         holder.txtDate.setText(fecha);
-        holder.txtPublicadoPor.setText("Publicado por "+holder.mItem.getUserName());
+        String publicadoPor="Publicado por "+holder.mItem.getUserName();
         holder.txtDistance.setText(holder.mItem.getDistance()+"KM");
 
-        if (!SharedPreferencesSingleton.getInstance(c).getStringSP(Constantes.KEY_USER).equals(holder.mItem.getUser())){
+        if (!SharedPreferencesSingleton.getInstance(c).getStringSP(Constantes.KEY_USER).toLowerCase().equals(holder.mItem.getUser().toLowerCase())){
             holder.imgBtnLikeRace.setVisibility(View.VISIBLE);
             if (holder.mItem.isFavorite()){
                 holder.imgBtnLikeRace.setImageResource(R.drawable.ic_favorite);
@@ -85,9 +85,22 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
             }
             //holder.imgBtnLikeRace.setLiked(holder.mItem.isFavorite());
         }else{
+            publicadoPor="Publicado por mi";
             holder.imgBtnLikeRace.setVisibility(View.INVISIBLE);
+            holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if (null != mListenerListInteracion) {
+                        // Notify the active callbacks interface (the activity, if the
+                        // fragment is attached to one) that an item has been selected.
+                        mListenerListInteracion.onItemLongClickListener(holder.mItem);
+                    }
+                    return true;
+                }
+            });
         }
 
+        holder.txtPublicadoPor.setText(publicadoPor);
 
         holder.imgBtnLikeRace.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,18 +143,6 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
         }else{
             holder.imgBtnLikeRace.setEnabled(false);
         }*/
-
-        holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if (null != mListenerListInteracion) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListenerListInteracion.onItemLongClickListener(holder.mItem);
-                }
-                return true;
-            }
-        });
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -173,7 +173,8 @@ public class MainActivity extends AppCompatActivity
         builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                MainActivity.super.onBackPressed();
+                //MainActivity.super.onBackPressed();
+                finish();
             }
         });
 

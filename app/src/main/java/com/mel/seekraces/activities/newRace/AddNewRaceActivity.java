@@ -12,7 +12,6 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
@@ -35,8 +34,8 @@ import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.SharedPreferencesSingleton;
 import com.mel.seekraces.commons.Utils;
 import com.mel.seekraces.commons.UtilsViews;
-import com.mel.seekraces.entities.Race;
 import com.mel.seekraces.entities.PlacePredictions;
+import com.mel.seekraces.entities.Race;
 import com.mel.seekraces.fragments.DatePickerFragment;
 import com.mel.seekraces.fragments.TimePickerFragment;
 import com.mel.seekraces.interfaces.newRace.IAddNewRacePresenter;
@@ -222,7 +221,8 @@ public class AddNewRaceActivity extends AppCompatActivity implements IAddNewRace
                 dtpFechaDesde.setText(Utils.getCorrectFormatDateSpanish(dayOfMonth, month, year));
             }
         };
-        DialogFragment datePickerFragment = new DatePickerFragment(onDateSetListener);
+        DatePickerFragment datePickerFragment = new DatePickerFragment();
+        datePickerFragment.setOnDateSetListener(onDateSetListener);
         datePickerFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
@@ -235,7 +235,8 @@ public class AddNewRaceActivity extends AppCompatActivity implements IAddNewRace
                 tipHora.setText(Utils.getCorrectFormatTime(hourOfDay, minute));
             }
         };
-        DialogFragment newFragment = new TimePickerFragment(onTimeSetListener);
+        TimePickerFragment newFragment = new TimePickerFragment();
+        newFragment.setOnTimeSetListener(onTimeSetListener);
         newFragment.show(getSupportFragmentManager(), "TimePicker");
     }
 
@@ -267,10 +268,12 @@ public class AddNewRaceActivity extends AppCompatActivity implements IAddNewRace
     @Override
     public void fillImageViewFromGallery() {
         Uri uriImage = intentOnActivityResult.getData();
-        Bitmap bitmaptmp=Utils.getBitmapFromUriImage(this,uriImage);
-        imageBitmap = Bitmap.createScaledBitmap(bitmaptmp,(int)(bitmaptmp.getWidth()*0.5), (int)(bitmaptmp.getHeight()*0.5), true);
-        //imageBitmap= Utils.getBitmapFromUriImage(this,uriImage);
-        imgRace.setImageBitmap(imageBitmap);
+        Bitmap bitmaptmp = Utils.getBitmapFromUriImage(this, uriImage);
+        //imageBitmap = Bitmap.createScaledBitmap(bitmaptmp, (int) (bitmaptmp.getWidth() * 0.5), (int) (bitmaptmp.getHeight() * 0.5), true);
+        if (bitmaptmp!=null){
+            imageBitmap= bitmaptmp;
+            imgRace.setImageBitmap(imageBitmap);
+        }
     }
 
     @Override

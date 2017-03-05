@@ -6,14 +6,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
-import android.widget.DatePicker;
 
 import com.mel.seekraces.commons.Utils;
 
-import org.w3c.dom.Text;
-
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by void on 29/01/2017.
@@ -25,11 +21,11 @@ public class DatePickerFragment extends DialogFragment{
 
     public DatePickerFragment(){
     }
-    public DatePickerFragment(DatePickerDialog.OnDateSetListener onDateSetListener){
+    public void setOnDateSetListener(DatePickerDialog.OnDateSetListener onDateSetListener){
         this.onDateSetListener=onDateSetListener;
     }
 
-    public DatePickerFragment(DatePickerDialog.OnDateSetListener onDateSetListener,String dateFrom){
+    public void setOnDateSetListener(DatePickerDialog.OnDateSetListener onDateSetListener,String dateFrom){
         this.onDateSetListener=onDateSetListener;
         this.dateFrom=dateFrom;
     }

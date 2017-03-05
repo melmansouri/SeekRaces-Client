@@ -63,6 +63,7 @@ public class ListFragmentRacesPublishedPresenterImpl implements IListFragmentRac
         interactor.getRacesPublished(null);
         interactor.addEventToFavorites(null);
         interactor.deleteEventFromFavorite(null,0);
+        interactor.deleteEvent(null,0);
         interactor=null;
         view=null;
         Log.e("ListRacesPublished","onDestroy");
@@ -103,6 +104,30 @@ public class ListFragmentRacesPublishedPresenterImpl implements IListFragmentRac
     }
 
     @Override
+    public void deleteOwnRacePublished(boolean online, String user, int id) {
+        if (view!=null){
+            view.showProgressBar();
+            if (!online){
+                view.hideProgressBar();
+                view.showMessage("Comprueba tu conexión");
+                return;
+            }
+            interactor.deleteEvent(user,id);
+        }
+    }
+
+    @Override
+    public void selectOptionDialogLongClickList(String[] options, int selected, Race race) {
+        if (view!=null){
+            if (options[selected].equals("Editar")) {
+                view.editEvent(race);
+            } else if (options[selected].equals("Eliminar")) {
+                view.deleteOwnRacePublished(race.getUser(), race.getId());
+            }
+        }
+    }
+
+    @Override
     public void onSuccess(Object object) {
         if (view!=null){
                 view.hideProgressBar();
@@ -111,7 +136,13 @@ public class ListFragmentRacesPublishedPresenterImpl implements IListFragmentRac
                 gsonBuilder.registerTypeAdapter(Race.class,new EventDeserializer());
                 Gson gson=gsonBuilder.create();
                 Type founderListType = new TypeToken<ArrayList<Race>>(){}.getType();
-                List<Race> carreras=gson.fromJson(((Response)object).getContent(),founderListType);
+            String content=((Response)object).getContent();
+            List<Race> carreras=new ArrayList<>();
+            if (content!=null && !content.isEmpty()){
+                carreras=gson.fromJson(content,founderListType);
+            }else{
+                view.showMessage(((Response)object).getMessage());
+            }
                 view.fillAdapterList(carreras);
                 view.showList();
         }

@@ -40,7 +40,7 @@ public class FilterPresenterImpl implements IFiltersPresenter,IListennerCallBack
 
     @Override
     public void onTextChangedPlaces(String text) {
-        if(text.length()>3){
+        if(text.length()>1){
             interactor.getAutoCompletePlaces(null);
             interactor.getAutoCompletePlaces(Utils.getPlaceAutoCompleteUrl(text));
         }

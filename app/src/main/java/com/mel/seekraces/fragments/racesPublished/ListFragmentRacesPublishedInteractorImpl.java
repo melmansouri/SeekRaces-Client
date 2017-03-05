@@ -19,9 +19,10 @@ import retrofit2.Retrofit;
 public class ListFragmentRacesPublishedInteractorImpl implements IListFragmentRacesPublishedInteractor{
     private IListennerCallBack listennerCallBack;
     private INetworkConnectionApi networkConnectionApi;
-    Call<Response> racesPublishedCall;
-    Call<Response> addEventToFavoritesCall;
-    Call<Response> deleteEventFromFavoritesCall;
+    private Call<Response> racesPublishedCall;
+    private Call<Response> addEventToFavoritesCall;
+    private Call<Response> deleteEventFromFavoritesCall;
+    private Call<Response> deleteOwnRacePublished;
 
     public ListFragmentRacesPublishedInteractorImpl(IListennerCallBack listennerCallBack) {
         this.listennerCallBack = listennerCallBack;
@@ -158,6 +159,53 @@ public class ListFragmentRacesPublishedInteractorImpl implements IListFragmentRa
         }else{
             if (deleteEventFromFavoritesCall!=null){
                 deleteEventFromFavoritesCall.cancel();
+            }
+        }
+    }
+
+    @Override
+    public void deleteEvent(final String user, int id) {
+        if (user!=null){
+            Retrofit retrofit= RetrofitSingleton.getInstance().getRetrofit();
+            INetworkConnectionApi networkConnectionApi=retrofit.create(INetworkConnectionApi.class);
+
+            String url = INetworkConnectionApi.BASE_URL + "user/" + user + "/event/" + id;
+            deleteOwnRacePublished=networkConnectionApi.deleteOwnRacePublished(url);
+            deleteOwnRacePublished.enqueue(new Callback<Response>() {
+                @Override
+                public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                    Response responsetmp;
+                    if (!response.isSuccessful()){
+                        responsetmp=new Response();
+                        responsetmp.setMessage(response.message());
+                        responsetmp.setOk(false);
+
+                    }else{
+                        responsetmp=response.body();
+                    }
+
+                    if (responsetmp.isOk()){
+                        //listennerCallBack.onSuccess(responsetmp);
+                        Filter filter=new Filter();
+                        filter.setUser(user);
+                        getRacesPublished(filter);
+                    }else{
+                        listennerCallBack.onError(responsetmp);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Response> call, Throwable t) {
+                    if (deleteOwnRacePublished!=null && !deleteOwnRacePublished.isCanceled()) {
+                        Response response=new Response();
+                        response.setMessage("Problemas para conectar con el servidor. Intentalo más tarde");
+                        listennerCallBack.onError(response);
+                    }
+                }
+            });
+        }else{
+            if (deleteOwnRacePublished!=null){
+                deleteOwnRacePublished.cancel();
             }
         }
     }

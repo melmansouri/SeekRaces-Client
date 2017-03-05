@@ -90,7 +90,13 @@ public class ListFragmentRacesPublishedFavoritesPresenterImpl implements IListFr
             Gson gson = gsonBuilder.create();
             Type founderListType = new TypeToken<ArrayList<Race>>() {
             }.getType();
-            List<Race> carreras = gson.fromJson(((Response) object).getContent(), founderListType);
+            String content=((Response)object).getContent();
+            List<Race> carreras=new ArrayList<>();
+            if (content!=null && !content.isEmpty()){
+                carreras=gson.fromJson(content,founderListType);
+            }else{
+                view.showMessage(((Response)object).getMessage());
+            }
             view.fillAdapterList(carreras);
             view.showList();
         }

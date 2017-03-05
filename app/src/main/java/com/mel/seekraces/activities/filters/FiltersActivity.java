@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.view.Menu;
@@ -58,7 +57,7 @@ public class FiltersActivity extends AppCompatActivity implements IFiltersView {
     TextInputEditText edtNameRace;
     private SharedPreferencesSingleton sharedPreferencesSingleton;
     private IFiltersPresenter presenter;
-    private DialogFragment datePickerFragment;
+    private DatePickerFragment datePickerFragment;
     private MenuItem item;
     private AutoCompleteAdapter autoCompleteAdapter;
 
@@ -140,7 +139,9 @@ public class FiltersActivity extends AppCompatActivity implements IFiltersView {
                 dtpFechaDesde.setText(Utils.getCorrectFormatDateSpanish(dayOfMonth, month, year));
             }
         };
-        datePickerFragment = new DatePickerFragment(onDateSetListener);
+        datePickerFragment=null;
+        datePickerFragment = new DatePickerFragment();
+        datePickerFragment.setOnDateSetListener(onDateSetListener);
         showDatePickerDialog();
     }
 
@@ -153,7 +154,9 @@ public class FiltersActivity extends AppCompatActivity implements IFiltersView {
                 dtpFechaHasta.setText(Utils.getCorrectFormatDateSpanish(dayOfMonth, month, year));
             }
         };
-        datePickerFragment = new DatePickerFragment(onDateSetListener, dtpFechaDesde.getText().toString());
+        datePickerFragment=null;
+        datePickerFragment = new DatePickerFragment();
+        datePickerFragment.setOnDateSetListener(onDateSetListener, dtpFechaDesde.getText().toString());
         showDatePickerDialog();
     }
 

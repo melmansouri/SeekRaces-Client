@@ -9,6 +9,8 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.util.Base64;
 
+import com.google.firebase.crash.FirebaseCrash;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -45,9 +47,37 @@ public class Utils {
         Bitmap bitmap=null;
         try {
             InputStream imageStream = context.getContentResolver().openInputStream(uriImage);
-            bitmap = BitmapFactory.decodeStream(imageStream);
+            //bitmap = BitmapFactory.decodeStream(imageStream);
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            bmOptions.inJustDecodeBounds = true;
+            BitmapFactory.decodeStream(imageStream,null,bmOptions);
+            int photoW = bmOptions.outWidth;
+            int photoH = bmOptions.outHeight;
+
+            int targetH;
+            int targetW;
+            if(photoH > photoW){
+                targetH = 1024;
+                targetW = photoW*1024 / photoH;
+            }else{
+                targetH = photoH*1024 / photoW;
+                targetW = 1024;
+            }
+
+            // Determine how much to scale down the image
+            int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+
+            // Decode the image file into a Bitmap sized to fill the View
+            bmOptions.inJustDecodeBounds = false;
+            bmOptions.inSampleSize = scaleFactor;
+            imageStream = context.getContentResolver().openInputStream(uriImage);
+            bitmap= BitmapFactory.decodeStream(imageStream,null,bmOptions);
         } catch (Exception e) {
+            FirebaseCrash.report(e);
             e.printStackTrace();
+        }catch (OutOfMemoryError error){
+            error.printStackTrace();
+            FirebaseCrash.report(error);
         }
         return bitmap;
     }
@@ -77,6 +107,8 @@ public class Utils {
             encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
         } catch (Exception e) {
             e.printStackTrace();
+        }catch (OutOfMemoryError error){
+
         }
         return encodedImage;
     }
@@ -153,8 +185,16 @@ public class Utils {
     }
 
     public static Bitmap base64ToBitmap(String b64) {
-        byte[] imageAsBytes = Base64.decode(b64.getBytes(), Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
+        Bitmap bitmap=null;
+        try{
+            byte[] imageAsBytes = Base64.decode(b64.getBytes(), Base64.DEFAULT);
+            bitmap= BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
+        }catch (Exception e){
+            FirebaseCrash.report(e);
+        }catch (OutOfMemoryError error){
+            FirebaseCrash.report(error);
+        }
+        return bitmap;
     }
 
     public static boolean isValidEmail(String email) {

@@ -13,4 +13,6 @@ public interface IListFragmentRacesPublishedInteractor {
     void addEventToFavorites(Favorite item);
 
     void deleteEventFromFavorite(String user, int id);
+
+    void deleteEvent(String user, int id);
 }

@@ -49,7 +49,7 @@ public class ListRacesPublishedFavoritesFragment extends Fragment implements ILi
     public void onResume() {
         super.onResume();
         mListener.changeTitleActionBar(RMapped.TITLE_CARRERAS_FAVORITAS.getValue());
-        mListener.hideFloatingButton();
+        //mListener.hideFloatingButton();
     }
 
     @Override

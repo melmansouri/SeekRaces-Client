@@ -11,7 +11,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.NavUtils;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -23,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 
-import com.bumptech.glide.Glide;
 import com.mel.seekraces.R;
 import com.mel.seekraces.commons.Utils;
 import com.mel.seekraces.commons.UtilsViews;
@@ -234,9 +232,15 @@ public class SignInActivity extends AppCompatActivity implements ISignInView {
         Uri uriImage = intentOnActivityResult.getData();
         //Bitmap bitmaptmp=Utils.getBitmapFromUriImage(this,uriImage);
         //imageBitmap = Bitmap.createScaledBitmap(bitmaptmp,(int)(bitmaptmp.getWidth()*0.8), (int)(bitmaptmp.getHeight()*0.8), true);
-        Glide.with(this).load(uriImage).into(imgProfileUser);
-        imageBitmap = Utils.getBitmapFromUriImage(this, uriImage);
+        //Glide.with(this).load(uriImage).into(imgProfileUser);
+        //imageBitmap = Utils.getBitmapFromUriImage(this, uriImage);
         //imgProfileUser.setImageBitmap(imageBitmap);
+        Bitmap bitmaptmp = Utils.getBitmapFromUriImage(this, uriImage);
+        //imageBitmap = Bitmap.createScaledBitmap(bitmaptmp, (int) (bitmaptmp.getWidth() * 0.5), (int) (bitmaptmp.getHeight() * 0.5), true);
+        if (bitmaptmp!=null){
+            imageBitmap= bitmaptmp;
+            imgProfileUser.setImageBitmap(imageBitmap);
+        }
     }
 
     @Override
