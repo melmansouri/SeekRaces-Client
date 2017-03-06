@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 
 import com.mel.seekraces.R;
 import com.mel.seekraces.adapters.RVRacesPublishedAdapter;
-import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.RMapped;
 import com.mel.seekraces.commons.SharedPreferencesSingleton;
 import com.mel.seekraces.commons.Utils;
@@ -177,8 +176,18 @@ public class ListRacesPublishedFavoritesFragment extends Fragment implements ILi
 
     @Override
     public void onItemLongClickListener(final Object object) {
-        String user = sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER);
-        alertDialogDeleteFromFavorites(user,((Race) object).getId());
+        /*String user = sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER);
+        alertDialogDeleteFromFavorites(user,((Race) object).getId());*/
+    }
+
+    @Override
+    public void deleteOwnEvent(Object object) {
+
+    }
+
+    @Override
+    public void editEvent(Object object) {
+
     }
 
     private void alertDialogDeleteFromFavorites(final String user, final int idEvent){

@@ -158,17 +158,21 @@ public class LoginPresenterImpl implements ILoginPresenter, IListennerCallBack {
     @Override
     public void onSuccess(Object object) {
         if (view!=null){
-            view.hideProgress();
-            view.showComponentScreen();
+
+            //view.showComponentScreen();
             if (object instanceof String){
                 view.showMessage((String)object);
                 return;
             }
-            User user = new Gson().fromJson(((Response) object).getContent(), User.class);
-            sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USER, user.getEmail());
-            sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USER_NAME_PICTURE, user.getPhoto_url());
-            sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USERNAME, user.getUsername());
-
+            try {
+                User user = new Gson().fromJson(((Response) object).getContent(), User.class);
+                sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USER, user.getEmail());
+                sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USER_NAME_PICTURE, user.getPhoto_url());
+                sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USERNAME, user.getUsername());
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            view.hideProgress();
             view.goToMainScreen();
         }
     }

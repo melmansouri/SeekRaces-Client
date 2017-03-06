@@ -15,8 +15,4 @@ public interface IListFragmentOwnRacesPublishedView {
     void showList();
     void hideList();
     void showMessage(String message);
-
-    void editEvent(Race race);
-
-    void deleteOwnRacePublished(String user, int id);
 }

@@ -78,6 +78,8 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
 
         if (!SharedPreferencesSingleton.getInstance(c).getStringSP(Constantes.KEY_USER).toLowerCase().equals(holder.mItem.getUser().toLowerCase())){
             holder.imgBtnLikeRace.setVisibility(View.VISIBLE);
+            holder.imgBtnEdit.setVisibility(View.GONE);
+            holder.imgBtnDelete.setVisibility(View.GONE);
             if (holder.mItem.isFavorite()){
                 holder.imgBtnLikeRace.setImageResource(R.drawable.ic_favorite);
             }else{
@@ -86,8 +88,22 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
             //holder.imgBtnLikeRace.setLiked(holder.mItem.isFavorite());
         }else{
             publicadoPor="Publicado por mi";
-            holder.imgBtnLikeRace.setVisibility(View.INVISIBLE);
-            holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
+            holder.imgBtnLikeRace.setVisibility(View.GONE);
+            holder.imgBtnEdit.setVisibility(View.VISIBLE);
+            holder.imgBtnDelete.setVisibility(View.VISIBLE);
+            holder.imgBtnEdit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mListenerListInteracion.editEvent(holder.mItem);
+                }
+            });
+            holder.imgBtnDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mListenerListInteracion.deleteOwnEvent(holder.mItem);
+                }
+            });
+            /*holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
                     if (null != mListenerListInteracion) {
@@ -97,7 +113,7 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
                     }
                     return true;
                 }
-            });
+            });*/
         }
 
         holder.txtPublicadoPor.setText(publicadoPor);
@@ -193,6 +209,10 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
         TextView txtPublicadoPor;
         @BindView(R.id.imgBtnLikeRace)
         ImageButton imgBtnLikeRace;
+        @BindView(R.id.imgBtnDelete)
+        ImageButton imgBtnDelete;
+        @BindView(R.id.imgBtnEdit)
+        ImageButton imgBtnEdit;
         public Race mItem;
 
         public ViewHolder(View view) {

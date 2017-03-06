@@ -60,27 +60,18 @@ public class ListFragmentOwnRacesPublishedPresenterImpl implements IListFragment
         sharedPreferencesSingleton=null;
     }
 
-    @Override
-    public void selectOptionDialogLongClickList(String[] options, int selected,Race race) {
-        if (view!=null){
-            if (options[selected].equals("Editar")) {
-                view.editEvent(race);
-            } else if (options[selected].equals("Eliminar")) {
-                view.deleteOwnRacePublished(race.getUser(), race.getId());
-            }
-        }
-    }
 
     @Override
-    public void deleteOwnRacePublished(boolean online, String user, int id) {
-        if (view!=null){
+    public void deleteOwnRacePublished(boolean online, Object object) {
+        if (view!=null && object!=null){
             view.showProgressBar();
             if (!online){
                 view.hideProgressBar();
                 view.showMessage("Comprueba tu conexión");
                 return;
             }
-            interactor.deleteEvent(user,id);
+
+            interactor.deleteEvent(((Race)object).getUser(),((Race)object).getId());
         }
     }
 

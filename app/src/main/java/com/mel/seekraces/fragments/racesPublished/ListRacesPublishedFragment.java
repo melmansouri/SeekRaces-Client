@@ -199,17 +199,12 @@ public class ListRacesPublishedFragment extends Fragment implements IListFragmen
     }
 
     @Override
-    public void editEvent(Race race) {
-        mListener.editEvent(race);
-    }
-
-    @Override
-    public void deleteOwnRacePublished(final String user,final int id) {
+    public void deleteOwnEvent(final Object object) {
         AlertDialog.Builder builder = UtilsViews.createAlertDialog(getContext(), "Importante");
         builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                presenter.deleteOwnRacePublished(Utils.isOnline(getContext()),user,id);
+                presenter.deleteOwnRacePublished(Utils.isOnline(getContext()), object);
             }
         });
 
@@ -223,8 +218,13 @@ public class ListRacesPublishedFragment extends Fragment implements IListFragmen
     }
 
     @Override
+    public void editEvent(Object object) {
+        mListener.editEvent((Race) object);
+    }
+
+    @Override
     public void onItemLongClickListener(final Object object) {
-        final String[] options={"Editar","Eliminar"};
+        /*final String[] options={"Editar","Eliminar"};
         AlertDialog.Builder builder = UtilsViews.createAlertDialog(getContext(), null);
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
@@ -233,7 +233,7 @@ public class ListRacesPublishedFragment extends Fragment implements IListFragmen
             }
         });
 
-        builder.show();
+        builder.show();*/
     }
 
     @Override

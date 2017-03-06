@@ -15,9 +15,7 @@ public interface IListFragmentOwnRacesPublishedPresenter {
 
     void onDestroy();
 
-    void selectOptionDialogLongClickList(String[] options, int selected,Race race);
-
-    void deleteOwnRacePublished(boolean online, String user, int id);
-
     void filter(RVRacesPublishedAdapter adapter, List<Race> racesWithoutFilter, String newText);
+
+    void deleteOwnRacePublished(boolean online, Object object);
 }

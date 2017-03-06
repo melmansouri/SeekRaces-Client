@@ -143,31 +143,6 @@ public class ListOwnRacesPublishedFragment extends Fragment implements IListFrag
     }
 
     @Override
-    public void editEvent(Race race) {
-        mListener.editEvent(race);
-    }
-
-    @Override
-    public void deleteOwnRacePublished(final String user,final int id) {
-        AlertDialog.Builder builder = UtilsViews.createAlertDialog(getContext(), "Importante");
-        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                presenter.deleteOwnRacePublished(Utils.isOnline(getContext()),user,id);
-            }
-        });
-
-        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            }
-        });
-        builder.setMessage("¿Está seguro de eliminar esta carrera?");
-        builder.show();
-    }
-
-
-    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
@@ -201,7 +176,7 @@ public class ListOwnRacesPublishedFragment extends Fragment implements IListFrag
 
     @Override
     public void onItemLongClickListener(final Object object) {
-        final String[] options={"Editar","Eliminar"};
+        /*final String[] options={"Editar","Eliminar"};
         AlertDialog.Builder builder = UtilsViews.createAlertDialog(getContext(), null);
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
@@ -210,8 +185,32 @@ public class ListOwnRacesPublishedFragment extends Fragment implements IListFrag
             }
         });
 
-        builder.show();
+        builder.show();*/
 
+    }
+
+    @Override
+    public void deleteOwnEvent(final Object object) {
+        AlertDialog.Builder builder = UtilsViews.createAlertDialog(getContext(), "Importante");
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                presenter.deleteOwnRacePublished(Utils.isOnline(getContext()), object);
+            }
+        });
+
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        builder.setMessage("¿Está seguro de eliminar esta carrera?");
+        builder.show();
+    }
+
+    @Override
+    public void editEvent(Object object) {
+        mListener.editEvent((Race) object);
     }
 
     @Override

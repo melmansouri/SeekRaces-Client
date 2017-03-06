@@ -55,5 +55,7 @@ public interface IGenericInterface {
         void addEventToFavorite(Favorite item);
         void deleteEventFromFavorite(String user, int id);
         void onItemLongClickListener(Object object);
+        void deleteOwnEvent(Object object);
+        void editEvent(Object object);
     }
 }

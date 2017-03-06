@@ -33,6 +33,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.google.firebase.crash.FirebaseCrash;
 import com.mel.seekraces.R;
 import com.mel.seekraces.adapters.AutoCompleteAdapter;
 import com.mel.seekraces.commons.Utils;
@@ -134,20 +135,24 @@ public class EditRaceFragment extends Fragment implements IEditRaceView{
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        spDistancia.setAdapter(UtilsViews.getSpinnerDistanceAdapter(getContext(),R.layout.support_simple_spinner_dropdown_item,true));
-        imgRace.setImageBitmap(raceFromList.getBitmap());
-        imageBitmap= raceFromList.getBitmap();
-        edtNameRace.setText(raceFromList.getName());
-        edtLugar.setText(raceFromList.getPlace());
-        edtWeb.setText(raceFromList.getWeb());
-        edtDescription.setText(raceFromList.getDescription());
-        String[] fechaHora= raceFromList.getDate_time_init().split(" ");
-        String fecha=fechaHora[0];
-        String hora=fechaHora[1];
-        dtpFechaDesde.setText(Utils.convertDateEnglishToSpanish(fecha));
-        tipHora.setText(hora);
-        int positionSelectedSpinnerDistance= raceFromList.getDistance()-1;
-        spDistancia.setSelection(positionSelectedSpinnerDistance);
+        try{
+            spDistancia.setAdapter(UtilsViews.getSpinnerDistanceAdapter(getContext(),R.layout.support_simple_spinner_dropdown_item,true));
+            imgRace.setImageBitmap(raceFromList.getBitmap());
+            imageBitmap= raceFromList.getBitmap();
+            edtNameRace.setText(raceFromList.getName());
+            edtLugar.setText(raceFromList.getPlace());
+            edtWeb.setText(raceFromList.getWeb());
+            edtDescription.setText(raceFromList.getDescription());
+            String[] fechaHora= raceFromList.getDate_time_init().split(" ");
+            String fecha=fechaHora[0];
+            String hora=fechaHora[1];
+            dtpFechaDesde.setText(Utils.convertDateEnglishToSpanish(fecha));
+            tipHora.setText(hora);
+            int positionSelectedSpinnerDistance= raceFromList.getDistance()-1;
+            spDistancia.setSelection(positionSelectedSpinnerDistance);
+        }catch(Exception e){
+            FirebaseCrash.report(e);
+        }
     }
 
     @Override

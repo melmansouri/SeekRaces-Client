@@ -18,8 +18,4 @@ public interface IListFragmentRacesPublishedView {
     void showMessage(String message);
 
     void startScreenFilter();
-
-    void editEvent(Race race);
-
-    void deleteOwnRacePublished(String user, int id);
 }

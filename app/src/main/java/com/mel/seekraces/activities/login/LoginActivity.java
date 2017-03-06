@@ -86,6 +86,12 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, Goog
     private GoogleSignInResult resultSignInGoogle;
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        showComponentScreen();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);

@@ -26,5 +26,7 @@ public interface IListFragmentRacesPublishedPresenter {
 
     void deleteOwnRacePublished(boolean online, String user, int id);
 
+    void deleteOwnRacePublished(boolean online, Object object);
+
     void selectOptionDialogLongClickList(String[] options, int i, Race object);
 }
