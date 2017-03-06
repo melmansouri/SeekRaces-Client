@@ -30,7 +30,6 @@ import org.florescu.android.rangeseekbar.RangeSeekBar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnTextChanged;
 
 /**
  * Created by void on 29/01/2017.
@@ -170,9 +169,9 @@ public class FiltersActivity extends AppCompatActivity implements IFiltersView {
     }
 
     @Override
-    @OnTextChanged(R.id.edtLugar)
+    //@OnTextChanged(R.id.edtLugar)
     public void onTextChangedPlaces() {
-        presenter.onTextChangedPlaces(edtLugar.getText().toString());
+        //presenter.onTextChangedPlaces(edtLugar.getText().toString());
     }
 
     @Override
