@@ -1,6 +1,7 @@
 package com.mel.seekraces.activities.login;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
@@ -60,14 +61,16 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, Goog
     CoordinatorLayout coordinatorLayout;
     @BindView(R.id.btnLogin)
     Button btnLogin;
-    @BindView(R.id.txtSignIn)
-    TextView txtSignIn;
     @BindView(R.id.activity_login)
     RelativeLayout activityLogin;
-    @BindView(R.id.txtForgotPwd)
-    TextView txtForgotPwd;
     @BindView(R.id.btnSignInGoogle)
     Button btnSignInGoogle;
+    @BindView(R.id.txtAppName)
+    TextView txtAppName;
+    @BindView(R.id.btnForgotPwd)
+    Button btnForgotPwd;
+    @BindView(R.id.btnSignIn)
+    Button btnSignIn;
 
     private ILoginPresenter loginPresenter;
 
@@ -98,6 +101,13 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, Goog
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+        try{
+            Typeface custom_font = Typeface.createFromAsset(getAssets(), "android_insomnia_regular.ttf");
+            txtAppName.setTypeface(custom_font);
+        }catch(Exception e){
+            e.printStackTrace();
+            FirebaseCrash.report(e);
+        }
 
         loginPresenter.checkSession();
     }
@@ -110,7 +120,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, Goog
     }
 
     @Override
-    @OnClick(R.id.txtSignIn)
+    @OnClick(R.id.btnSignIn)
     public void goToSignIn() {
         loginPresenter.startActivitySignIn();
     }
@@ -124,7 +134,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, Goog
     @Override
     @OnClick(R.id.btnLogin)
     public void login() {
-        try{
+        try {
             UtilsViews.closeKeyBoard(this);
             User user = new User();
             user.setEmail(edtEmail.getText().toString());
@@ -132,7 +142,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, Goog
             user.setToken_push(sharedPreferencesSingleton.getStringSP(Constantes.KEY_TOKEN_PUSH));
             //sharedPreferencesSingleton.removeValueSP(Constantes.KEY_TOKEN_PUSH);
             loginPresenter.login(Utils.isOnline(this), false, user);
-        }catch (Exception e){
+        } catch (Exception e) {
             FirebaseCrash.report(e);
             e.printStackTrace();
         }
@@ -182,21 +192,23 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, Goog
     @Override
     public void showComponentScreen() {
         btnLogin.setVisibility(View.VISIBLE);
-        txtSignIn.setVisibility(View.VISIBLE);
+        btnSignIn.setVisibility(View.VISIBLE);
         textInputLayoutEmail.setVisibility(View.VISIBLE);
         textInputLayoutPass.setVisibility(View.VISIBLE);
-        txtForgotPwd.setVisibility(View.VISIBLE);
+        btnForgotPwd.setVisibility(View.VISIBLE);
         btnSignInGoogle.setVisibility(View.VISIBLE);
+        txtAppName.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideComponentScreen() {
         btnLogin.setVisibility(View.GONE);
-        txtSignIn.setVisibility(View.GONE);
+        btnSignIn.setVisibility(View.GONE);
         textInputLayoutEmail.setVisibility(View.GONE);
         textInputLayoutPass.setVisibility(View.GONE);
-        txtForgotPwd.setVisibility(View.GONE);
+        btnForgotPwd.setVisibility(View.GONE);
         btnSignInGoogle.setVisibility(View.GONE);
+        txtAppName.setVisibility(View.GONE);
     }
 
     @Override
@@ -227,7 +239,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, Goog
     @Override
     public void loginGoogle() {
         showProgress();
-        try{
+        try {
             final GoogleSignInAccount acct = resultSignInGoogle.getSignInAccount();
             final User user = new User();
             new EncodeImageTask(this, acct.getPhotoUrl()) {
@@ -242,7 +254,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, Goog
                     loginPresenter.login(Utils.isOnline(LoginActivity.this), false, user);
                 }
             }.execute();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             FirebaseCrash.report(e);
         }
@@ -251,7 +263,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, Goog
     }
 
     @Override
-    @OnClick(R.id.txtForgotPwd)
+    @OnClick(R.id.btnForgotPwd)
     public void fogotPassword() {
         UtilsViews.closeKeyBoard(this);
         loginPresenter.forgotPwd(Utils.isOnline(this), edtEmail.getText().toString());
@@ -265,15 +277,15 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, Goog
 
     @Override
     public void revokeAccessSignInGoogle() {
-        try{
+        try {
             Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(
                     new ResultCallback<Status>() {
                         @Override
                         public void onResult(Status status) {
-                            Log.e("LoginActivity","desconectado de google");
+                            Log.e("LoginActivity", "desconectado de google");
                         }
                     });
-        }catch (Exception e){
+        } catch (Exception e) {
             FirebaseCrash.report(e);
             e.printStackTrace();
         }

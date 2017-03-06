@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +66,11 @@ public class UtilsViews {
     }
 
     public static void showSnackBar(CoordinatorLayout root, String message) {
+        Snackbar snackbar = Snackbar.make(root, message, Snackbar.LENGTH_LONG);
+        snackbar.show();
+    }
+
+    public static void showSnackBar(LinearLayout root, String message) {
         Snackbar snackbar = Snackbar.make(root, message, Snackbar.LENGTH_LONG);
         snackbar.show();
     }

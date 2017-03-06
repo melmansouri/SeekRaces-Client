@@ -24,7 +24,7 @@ public interface INetworkConnectionApi {
     // TODO: Cambiar host por "10.0.0.2" para Genymotion.
     // TODO: Cambiar host por "10.0.0.3" para AVD.
     // TODO: Cambiar host por IP de tu PC para dispositivo real.
-    String BASE_URL = "https://seekraces.tk/SeekRaces/api/";
+    String BASE_URL = "https://seekraces.tk/SeekRaces/";
     String BASE_URL_PICTURES = "https://seekraces.tk/SeekRaces/pictures/";
 
     //String BASE_URL = "http://192.168.0.101:8080/SeekRaces/api/";
