@@ -50,10 +50,10 @@ public class ListFragmentRacesPublishedPresenterImpl implements IListFragmentRac
     }
 
     @Override
-    public void onOptionsItemSelected(int itemSelected) {
+    public void onOptionsItemSelected(int itemSelected, Filter filter) {
         if (view!=null){
             if (itemSelected== RMapped.ITEM_FILTER.getValue()){
-                view.startScreenFilter();
+                view.startScreenFilter(filter);
             }
         }
     }

@@ -1,5 +1,7 @@
 package com.mel.seekraces.interfaces.fragmentRacesPublished;
 
+import com.mel.seekraces.adapters.RVRacesPublishedAdapter;
+import com.mel.seekraces.entities.Filter;
 import com.mel.seekraces.entities.Race;
 
 import java.util.List;
@@ -10,6 +12,9 @@ import java.util.List;
 
 public interface IListFragmentRacesPublishedView {
     void fillAdapterList(List<Race> races);
+
+    RVRacesPublishedAdapter getAdapter();
+
     void showProgressBar();
     void hideProgressBar();
     void showList();
@@ -17,5 +22,5 @@ public interface IListFragmentRacesPublishedView {
 
     void showMessage(String message);
 
-    void startScreenFilter();
+    void startScreenFilter(Filter filter);
 }

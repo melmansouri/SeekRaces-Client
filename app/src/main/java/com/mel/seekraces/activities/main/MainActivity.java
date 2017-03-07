@@ -28,6 +28,7 @@ import com.mel.seekraces.commons.SharedPreferencesSingleton;
 import com.mel.seekraces.commons.UtilsViews;
 import com.mel.seekraces.entities.Filter;
 import com.mel.seekraces.entities.Race;
+import com.mel.seekraces.entities.User;
 import com.mel.seekraces.fragments.detailRace.DetailRaceFragment;
 import com.mel.seekraces.fragments.editRace.EditRaceFragment;
 import com.mel.seekraces.fragments.ownRacesPublished.ListOwnRacesPublishedFragment;
@@ -204,8 +205,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void startActivityFilters() {
+    public void startActivityFilters(Filter filter) {
         Intent intent = new Intent(this, FiltersActivity.class);
+        intent.putExtra("filter",filter);
         startActivityForResult(intent, Constantes.REQUEST_START_FILTERS_FOR_RESULT);
     }
 
@@ -249,6 +251,11 @@ public class MainActivity extends AppCompatActivity
         bundle.putInt("idEvent", idEvent);
         fragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment,Constantes.TAG_REVIEWS_FRAGMENT).addToBackStack("review").commit();
+    }
+
+    @Override
+    public void showDetailUserHowPublishRace(User user) {
+
     }
 
     @Override

@@ -149,7 +149,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, Goog
             user.setPwd(edtPassword.getText().toString());
             user.setToken_push(sharedPreferencesSingleton.getStringSP(Constantes.KEY_TOKEN_PUSH));
             //sharedPreferencesSingleton.removeValueSP(Constantes.KEY_TOKEN_PUSH);
-            loginPresenter.login(Utils.isOnline(this), false, user);
+            loginPresenter.login(Utils.isOnline(this), true, user);
         } catch (Exception e) {
             FirebaseCrash.report(e);
             e.printStackTrace();

@@ -306,6 +306,7 @@ public class SignInActivity extends AppCompatActivity implements ISignInView {
                 user.setPwd_repeat(edtRepeatPassword.getText().toString());
                 user.setUsername(edtUserName.getText().toString());
                 user.setPhotoBase64(s);
+                user.setPlace(edtPlace.getText().toString());
                 presenter.signIn(Utils.isOnline(SignInActivity.this), user);
             }
         }.execute();

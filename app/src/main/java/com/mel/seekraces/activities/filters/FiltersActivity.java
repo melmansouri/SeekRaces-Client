@@ -8,12 +8,14 @@ import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.crash.FirebaseCrash;
 import com.mel.seekraces.R;
 import com.mel.seekraces.adapters.AutoCompleteAdapter;
 import com.mel.seekraces.commons.Constantes;
@@ -30,6 +32,7 @@ import org.florescu.android.rangeseekbar.RangeSeekBar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 
 /**
  * Created by void on 29/01/2017.
@@ -58,9 +61,9 @@ public class FiltersActivity extends AppCompatActivity implements IFiltersView {
     private IFiltersPresenter presenter;
     private DatePickerFragment datePickerFragment;
     private MenuItem item;
+    private Menu menu;
     private AutoCompleteAdapter autoCompleteAdapter;
-
-
+    private Filter filter;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +71,8 @@ public class FiltersActivity extends AppCompatActivity implements IFiltersView {
         ButterKnife.bind(this);
         sharedPreferencesSingleton = SharedPreferencesSingleton.getInstance(this);
         presenter = new FilterPresenterImpl(this);
-        dtpFechaDesde.setText(Utils.getCurrentDateSpanishString());
+        filter=getIntent().getParcelableExtra("filter");
+        //dtpFechaDesde.setText(Utils.getCurrentDateSpanishString());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //spDistancia.setAdapter(UtilsViews.getSpinnerDistanceAdapter(this,R.layout.support_simple_spinner_dropdown_item,false));
         rangeSeekBar.setRangeValues(1, 100);
@@ -78,29 +82,64 @@ public class FiltersActivity extends AppCompatActivity implements IFiltersView {
         rangeSeekBar.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener() {
             @Override
             public void onRangeSeekBarValuesChanged(RangeSeekBar bar, Object minValue, Object maxValue) {
-                String kmMin = ((int) minValue == 1) ? (int) minValue + " km" : (int) minValue + " kms";
-                String kmMax = ((int) maxValue == 1) ? (int) maxValue + " km" : (int) maxValue + " kms";
-
-                txtRangoDistancias.setText(kmMin.concat(" - ").concat(kmMax));
+                setTextViewRangoDistancia((int) minValue,(int) maxValue);
             }
         });
+        initComponentsWithFilterData(filter);
 
+    }
+
+    @Override
+    public void initComponentsWithFilterData(Filter filter){
+        String dateInit=Utils.getCurrentDateSpanishString();
+        try{
+            edtNameRace.setText(filter.getName());
+            edtLugar.setText(filter.getPlace());
+            String dateInitTmp=filter.getDate_interval_init();
+            String dateEnd=filter.getDate_interval_end();
+            dateInit=TextUtils.isEmpty(dateInitTmp)?Utils.getCurrentDateSpanishString():Utils.convertDateEnglishToSpanish(dateInitTmp);
+            dtpFechaHasta.setText(TextUtils.isEmpty(dateEnd)?getString(R.string.fecha_hasta_default):Utils.convertDateEnglishToSpanish(dateEnd));
+            rangeSeekBar.setSelectedMinValue(filter.getDistanceMin()==0?1:filter.getDistanceMin());
+            rangeSeekBar.setSelectedMaxValue(filter.getDistanceMax()==0?100:filter.getDistanceMax());
+            setTextViewRangoDistancia(filter.getDistanceMin(),filter.getDistanceMax());
+
+        }catch (Exception e){
+            FirebaseCrash.report(e);
+            e.printStackTrace();
+        }
+        dtpFechaDesde.setText(dateInit);
+    }
+
+    private void setTextViewRangoDistancia(int minValue,int maxValue){
+        minValue=minValue==0?1:minValue;
+        maxValue=maxValue==0?100:maxValue;
+        String kmMin = ( minValue == 1) ?  minValue + " km" :  minValue + " kms";
+        String kmMax = ( maxValue == 1) ?  maxValue + " km" :  maxValue + " kms";
+
+        txtRangoDistancias.setText(kmMin.concat(" - ").concat(kmMax));
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_filter, menu);
+        this.menu=menu;
+        //presenter.showGroupsItemMenu(filter);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public void showGroupItemMenu(int idGroup, boolean show){
+        menu.setGroupVisible(idGroup,show);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         this.item = item;
-        return presenter.onOptionsItemSelected(item.getItemId());
+
+        return presenter.onOptionsItemSelected(item.getItemId(),generateFilterObject());
     }
 
-    @Override
-    public void backToListRacesPublished() {
+    private Filter generateFilterObject(){
         Filter filter = new Filter();
         filter.setUser(sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER));
         filter.setPlace(edtLugar.getText().toString().trim());
@@ -117,6 +156,13 @@ public class FiltersActivity extends AppCompatActivity implements IFiltersView {
         filter.setDate_interval_init(fechaDesde);
         String fechaHasta = Utils.convertDateSpanishToEnglish(dtpFechaHasta.getText().toString());
         filter.setDate_interval_end(fechaHasta);
+
+        return filter;
+    }
+
+    @Override
+    public void backToListRacesPublished(Filter filter) {
+
         Intent intent = new Intent();
         intent.putExtra("filter", filter);
         setResult(RESULT_OK, intent);
@@ -169,9 +215,9 @@ public class FiltersActivity extends AppCompatActivity implements IFiltersView {
     }
 
     @Override
-    //@OnTextChanged(R.id.edtLugar)
+    @OnTextChanged(R.id.edtLugar)
     public void onTextChangedPlaces() {
-        //presenter.onTextChangedPlaces(edtLugar.getText().toString());
+        presenter.onTextChangedPlaces(edtLugar.getText().toString());
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.mel.seekraces.deserializers;
 
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -9,6 +10,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.mel.seekraces.commons.Utils;
 import com.mel.seekraces.entities.Race;
+import com.mel.seekraces.entities.User;
 
 import java.lang.reflect.Type;
 
@@ -22,7 +24,7 @@ public class EventDeserializer implements JsonDeserializer<Race>{
         JsonObject jsonObject=json.getAsJsonObject();
         Race race =new Race();
         race.setId(jsonObject.get("id").getAsInt());
-        race.setUser(jsonObject.get("user").getAsString());
+        //race.setUser(jsonObject.get("user").getAsString());
         race.setUserName(jsonObject.get("userName").getAsString());
         race.setName(jsonObject.get("name").getAsString());
         race.setDescription(jsonObject.get("description").getAsString());
@@ -40,6 +42,8 @@ public class EventDeserializer implements JsonDeserializer<Race>{
         race.setRating(jsonObject.get("rating").getAsDouble());*/
         race.setFavorite(!jsonObject.get("isFavorite").isJsonNull());
         race.setFinished(jsonObject.get("isFinished").getAsInt() == 1 ?true:false);
+        User user=new Gson().fromJson(jsonObject.get("user").getAsString(),User.class);
+        race.setUser(user);
         return race;
     }
 }

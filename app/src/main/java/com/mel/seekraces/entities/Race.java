@@ -10,7 +10,7 @@ import android.os.Parcelable;
 
 public class Race implements Parcelable {
     private int id;
-    private String user;
+    //private String user;
     private String userName;
     private String name;
     private String description;
@@ -23,13 +23,14 @@ public class Race implements Parcelable {
     private String web;
     private boolean isFavorite;
     private boolean isFinished;
+    private User user;
 
     public Race() {
     }
 
     protected Race(Parcel in) {
         id = in.readInt();
-        user = in.readString();
+        //user = in.readString();
         name = in.readString();
         description = in.readString();
         bitmap = in.readParcelable(Bitmap.class.getClassLoader());
@@ -41,6 +42,7 @@ public class Race implements Parcelable {
         web = in.readString();
         isFavorite = in.readByte() != 0;
         isFinished = in.readByte() != 0;
+        user=in.readParcelable(User.class.getClassLoader());
     }
 
     public static final Creator<Race> CREATOR = new Creator<Race>() {
@@ -63,13 +65,13 @@ public class Race implements Parcelable {
         this.id = id;
     }
 
-    public String getUser() {
+    /*public String getUser() {
         return user;
     }
 
     public void setUser(String user) {
         this.user = user;
-    }
+    }*/
 
     public String getUserName() {
         return userName;
@@ -168,6 +170,14 @@ public class Race implements Parcelable {
         isFinished = finished;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -176,7 +186,7 @@ public class Race implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
-        dest.writeString(user);
+        //dest.writeString(user);
         dest.writeString(userName);
         dest.writeString(name);
         dest.writeString(description);
@@ -189,11 +199,12 @@ public class Race implements Parcelable {
         dest.writeString(web);
         dest.writeByte((byte) (isFavorite ? 1 : 0));
         dest.writeByte((byte) (isFinished ? 1 : 0));
+        dest.writeParcelable(user,flags);
     }
 
     private void readFromParcel(Parcel in) {
         id = in.readInt();
-        user = in.readString();
+        //user = in.readString();
         description = in.readString();
         bitmap = in.readParcelable(Bitmap.class.getClassLoader());
         imageBase64 = in.readString();
@@ -204,5 +215,6 @@ public class Race implements Parcelable {
         web = in.readString();
         isFavorite = in.readByte() != 0;
         isFinished = in.readByte() != 0;
+        user=in.readParcelable(User.class.getClassLoader());
     }
 }

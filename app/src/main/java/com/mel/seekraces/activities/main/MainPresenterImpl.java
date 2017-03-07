@@ -49,6 +49,7 @@ public class MainPresenterImpl implements IMainPresenter, IListennerCallBack {
             if (itemSelectd == RMapped.ITEM_RACES_PUBLISHED.getValue()) {
                 Filter filter = new Filter();
                 filter.setUser(sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER));
+                filter.setPlace(sharedPreferencesSingleton.getStringSP(Constantes.KEY_PLACE_USER));
                 view.chargeFragmentRacesPublished(filter);
             } else if (itemSelectd == RMapped.ITEM_RACES_MY_PUBLISHED.getValue()) {
                 view.chargeFragmentMyRacesPublished();

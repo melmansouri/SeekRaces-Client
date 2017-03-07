@@ -20,6 +20,7 @@ public enum RMapped {
     //Menus
     ITEM_FILTER(R.id.filter),
     ITEM_ACTIVITY_FILTERS_FILTRAR(R.id.item_menu_filters_filtrar),
+    ITEM_RESTART(R.id.item_menu_filters_reiniciar),
     ITEM_HOME_BACK(android.R.id.home),
     ITEM_SIGNIN(R.id.item_menu_signin_registrarse),
     ITEM_ADDRACE(R.id.item_menu_add_new_race),
@@ -28,6 +29,8 @@ public enum RMapped {
     ITEM_OPINAR(R.id.group_opinar),
     ITEM_EDTT_REVIEW(R.id.group_edit),
     ITEM_DELETE_REVIEW(R.id.group_delete),
+    ITEM_GROUP_FILTER(R.id.group_filter),
+    ITEM_GROUP_RESTART(R.id.group_restart),
 
     //Strings
     TITLE_CARRERAS_PUBLICADAS(R.string.title_carreras_publicadas),

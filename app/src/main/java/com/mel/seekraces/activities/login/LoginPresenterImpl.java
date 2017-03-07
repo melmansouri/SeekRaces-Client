@@ -168,8 +168,8 @@ public class LoginPresenterImpl implements ILoginPresenter, IListennerCallBack {
                 @Override
                 protected void onPostExecute(Void aVoid) {
                     super.onPostExecute(aVoid);
+                    view.hideProgress();
                     if (sharedPreferencesSingleton.containValue(Constantes.KEY_USER)){
-                        view.hideProgress();
                         view.goToMainScreen();
                     }else{
                         view.showComponentScreen();

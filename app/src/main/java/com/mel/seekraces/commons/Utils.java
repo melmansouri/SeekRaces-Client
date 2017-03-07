@@ -102,7 +102,7 @@ public class Utils {
         String encodedImage="";
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG,50,baos);
+            bitmap.compress(Bitmap.CompressFormat.JPEG,100,baos);
             byte[] b = baos.toByteArray();
             encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
         } catch (Exception e) {

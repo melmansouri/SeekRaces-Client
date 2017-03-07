@@ -1,6 +1,8 @@
 package com.mel.seekraces.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
@@ -34,19 +36,14 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
     private IGenericInterface.OnListInteractionListener mListenerListInteracion;
     private IGenericInterface.OnFragmentInteractionListener mListenerFragmentInteracion;
     private Context c;
-
-
-    public RVRacesPublishedAdapter(List<Race> items, IGenericInterface.OnListInteractionListener listListener, IGenericInterface.OnFragmentInteractionListener fragmentListener) {
-        list = items;
-        mListenerListInteracion = listListener;
-        mListenerFragmentInteracion = fragmentListener;
-    }
+    private Bitmap bitmap;
 
     public RVRacesPublishedAdapter(Context context, List<Race> items, IGenericInterface.OnListInteractionListener listener, IGenericInterface.OnFragmentInteractionListener fragmentListener) {
         list = items;
         mListenerListInteracion = listener;
         c = context;
         mListenerFragmentInteracion = fragmentListener;
+        bitmap=BitmapFactory.decodeResource(c.getResources(), R.drawable.default_race);
     }
 
     @Override
@@ -59,7 +56,14 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = list.get(position);
-        holder.imgRace.setImageBitmap(holder.mItem.getBitmap());
+
+       // if (holder.mItem.getBitmap()!=null){
+            holder.imgRace.setImageBitmap(holder.mItem.getBitmap());
+        /*}else{
+            holder.imgRace.setImageBitmap(bitmap);
+
+        }*/
+
         holder.txtNameRace.setText(holder.mItem.getName());
         holder.txtCountryCity.setText(holder.mItem.getPlace());
         SimpleDateFormat formato =
@@ -74,10 +78,10 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
         }
         String fecha = formato.format(date);
         holder.txtDate.setText(fecha);
-        String publicadoPor = "Publicado por " + holder.mItem.getUserName();
+        String publicadoPor = "<h3>Publicado por " + holder.mItem.getUserName()+"</h3>";
         holder.txtDistance.setText(holder.mItem.getDistance() + "KM");
 
-        if (!SharedPreferencesSingleton.getInstance(c).getStringSP(Constantes.KEY_USER).toLowerCase().equals(holder.mItem.getUser().toLowerCase())) {
+        if (!SharedPreferencesSingleton.getInstance(c).getStringSP(Constantes.KEY_USER).toLowerCase().equals(holder.mItem.getUser().getUsername().toLowerCase())) {
             holder.imgBtnLikeRace.setVisibility(View.VISIBLE);
             holder.imgBtnEdit.setVisibility(View.GONE);
             holder.imgBtnDelete.setVisibility(View.GONE);
@@ -87,6 +91,12 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
                 holder.imgBtnLikeRace.setImageResource(R.drawable.ic_not_favorite);
             }
             //holder.imgBtnLikeRace.setLiked(holder.mItem.isFavorite());
+            holder.txtPublicadoPor.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mListenerFragmentInteracion.showDetailUserHowPublishRace(holder.mItem.getUser());
+                }
+            });
         } else {
             publicadoPor = "Publicado por mi";
             holder.imgBtnLikeRace.setVisibility(View.GONE);
@@ -127,7 +137,7 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
             holder.txtFinished.setVisibility(View.GONE);
         }
 
-        holder.txtPublicadoPor.setText(publicadoPor);
+        holder.txtPublicadoPor.setText(TextUtils.htmlEncode(publicadoPor));
 
         holder.imgBtnLikeRace.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -108,24 +108,25 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <!--com.getbase.floatingactionbutton.FloatingActionsMenu
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
         android:id="@+id/menu_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="@dimen/fab_margin"
-        fab:fab_addButtonColorNormal="@color/colorAccent"
         fab:fab_addButtonSize="normal"
-        fab:fab_labelsPosition="left">
+        fab:fab_labelsPosition="left"
+        app:fab_addButtonColorNormal="@color/colorAccent"
+        app:fab_addButtonColorPressed="@color/colorAccent">
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabOpinar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_colorNormal="?attr/colorPrimary"
-            fab:fab_icon="@drawable/ic_send_white"
+            android:src="@drawable/ic_insert_comment_white_24dp"
             fab:fab_size="mini"
-            fab:fab_title="Opinar"/>
+            app:fab_label="Opinar"/>
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabEdit"
@@ -133,9 +134,9 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             fab:fab_colorNormal="?attr/colorPrimary"
-            fab:fab_icon="@drawable/ic_mode_edit_white"
+            android:src="@drawable/ic_mode_edit_white_24dp"
             fab:fab_size="mini"
-            fab:fab_title="Editar"/>
+            fab:fab_label="Editar"/>
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabDelete"
@@ -143,13 +144,13 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             fab:fab_colorNormal="?attr/colorPrimary"
-            fab:fab_icon="@drawable/ic_delete_white"
+            android:src="@drawable/ic_delete_forever_white_24dp"
             fab:fab_size="mini"
-            fab:fab_title="Borrar"/>
+            fab:fab_label="Borrar"/>
 
-    </com.getbase.floatingactionbutton.FloatingActionsMenu-->
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
-    <com.github.clans.fab.FloatingActionMenu
+    <!--com.github.clans.fab.FloatingActionMenu
         android:id="@+id/menu_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -187,6 +188,6 @@
             app:fab_size="mini"
             app:fab_label="Borrar"/>
 
-    </com.github.clans.fab.FloatingActionMenu>
+    </com.github.clans.fab.FloatingActionMenu-->
 
 </android.support.design.widget.CoordinatorLayout>

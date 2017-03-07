@@ -15,7 +15,7 @@ public interface IListFragmentRacesPublishedPresenter {
 
     void getRacesPublished(boolean isOnline, Filter filter);
 
-    void onOptionsItemSelected(int itemSelected);
+    void onOptionsItemSelected(int itemSelected, Filter filter);
     void onDestroy();
 
     void addEventToFavorite(boolean online, Favorite item);

@@ -18,9 +18,7 @@ import android.view.ViewGroup;
 
 import com.mel.seekraces.R;
 import com.mel.seekraces.adapters.RVRacesPublishedAdapter;
-import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.RMapped;
-import com.mel.seekraces.commons.SharedPreferencesSingleton;
 import com.mel.seekraces.commons.Utils;
 import com.mel.seekraces.commons.UtilsViews;
 import com.mel.seekraces.customsViews.SwipeRefreshLayoutWithEmpty;
@@ -79,8 +77,8 @@ public class ListRacesPublishedFragment extends Fragment implements IListFragmen
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                filter=new Filter();
-                filter.setUser(SharedPreferencesSingleton.getInstance(getContext()).getStringSP(Constantes.KEY_USER));
+                /*filter=new Filter();
+                filter.setUser(SharedPreferencesSingleton.getInstance(getContext()).getStringSP(Constantes.KEY_USER));*/
                 presenter.getRacesPublished(Utils.isOnline(getContext()),filter);
             }
         });
@@ -118,10 +116,12 @@ public class ListRacesPublishedFragment extends Fragment implements IListFragmen
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        presenter.onOptionsItemSelected(id);
+        presenter.onOptionsItemSelected(id,filter);
         return super.onOptionsItemSelected(item);
     }
 
@@ -130,10 +130,16 @@ public class ListRacesPublishedFragment extends Fragment implements IListFragmen
         hideProgressBar();
         /*racesWithoutFilter.clear();
         racesWithoutFilter.addAll(races);*/
-
-        adapter = new RVRacesPublishedAdapter(races, this,mListener);
+        adapter=null;
+        adapter = new RVRacesPublishedAdapter(getContext(),races, this,mListener);
         recyclerView.setAdapter(adapter);
     }
+
+    @Override
+    public RVRacesPublishedAdapter getAdapter(){
+        return adapter;
+    }
+
     @Override
     public void showProgressBar() {
         swipeRefresh.setRefreshing(true);
@@ -160,8 +166,8 @@ public class ListRacesPublishedFragment extends Fragment implements IListFragmen
     }
 
     @Override
-    public void startScreenFilter() {
-        mListener.startActivityFilters();
+    public void startScreenFilter(Filter filter) {
+        mListener.startActivityFilters(filter);
     }
 
 

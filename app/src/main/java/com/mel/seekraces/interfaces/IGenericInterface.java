@@ -3,7 +3,9 @@ package com.mel.seekraces.interfaces;
 import android.view.View;
 
 import com.mel.seekraces.entities.Favorite;
+import com.mel.seekraces.entities.Filter;
 import com.mel.seekraces.entities.Race;
+import com.mel.seekraces.entities.User;
 
 /**
  * Created by void on 26/02/2017.
@@ -30,7 +32,9 @@ public interface IGenericInterface {
         void setCheckedItemNavView(int index);
 
         void changeTitleActionBar(int idTitle);
-        void startActivityFilters();
+
+        void startActivityFilters(Filter filter);
+
         void showMessageFromFragments(String message);
 
         void hideFloatingButton();
@@ -42,6 +46,8 @@ public interface IGenericInterface {
         void showFloatingButton();
 
         void startScreenReviews(int idEvent);
+
+        void showDetailUserHowPublishRace(User user);
     }
 
     /**

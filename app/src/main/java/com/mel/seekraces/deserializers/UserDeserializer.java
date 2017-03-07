@@ -20,14 +20,16 @@ public class UserDeserializer implements JsonDeserializer<User>{
         User user=new User();
         user.setEmail(jsonObject.get("email").getAsString());
         user.setUsername(jsonObject.get("username").getAsString());
-        user.setPhoto_url(jsonObject.get("photo_url").getAsString());
+        if (!jsonObject.get("photo_url").isJsonNull()){
+            user.setPhoto_url(jsonObject.get("photo_url").getAsString());
+        }
         //String base64=jsonObject.get("photoBase64").getAsString();
         /*if (!TextUtils.isEmpty(base64)){
             user.setPhoto(Utils.base64ToBitmap(base64));
         }*/
         //user.setPhotoBase64(base64);
-        if (!jsonObject.get("country").isJsonNull()){
-            user.setPlace(jsonObject.get("country").getAsString());
+        if (!jsonObject.get("place").isJsonNull()){
+            user.setPlace(jsonObject.get("place").getAsString());
         }
 
         return user;

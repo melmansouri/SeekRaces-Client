@@ -20,6 +20,8 @@ public interface IFragmentReviewsView {
 
     void showFabEdit(boolean show);
 
+    void closeFabMenu(boolean close);
+
     Menu getMenu();
 
     void fillAdapterList(List<Review> reviews);

@@ -1,5 +1,7 @@
 package com.mel.seekraces.deserializers;
 
+import android.text.TextUtils;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -24,7 +26,14 @@ public class PlacePredictionsDeserializer implements JsonDeserializer<PlacePredi
         ArrayList<String> lugares=new ArrayList<>();
         for (int i=0;i<jsonArray.size();i++){
             JsonObject jObject=jsonArray.get(i).getAsJsonObject();
-            lugares.add(jObject.get("description").getAsString());
+            String tmp=jObject.get("description").getAsString();
+            String description = "";
+            if (!TextUtils.isEmpty(tmp)) {
+                int indexFinal = tmp.indexOf(',');
+
+                description = tmp.substring(0, indexFinal);
+            }
+            lugares.add(description);
         }
         placePredictions.setPlaces(lugares);
         placePredictions.setStatus(jsonObject.get("status").getAsString());

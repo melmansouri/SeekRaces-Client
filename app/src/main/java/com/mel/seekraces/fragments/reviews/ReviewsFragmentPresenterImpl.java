@@ -153,6 +153,7 @@ public class ReviewsFragmentPresenterImpl implements IFragmentReviewsPresenter, 
                     view.showValoracion();
                     view.showList();
                 }
+                //view.closeFabMenu(true);
                 view.hideProgressBar();
 
             }
@@ -215,6 +216,7 @@ public class ReviewsFragmentPresenterImpl implements IFragmentReviewsPresenter, 
             }else{
                 fillViewOwnReview(null);
             }
+            //view.closeFabMenu(true);
             view.showMessage(response.getMessage());
         }
     }

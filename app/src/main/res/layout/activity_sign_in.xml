@@ -25,7 +25,8 @@
             <ImageView
                 android:id="@+id/imgProfileUser"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="250dp"
+                android:scaleType="fitXY"
                 android:src="@drawable/user_default"
                 android:layout_weight=".9"/>
 

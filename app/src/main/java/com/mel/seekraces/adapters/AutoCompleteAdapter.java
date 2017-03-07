@@ -45,7 +45,7 @@ public class AutoCompleteAdapter extends ArrayAdapter<String> implements Filtera
 
 
         if (Places.size() > 0) {
-            holder.Place = Places.get(position);//acortarNombre(Places.get(position));
+            holder.Place = Places.get(position);
 
             holder.name.setText(holder.Place);
         }

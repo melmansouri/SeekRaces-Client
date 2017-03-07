@@ -21,6 +21,7 @@ public class User implements Parcelable {
     private String place;
     private String token_push;
     private String idTokenGoogle;
+    private boolean followed;
 
     public User() {
         this.email = "";
@@ -39,6 +40,7 @@ public class User implements Parcelable {
         photoBase64 = in.readString();
         photo = in.readParcelable(Bitmap.class.getClassLoader());
         place = in.readString();
+        followed = in.readByte() != 0;
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -133,6 +135,14 @@ public class User implements Parcelable {
         this.idTokenGoogle = idTokenGoogle;
     }
 
+    public boolean isFollowed() {
+        return followed;
+    }
+
+    public void setFollowed(boolean followed) {
+        this.followed = followed;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -146,6 +156,7 @@ public class User implements Parcelable {
                 ", place='" + place + '\'' +
                 ", token_push='" + token_push + '\'' +
                 ", idTokenGoogle='" + idTokenGoogle + '\'' +
+                ", followed=" + followed +
                 '}';
     }
 
@@ -162,6 +173,7 @@ public class User implements Parcelable {
         parcel.writeString(photoBase64);
         parcel.writeParcelable(photo, i);
         parcel.writeString(place);
+        parcel.writeByte((byte) (followed ? 1 : 0));
     }
 
     private void readFromParcel(Parcel in){
@@ -170,6 +182,7 @@ public class User implements Parcelable {
         photoBase64 = in.readString();
         photo = in.readParcelable(Bitmap.class.getClassLoader());
         place = in.readString();
+        followed = in.readByte() != 0;
     }
 
 }
