@@ -292,7 +292,8 @@ public class Utils {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        urlString.append("&types=(cities)&language=es");
+        urlString.append("&components=country:es");
+        urlString.append("&types=geocode");
         urlString.append("&key=".concat(Constantes.KEY_GOOGLE_API));
         return urlString.toString();
     }

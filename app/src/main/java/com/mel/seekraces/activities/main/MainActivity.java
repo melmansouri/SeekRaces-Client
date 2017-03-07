@@ -31,7 +31,6 @@ import com.mel.seekraces.entities.Race;
 import com.mel.seekraces.fragments.detailRace.DetailRaceFragment;
 import com.mel.seekraces.fragments.editRace.EditRaceFragment;
 import com.mel.seekraces.fragments.ownRacesPublished.ListOwnRacesPublishedFragment;
-import com.mel.seekraces.fragments.racesFinished.ListRacesFinishedFragment;
 import com.mel.seekraces.fragments.racesPublished.ListRacesPublishedFragment;
 import com.mel.seekraces.fragments.racesPublishedFavorites.ListRacesPublishedFavoritesFragment;
 import com.mel.seekraces.fragments.reviews.ReviewsFragment;
@@ -296,8 +295,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void chargeFragmentRacesPrevious() {
-        ListRacesFinishedFragment fragment = new ListRacesFinishedFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment).addToBackStack("finished").commit();
+        /*ListRacesFinishedFragment fragment = new ListRacesFinishedFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment).addToBackStack("finished").commit();*/
     }
 
     @Override

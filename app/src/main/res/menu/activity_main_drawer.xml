@@ -17,6 +17,7 @@
         <item
             android:id="@+id/itemListPreviousEvents"
             android:icon="@drawable/ic_finished"
+            android:visible="false"
             android:title="@string/title_carreras_anteriores" />
     </group>
 

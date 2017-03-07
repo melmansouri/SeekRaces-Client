@@ -39,6 +39,7 @@ public class EventDeserializer implements JsonDeserializer<Race>{
         race.setTotal_scores(jsonObject.get("total_scores").getAsInt());
         race.setRating(jsonObject.get("rating").getAsDouble());*/
         race.setFavorite(!jsonObject.get("isFavorite").isJsonNull());
+        race.setFinished(jsonObject.get("isFinished").getAsInt() == 1 ?true:false);
         return race;
     }
 }

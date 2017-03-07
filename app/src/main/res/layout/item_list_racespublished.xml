@@ -100,11 +100,23 @@
             android:text="Fecha"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
+        <TextView
+            android:id="@+id/txtFinished"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/lnName"
+            android:layout_below="@+id/txtDate"
+            android:layout_marginBottom="10dp"
+            android:text="Finalizada"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
             <TextView
                 android:id="@+id/txtPublicadoPor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/txtDate"
+                android:layout_below="@id/txtFinished"
                 android:layout_alignLeft="@id/lnName"
                 android:text="Publicado por Manolo"
                 android:textAppearance="?android:attr/textAppearanceSmall"

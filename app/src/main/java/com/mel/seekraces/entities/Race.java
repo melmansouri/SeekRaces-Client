@@ -8,7 +8,7 @@ import android.os.Parcelable;
  * Created by void on 18/01/2017.
  */
 
-public class Race implements Parcelable{
+public class Race implements Parcelable {
     private int id;
     private String user;
     private String userName;
@@ -22,8 +22,9 @@ public class Race implements Parcelable{
     private String date_time_init;
     private String web;
     private boolean isFavorite;
+    private boolean isFinished;
 
-    public Race(){
+    public Race() {
     }
 
     protected Race(Parcel in) {
@@ -33,12 +34,13 @@ public class Race implements Parcelable{
         description = in.readString();
         bitmap = in.readParcelable(Bitmap.class.getClassLoader());
         imageBase64 = in.readString();
-        imageName= in.readString();
+        imageName = in.readString();
         distance = in.readInt();
         place = in.readString();
-        date_time_init=in.readString();
+        date_time_init = in.readString();
         web = in.readString();
-        isFavorite=in.readByte() != 0;
+        isFavorite = in.readByte() != 0;
+        isFinished = in.readByte() != 0;
     }
 
     public static final Creator<Race> CREATOR = new Creator<Race>() {
@@ -150,13 +152,20 @@ public class Race implements Parcelable{
     }
 
 
-
     public boolean isFavorite() {
         return isFavorite;
     }
 
     public void setFavorite(boolean favorite) {
         isFavorite = favorite;
+    }
+
+    public boolean isFinished() {
+        return isFinished;
+    }
+
+    public void setFinished(boolean finished) {
+        isFinished = finished;
     }
 
     @Override
@@ -179,6 +188,7 @@ public class Race implements Parcelable{
         dest.writeString(date_time_init);
         dest.writeString(web);
         dest.writeByte((byte) (isFavorite ? 1 : 0));
+        dest.writeByte((byte) (isFinished ? 1 : 0));
     }
 
     private void readFromParcel(Parcel in) {
@@ -187,11 +197,12 @@ public class Race implements Parcelable{
         description = in.readString();
         bitmap = in.readParcelable(Bitmap.class.getClassLoader());
         imageBase64 = in.readString();
-        imageName= in.readString();
+        imageName = in.readString();
         distance = in.readInt();
         place = in.readString();
         date_time_init = in.readString();
         web = in.readString();
         isFavorite = in.readByte() != 0;
+        isFinished = in.readByte() != 0;
     }
 }

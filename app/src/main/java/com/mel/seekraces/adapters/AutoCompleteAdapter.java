@@ -1,7 +1,7 @@
 package com.mel.seekraces.adapters;
 
-import android.app.Activity;
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +11,6 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.mel.seekraces.R;
-import com.mel.seekraces.entities.PlaceAutoComplete;
 
 import java.util.List;
 
@@ -19,7 +18,7 @@ import java.util.List;
  * Created by void on 11/02/2017.
  */
 
-public class AutoCompleteAdapter extends ArrayAdapter<String> implements Filterable{
+public class AutoCompleteAdapter extends ArrayAdapter<String> implements Filterable {
     Context context;
     List<String> Places;
 
@@ -45,14 +44,24 @@ public class AutoCompleteAdapter extends ArrayAdapter<String> implements Filtera
             holder = (ViewHolder) rowView.getTag();
 
 
-        if (Places.size()>0){
-        holder.Place = Places.get(position);
+        if (Places.size() > 0) {
+            holder.Place = Places.get(position);//acortarNombre(Places.get(position));
 
-
-        holder.name.setText(holder.Place);
+            holder.name.setText(holder.Place);
         }
 
         return rowView;
+    }
+
+    private String acortarNombre(String text) {
+        String tmp = "";
+        if (!TextUtils.isEmpty(text)) {
+            int indexFinal = text.indexOf(',');
+
+            tmp = text.substring(0, indexFinal);
+        }
+
+        return tmp;
     }
 
     class ViewHolder {
@@ -61,7 +70,7 @@ public class AutoCompleteAdapter extends ArrayAdapter<String> implements Filtera
     }
 
     @Override
-    public int getCount(){
+    public int getCount() {
         return Places.size();
     }
 
@@ -71,7 +80,7 @@ public class AutoCompleteAdapter extends ArrayAdapter<String> implements Filtera
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults filterResults = new FilterResults();
-                if (constraint != null && constraint.length()>3) {
+                if (constraint != null && constraint.length() > 3) {
 
                     filterResults.values = Places;
                     filterResults.count = Places.size();
@@ -84,8 +93,7 @@ public class AutoCompleteAdapter extends ArrayAdapter<String> implements Filtera
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 if (results != null && results.count > 0) {
                     notifyDataSetChanged();
-                }
-                else {
+                } else {
                     notifyDataSetInvalidated();
                 }
             }

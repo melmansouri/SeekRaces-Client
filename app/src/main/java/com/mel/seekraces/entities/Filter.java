@@ -7,7 +7,7 @@ import android.os.Parcelable;
  * Created by void on 21/01/2017.
  */
 
-public class Filter implements Parcelable{
+public class Filter implements Parcelable {
     private String user;
     private String name;
     private String place;
@@ -16,12 +16,12 @@ public class Filter implements Parcelable{
     private String date_interval_init;
     private String date_interval_end;
 
-    public Filter(){
+    public Filter() {
 
     }
 
     protected Filter(Parcel in) {
-        user=in.readString();
+        user = in.readString();
         place = in.readString();
         name = in.readString();
         distanceMin = in.readInt();

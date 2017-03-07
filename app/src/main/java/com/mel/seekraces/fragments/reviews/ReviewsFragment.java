@@ -23,8 +23,8 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.mel.seekraces.R;
 import com.mel.seekraces.adapters.RVReviewsAdapter;
 import com.mel.seekraces.commons.Constantes;
@@ -77,7 +77,15 @@ public class ReviewsFragment extends Fragment implements IFragmentReviewsView {
     @BindView(R.id.fabDelete)
     FloatingActionButton fabDelete;
     @BindView(R.id.menu_fab)
-    FloatingActionsMenu menuFab;
+    FloatingActionMenu menuFab;
+    /*@BindView(R.id.fabOpinar)
+    FloatingActionButton fabOpinar;
+    @BindView(R.id.fabEdit)
+    FloatingActionButton fabEdit;
+    @BindView(R.id.fabDelete)
+    FloatingActionButton fabDelete;
+    @BindView(R.id.menu_fab)
+    FloatingActionsMenu menuFab;*/
 
     private int idEvent;
     private IGenericInterface.OnFragmentInteractionListener mListener;
@@ -155,17 +163,17 @@ public class ReviewsFragment extends Fragment implements IFragmentReviewsView {
 
     @Override
     public void showFabOpinar(boolean show) {
-        fabOpinar.setVisibility(show?View.VISIBLE:View.GONE);
+        fabOpinar.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     @Override
     public void showFabDelete(boolean show) {
-        fabDelete.setVisibility(show?View.VISIBLE:View.GONE);
+        fabDelete.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     @Override
     public void showFabEdit(boolean show) {
-        fabEdit.setVisibility(show?View.VISIBLE:View.GONE);
+        fabEdit.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     @Override

@@ -39,14 +39,14 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
     public RVRacesPublishedAdapter(List<Race> items, IGenericInterface.OnListInteractionListener listListener, IGenericInterface.OnFragmentInteractionListener fragmentListener) {
         list = items;
         mListenerListInteracion = listListener;
-        mListenerFragmentInteracion=fragmentListener;
+        mListenerFragmentInteracion = fragmentListener;
     }
 
     public RVRacesPublishedAdapter(Context context, List<Race> items, IGenericInterface.OnListInteractionListener listener, IGenericInterface.OnFragmentInteractionListener fragmentListener) {
         list = items;
         mListenerListInteracion = listener;
-        c=context;
-        mListenerFragmentInteracion=fragmentListener;
+        c = context;
+        mListenerFragmentInteracion = fragmentListener;
     }
 
     @Override
@@ -66,7 +66,7 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
                 new SimpleDateFormat("EEEE d 'de' MMMM 'de' yyyy 'a las' HH:mm", Locale.getDefault());
         SimpleDateFormat sdf =
                 new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date= null;
+        Date date = null;
         try {
             date = sdf.parse(holder.mItem.getDate_time_init());
         } catch (ParseException e) {
@@ -74,21 +74,21 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
         }
         String fecha = formato.format(date);
         holder.txtDate.setText(fecha);
-        String publicadoPor="Publicado por "+holder.mItem.getUserName();
-        holder.txtDistance.setText(holder.mItem.getDistance()+"KM");
+        String publicadoPor = "Publicado por " + holder.mItem.getUserName();
+        holder.txtDistance.setText(holder.mItem.getDistance() + "KM");
 
-        if (!SharedPreferencesSingleton.getInstance(c).getStringSP(Constantes.KEY_USER).toLowerCase().equals(holder.mItem.getUser().toLowerCase())){
+        if (!SharedPreferencesSingleton.getInstance(c).getStringSP(Constantes.KEY_USER).toLowerCase().equals(holder.mItem.getUser().toLowerCase())) {
             holder.imgBtnLikeRace.setVisibility(View.VISIBLE);
             holder.imgBtnEdit.setVisibility(View.GONE);
             holder.imgBtnDelete.setVisibility(View.GONE);
-            if (holder.mItem.isFavorite()){
+            if (holder.mItem.isFavorite()) {
                 holder.imgBtnLikeRace.setImageResource(R.drawable.ic_favorite);
-            }else{
+            } else {
                 holder.imgBtnLikeRace.setImageResource(R.drawable.ic_not_favorite);
             }
             //holder.imgBtnLikeRace.setLiked(holder.mItem.isFavorite());
-        }else{
-            publicadoPor="Publicado por mi";
+        } else {
+            publicadoPor = "Publicado por mi";
             holder.imgBtnLikeRace.setVisibility(View.GONE);
             holder.imgBtnDelete.setVisibility(View.VISIBLE);
             holder.imgBtnEdit.setOnClickListener(new View.OnClickListener() {
@@ -115,10 +115,16 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
                 }
             });*/
         }
-        if (mListenerListInteracion instanceof ListRacesFinishedFragment){
+        if (mListenerListInteracion instanceof ListRacesFinishedFragment) {
             holder.imgBtnEdit.setVisibility(View.GONE);
             holder.imgBtnDelete.setVisibility(View.GONE);
             holder.imgBtnLikeRace.setVisibility(View.GONE);
+        }
+
+        if (holder.mItem.isFinished()) {
+            holder.txtFinished.setVisibility(View.VISIBLE);
+        }else{
+            holder.txtFinished.setVisibility(View.GONE);
         }
 
         holder.txtPublicadoPor.setText(publicadoPor);
@@ -126,17 +132,17 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
         holder.imgBtnLikeRace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!SharedPreferencesSingleton.getInstance(c).getStringSP(Constantes.KEY_USER).equals(holder.mItem.getUser())){
-                    String user=SharedPreferencesSingleton.getInstance(c).getStringSP(Constantes.KEY_USER);
-                    if (holder.mItem.isFavorite()){
+                if (!SharedPreferencesSingleton.getInstance(c).getStringSP(Constantes.KEY_USER).equals(holder.mItem.getUser())) {
+                    String user = SharedPreferencesSingleton.getInstance(c).getStringSP(Constantes.KEY_USER);
+                    if (holder.mItem.isFavorite()) {
                         if (null != mListenerListInteracion) {
-                            mListenerListInteracion.deleteEventFromFavorite(user,holder.mItem.getId());
-                            Log.e("adapter","deleteFavorite");
+                            mListenerListInteracion.deleteEventFromFavorite(user, holder.mItem.getId());
+                            Log.e("adapter", "deleteFavorite");
                         }
-                    }else{
+                    } else {
                         if (null != mListenerListInteracion) {
                             mListenerListInteracion.addEventToFavorite(new Favorite(user, holder.mItem.getId()));
-                            Log.e("adapter","addFavorite");
+                            Log.e("adapter", "addFavorite");
                         }
                     }
                 }
@@ -168,7 +174,7 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("adapter","carrera");
+                Log.e("adapter", "carrera");
                 if (null != mListenerFragmentInteracion) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
@@ -178,16 +184,16 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
         });
     }
 
-    public void filter(List<Race> racesWithoutFilter,String query){
+    public void filter(List<Race> racesWithoutFilter, String query) {
         list.clear();
-        if (!TextUtils.isEmpty(query)){
+        if (!TextUtils.isEmpty(query)) {
             for (Race race :
                     racesWithoutFilter) {
-                if (race.getName().toLowerCase().contains(query.toLowerCase())){
+                if (race.getName().toLowerCase().contains(query.toLowerCase())) {
                     list.add(race);
                 }
             }
-        }else{
+        } else {
             list.addAll(racesWithoutFilter);
         }
         notifyDataSetChanged();
@@ -210,6 +216,8 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
         TextView txtCountryCity;
         @BindView(R.id.txtDate)
         TextView txtDate;
+        @BindView(R.id.txtFinished)
+        TextView txtFinished;
         @BindView(R.id.txtPublicadoPor)
         TextView txtPublicadoPor;
         @BindView(R.id.imgBtnLikeRace)
@@ -222,7 +230,7 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
 
         public ViewHolder(View view) {
             super(view);
-            ButterKnife.bind(this,view);
+            ButterKnife.bind(this, view);
             mView = view;
         }
     }

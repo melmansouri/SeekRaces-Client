@@ -11,6 +11,7 @@ android {
         versionCode 1
         versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -48,6 +49,8 @@ dependencies {
     testCompile 'junit:junit:4.12'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'com.getbase:floatingactionbutton:1.10.1'
+    compile 'com.android.support:multidex:1.0.0'
+    compile 'com.github.clans:fab:1.6.4'
 }
 
 apply plugin: 'com.google.gms.google-services'
