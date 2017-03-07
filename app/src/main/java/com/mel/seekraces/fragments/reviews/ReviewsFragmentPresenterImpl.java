@@ -3,7 +3,6 @@ package com.mel.seekraces.fragments.reviews;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.mel.seekraces.commons.Constantes;
-import com.mel.seekraces.commons.RMapped;
 import com.mel.seekraces.commons.SharedPreferencesSingleton;
 import com.mel.seekraces.entities.Response;
 import com.mel.seekraces.entities.Review;
@@ -35,9 +34,13 @@ public class ReviewsFragmentPresenterImpl implements IFragmentReviewsPresenter, 
     public void getReviews(boolean isOnline, int idEvent) {
         if (view != null) {
             view.hideList();
+            view.hideValoracion();
             view.showProgressBar();
-            if (!isOnline){
-                view.showList();
+            if (!isOnline) {
+                if (view.getAdapter()!=null){
+                    view.showList();
+                    view.showValoracion();
+                }
                 view.hideProgressBar();
                 view.showMessage("Comprueba tu conexión");
                 return;
@@ -48,15 +51,15 @@ public class ReviewsFragmentPresenterImpl implements IFragmentReviewsPresenter, 
 
     @Override
     public void onOptionsItemSelected(int itemSelected) {
-        if (view != null) {
+        /*if (view != null) {
             if (itemSelected == RMapped.ITEM_OPINAR.getValue()) {
                 view.showDialogAddReview();
-            }else if  (itemSelected == RMapped.ITEM_EDTT_REVIEW.getValue()) {
+            } else if (itemSelected == RMapped.ITEM_EDTT_REVIEW.getValue()) {
                 view.showDialogEditReview();
-            } else if  (itemSelected == RMapped.ITEM_DELETE_REVIEW.getValue()) {
+            } else if (itemSelected == RMapped.ITEM_DELETE_REVIEW.getValue()) {
                 view.deleteOwnReview();
             }
-        }
+        }*/
     }
 
     @Override
@@ -66,16 +69,20 @@ public class ReviewsFragmentPresenterImpl implements IFragmentReviewsPresenter, 
         interactor.addReview(null);
         interactor.editReview(null);
         interactor.deleteReview(null, 0);
-        interactor=null;
+        interactor = null;
     }
 
     @Override
-    public void addReview(boolean isOnline,Review review) {
+    public void addReview(boolean isOnline, Review review) {
         if (view != null) {
-            view.hideList();
-            view.showProgressBar();
-            if (!isOnline){
-                view.showList();
+                view.hideList();
+                view.hideValoracion();
+                view.showProgressBar();
+            if (!isOnline) {
+                if (view.getAdapter()!=null){
+                    view.showList();
+                    view.showValoracion();
+                }
                 view.hideProgressBar();
                 view.showMessage("Comprueba tu conexión");
                 return;
@@ -85,13 +92,17 @@ public class ReviewsFragmentPresenterImpl implements IFragmentReviewsPresenter, 
     }
 
     @Override
-    public void editReview(boolean isOnline,Review review) {
+    public void editReview(boolean isOnline, Review review) {
         if (view != null) {
             view.hideList();
+            view.hideValoracion();
             view.showProgressBar();
-            if (!isOnline){
-                view.showList();
-                view.hideProgressBar();
+            if (!isOnline) {
+                if (view.getAdapter()!=null){
+                    view.showList();
+                    view.showValoracion();
+                    view.hideProgressBar();
+                }
                 view.showMessage("Comprueba tu conexión");
                 return;
             }
@@ -100,12 +111,16 @@ public class ReviewsFragmentPresenterImpl implements IFragmentReviewsPresenter, 
     }
 
     @Override
-    public void deleteReview(boolean isOnline,String user, int idEvent) {
+    public void deleteReview(boolean isOnline, String user, int idEvent) {
         if (view != null) {
             view.hideList();
+            view.hideValoracion();
             view.showProgressBar();
-            if (!isOnline){
-                view.showList();
+            if (!isOnline) {
+                if (view.getAdapter()!=null) {
+                    view.showList();
+                    view.showValoracion();
+                }
                 view.hideProgressBar();
                 view.showMessage("Comprueba tu conexión");
                 return;
@@ -130,16 +145,22 @@ public class ReviewsFragmentPresenterImpl implements IFragmentReviewsPresenter, 
                 }
                 rating = totalScores / totalReviews;
                 fillViewOwnReview(reviews);
-                view.fillAdapterList(reviews);
-                view.fillViewRating(rating, totalReviews);
+                if (reviews.size()>0){
+                    view.fillAdapterList(reviews);
+                    view.fillViewRating(rating, totalReviews);
+                }
+                if (view.getAdapter()!=null) {
+                    view.showValoracion();
+                    view.showList();
+                }
                 view.hideProgressBar();
-                view.showList();
+
             }
         }
     }
 
     private void fillViewOwnReview(List<Review> reviews) {
-        if (reviews!=null){
+        if (reviews != null) {
             String email = sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER);
             Review ownReview = null;
             for (Review review :
@@ -152,25 +173,34 @@ public class ReviewsFragmentPresenterImpl implements IFragmentReviewsPresenter, 
             }
             if (ownReview != null) {
                 reviews.add(0, ownReview);
-                if (view.getMenu() != null) {
+                /*if (view.getMenu() != null) {
                     view.showItemMenu(RMapped.ITEM_EDTT_REVIEW.getValue(), true);
                     view.showItemMenu(RMapped.ITEM_DELETE_REVIEW.getValue(), true);
                     view.showItemMenu(RMapped.ITEM_OPINAR.getValue(), false);
-                }
+                }*/
+                view.showFabOpinar(false);
+                view.showFabDelete(true);
+                view.showFabEdit(true);
             } else {
 
-                if (view.getMenu() != null) {
+                /*if (view.getMenu() != null) {
                     view.showItemMenu(RMapped.ITEM_EDTT_REVIEW.getValue(), false);
                     view.showItemMenu(RMapped.ITEM_DELETE_REVIEW.getValue(), false);
                     view.showItemMenu(RMapped.ITEM_OPINAR.getValue(), true);
-                }
+                }*/
+                view.showFabOpinar(true);
+                view.showFabDelete(false);
+                view.showFabEdit(false);
             }
-        }else{
-            if (view.getMenu() != null) {
+        } else {
+            /*if (view.getMenu() != null) {
                 view.showItemMenu(RMapped.ITEM_EDTT_REVIEW.getValue(), false);
                 view.showItemMenu(RMapped.ITEM_DELETE_REVIEW.getValue(), false);
                 view.showItemMenu(RMapped.ITEM_OPINAR.getValue(), true);
-            }
+            }*/
+            view.showFabOpinar(true);
+            view.showFabDelete(false);
+            view.showFabEdit(false);
         }
 
     }
@@ -179,9 +209,11 @@ public class ReviewsFragmentPresenterImpl implements IFragmentReviewsPresenter, 
     public void onError(Response response) {
         if (view != null) {
             view.hideProgressBar();
-            fillViewOwnReview(null);
-            if (view.getAdapter()!=null){
+            if (view.getAdapter() != null) {
                 view.showList();
+                view.showValoracion();
+            }else{
+                fillViewOwnReview(null);
             }
             view.showMessage(response.getMessage());
         }

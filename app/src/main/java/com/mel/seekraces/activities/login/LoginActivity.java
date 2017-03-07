@@ -89,6 +89,8 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, Goog
     protected void onResume() {
         super.onResume();
         showComponentScreen();
+        edtEmail.getText().clear();
+        edtPassword.getText().clear();
     }
 
     @Override

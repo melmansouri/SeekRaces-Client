@@ -14,6 +14,12 @@ import java.util.List;
 public interface IFragmentReviewsView {
     void showItemMenu(int idgroup, boolean showMenu);
 
+    void showFabOpinar(boolean show);
+
+    void showFabDelete(boolean show);
+
+    void showFabEdit(boolean show);
+
     Menu getMenu();
 
     void fillAdapterList(List<Review> reviews);
@@ -29,6 +35,11 @@ public interface IFragmentReviewsView {
     void showProgressBar();
     void hideProgressBar();
     void showList();
+
+    void showValoracion();
+
+    void hideValoracion();
+
     void hideList();
 
     RVReviewsAdapter getAdapter();

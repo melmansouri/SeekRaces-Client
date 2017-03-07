@@ -40,6 +40,7 @@ public class Constantes {
     public static final String KEY_USER = "user";
     public static final String KEY_USERNAME = "username";
     public static final String KEY_USER_NAME_PICTURE = "picture";
+    public static final String KEY_PLACE_USER = "place";
 
     //Tags fragments
     public static final String TAG_REVIEWS_FRAGMENT = "reviews";
@@ -47,5 +48,6 @@ public class Constantes {
     public static final String TAG_MY_RACES_PUBLISHED_FRAGMENT = "myRacesPublished";
     public static final String TAG_RACES_FAVORITES_FRAGMENT = "racesFavorites";
     public static final String TAG_DETAIL_RACES_FRAGMENT = "detailRaces";
+
 
 }

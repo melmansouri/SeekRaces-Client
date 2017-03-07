@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatEditText;
@@ -22,12 +23,15 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.mel.seekraces.R;
 import com.mel.seekraces.adapters.RVReviewsAdapter;
 import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.SharedPreferencesSingleton;
 import com.mel.seekraces.commons.Utils;
 import com.mel.seekraces.commons.UtilsViews;
+import com.mel.seekraces.customsViews.SwipeRefreshLayoutWithEmpty;
 import com.mel.seekraces.entities.Review;
 import com.mel.seekraces.interfaces.IGenericInterface;
 import com.mel.seekraces.interfaces.fragmentReviews.IFragmentReviewsPresenter;
@@ -38,6 +42,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by void on 26/02/2017.
@@ -52,8 +57,6 @@ public class ReviewsFragment extends Fragment implements IFragmentReviewsView {
     TextView txtTotalScores;
     @BindView(R.id.lnValoracion)
     LinearLayout lnValoracion;
-    @BindView(R.id.recyclerViewReviews)
-    RecyclerView recyclerViewReviews;
     @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
     @BindView(R.id.ratingBar)
@@ -63,6 +66,18 @@ public class ReviewsFragment extends Fragment implements IFragmentReviewsView {
     RatingBar ratingBarDialog;
     @BindView(R.id.rlRoot)
     RelativeLayout rlRoot;
+    @BindView(R.id.recyclerViewReviews)
+    RecyclerView recyclerViewReviews;
+    @BindView(R.id.swipeRefresh)
+    SwipeRefreshLayoutWithEmpty swipeRefresh;
+    @BindView(R.id.fabOpinar)
+    FloatingActionButton fabOpinar;
+    @BindView(R.id.fabEdit)
+    FloatingActionButton fabEdit;
+    @BindView(R.id.fabDelete)
+    FloatingActionButton fabDelete;
+    @BindView(R.id.menu_fab)
+    FloatingActionsMenu menuFab;
 
     private int idEvent;
     private IGenericInterface.OnFragmentInteractionListener mListener;
@@ -96,6 +111,18 @@ public class ReviewsFragment extends Fragment implements IFragmentReviewsView {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_reviews, container, false);
         ButterKnife.bind(this, view);
+        swipeRefresh.setColorSchemeResources(
+                R.color.s1,
+                R.color.s2,
+                R.color.s3,
+                R.color.s4
+        );
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                presenter.getReviews(Utils.isOnline(getContext()), idEvent);
+            }
+        });
         setHasOptionsMenu(true);
         return view;
     }
@@ -103,7 +130,7 @@ public class ReviewsFragment extends Fragment implements IFragmentReviewsView {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        presenter.getReviews(Utils.isOnline(getContext()),idEvent);
+        presenter.getReviews(Utils.isOnline(getContext()), idEvent);
     }
 
 
@@ -111,7 +138,7 @@ public class ReviewsFragment extends Fragment implements IFragmentReviewsView {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         this.menu = menu;
         menu.clear();
-        inflater.inflate(R.menu.menu_fragment_reviews, menu);
+        //inflater.inflate(R.menu.menu_fragment_reviews, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -123,7 +150,22 @@ public class ReviewsFragment extends Fragment implements IFragmentReviewsView {
 
     @Override
     public void showItemMenu(int idgroup, boolean showMenu) {
-        menu.setGroupVisible(idgroup, showMenu);
+        //menu.setGroupVisible(idgroup, showMenu);
+    }
+
+    @Override
+    public void showFabOpinar(boolean show) {
+        fabOpinar.setVisibility(show?View.VISIBLE:View.GONE);
+    }
+
+    @Override
+    public void showFabDelete(boolean show) {
+        fabDelete.setVisibility(show?View.VISIBLE:View.GONE);
+    }
+
+    @Override
+    public void showFabEdit(boolean show) {
+        fabEdit.setVisibility(show?View.VISIBLE:View.GONE);
     }
 
     @Override
@@ -171,6 +213,7 @@ public class ReviewsFragment extends Fragment implements IFragmentReviewsView {
     }
 
     @Override
+    @OnClick(R.id.fabOpinar)
     public void showDialogAddReview() {
         AlertDialog.Builder builder = UtilsViews.createAlertDialog(getContext(), null);
         /*View view = LayoutInflater.from(getContext())
@@ -186,7 +229,7 @@ public class ReviewsFragment extends Fragment implements IFragmentReviewsView {
                 review.setScore(ratingBarDialog.getRating());
                 review.setComment(edtOpinion.getText().toString());
                 review.setDateOpinion(Utils.convertDateSpanishToEnglish(Utils.getCurrentDateSpanishString()));
-                presenter.addReview(Utils.isOnline(getContext()),review);
+                presenter.addReview(Utils.isOnline(getContext()), review);
             }
         });
 
@@ -201,6 +244,7 @@ public class ReviewsFragment extends Fragment implements IFragmentReviewsView {
     }
 
     @Override
+    @OnClick(R.id.fabEdit)
     public void showDialogEditReview() {
         AlertDialog.Builder builder = UtilsViews.createAlertDialog(getContext(), null);
         /*View view = LayoutInflater.from(getContext())
@@ -217,7 +261,7 @@ public class ReviewsFragment extends Fragment implements IFragmentReviewsView {
                 review.setScore(ratingBarDialog.getRating());
                 review.setComment(edtOpinion.getText().toString());
                 review.setDateOpinion(Utils.convertDateSpanishToEnglish(Utils.getCurrentDateSpanishString()));
-                presenter.editReview(Utils.isOnline(getContext()),review);
+                presenter.editReview(Utils.isOnline(getContext()), review);
             }
         });
 
@@ -235,29 +279,40 @@ public class ReviewsFragment extends Fragment implements IFragmentReviewsView {
     }
 
     @Override
+    @OnClick(R.id.fabDelete)
     public void deleteOwnReview() {
-        presenter.deleteReview(Utils.isOnline(getContext()),sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER), idEvent);
+        presenter.deleteReview(Utils.isOnline(getContext()), sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER), idEvent);
     }
 
     @Override
     public void showProgressBar() {
-        progressBar.setVisibility(View.VISIBLE);
+        //progressBar.setVisibility(View.VISIBLE);
+        swipeRefresh.setRefreshing(true);
     }
 
     @Override
     public void hideProgressBar() {
-        progressBar.setVisibility(View.GONE);
+        //progressBar.setVisibility(View.GONE);
+        swipeRefresh.setRefreshing(false);
     }
 
     @Override
     public void showList() {
-        lnValoracion.setVisibility(View.VISIBLE);
         recyclerViewReviews.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void hideList() {
+    public void showValoracion() {
+        lnValoracion.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideValoracion() {
         lnValoracion.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void hideList() {
         recyclerViewReviews.setVisibility(View.GONE);
     }
 

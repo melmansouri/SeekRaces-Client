@@ -56,7 +56,7 @@ import butterknife.OnTextChanged;
  * Created by void on 26/02/2017.
  */
 
-public class EditRaceFragment extends Fragment implements IEditRaceView{
+public class EditRaceFragment extends Fragment implements IEditRaceView {
 
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
@@ -98,6 +98,8 @@ public class EditRaceFragment extends Fragment implements IEditRaceView{
     FloatingActionButton fab;
     @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.txtHora)
+    TextView txtHora;
     private Race raceFromList;
     private IGenericInterface.OnFragmentInteractionListener mListener;
     private IEditRacePresenter presenter;
@@ -120,7 +122,7 @@ public class EditRaceFragment extends Fragment implements IEditRaceView{
                 getActivity().getSupportFragmentManager().popBackStack();
             }
         });
-        presenter=new EditRaceFragmentPresenterImpl(this);
+        presenter = new EditRaceFragmentPresenterImpl(this);
     }
 
     @Override
@@ -135,22 +137,22 @@ public class EditRaceFragment extends Fragment implements IEditRaceView{
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        try{
-            spDistancia.setAdapter(UtilsViews.getSpinnerDistanceAdapter(getContext(),R.layout.support_simple_spinner_dropdown_item,true));
+        try {
+            spDistancia.setAdapter(UtilsViews.getSpinnerDistanceAdapter(getContext(), R.layout.support_simple_spinner_dropdown_item, true));
             imgRace.setImageBitmap(raceFromList.getBitmap());
-            imageBitmap= raceFromList.getBitmap();
+            imageBitmap = raceFromList.getBitmap();
             edtNameRace.setText(raceFromList.getName());
             edtLugar.setText(raceFromList.getPlace());
             edtWeb.setText(raceFromList.getWeb());
             edtDescription.setText(raceFromList.getDescription());
-            String[] fechaHora= raceFromList.getDate_time_init().split(" ");
-            String fecha=fechaHora[0];
-            String hora=fechaHora[1];
+            String[] fechaHora = raceFromList.getDate_time_init().split(" ");
+            String fecha = fechaHora[0];
+            String hora = fechaHora[1];
             dtpFechaDesde.setText(Utils.convertDateEnglishToSpanish(fecha));
             tipHora.setText(hora);
-            int positionSelectedSpinnerDistance= raceFromList.getDistance()-1;
+            int positionSelectedSpinnerDistance = raceFromList.getDistance() - 1;
             spDistancia.setSelection(positionSelectedSpinnerDistance);
-        }catch(Exception e){
+        } catch (Exception e) {
             FirebaseCrash.report(e);
         }
     }
@@ -196,7 +198,7 @@ public class EditRaceFragment extends Fragment implements IEditRaceView{
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        presenter.onRequestPermissionsResult(requestCode,grantResults);
+        presenter.onRequestPermissionsResult(requestCode, grantResults);
     }
 
     @Override
@@ -204,6 +206,8 @@ public class EditRaceFragment extends Fragment implements IEditRaceView{
         super.onDestroy();
         presenter.onDestroy();
         ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+        mListener.setOnClickNavigationToolbar(null);
+        mListener.showHamburgerIconDrawer(true);
         mListener.setDrawerEnabled(true);
         mListener.showFloatingButton();
     }
@@ -334,8 +338,8 @@ public class EditRaceFragment extends Fragment implements IEditRaceView{
         Uri uriImage = intentOnActivityResult.getData();
         Bitmap bitmaptmp = Utils.getBitmapFromUriImage(getContext(), uriImage);
         //imageBitmap = Bitmap.createScaledBitmap(bitmaptmp, (int) (bitmaptmp.getWidth() * 0.5), (int) (bitmaptmp.getHeight() * 0.5), true);
-        if (bitmaptmp!=null){
-            imageBitmap= bitmaptmp;
+        if (bitmaptmp != null) {
+            imageBitmap = bitmaptmp;
             imgRace.setImageBitmap(imageBitmap);
         }
     }
@@ -381,7 +385,7 @@ public class EditRaceFragment extends Fragment implements IEditRaceView{
                 race.setId(raceFromList.getId());
                 race.setName(edtNameRace.getText().toString().trim());
                 String distance = spDistancia.getSelectedItem().toString();
-                race.setDistance(Integer.valueOf(distance.replace("KM","")));
+                race.setDistance(Integer.valueOf(distance.replace("KM", "")));
                 race.setPlace(edtLugar.getText().toString().trim());
                 String fecha = Utils.convertDateSpanishToEnglish(dtpFechaDesde.getText().toString());
                 String hora = tipHora.getText().toString();

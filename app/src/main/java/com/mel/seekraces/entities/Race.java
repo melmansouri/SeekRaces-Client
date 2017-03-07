@@ -21,9 +21,6 @@ public class Race implements Parcelable{
     private String place;
     private String date_time_init;
     private String web;
-    private int num_reviews;
-    private int total_scores;
-    private double rating;
     private boolean isFavorite;
 
     public Race(){
@@ -41,9 +38,6 @@ public class Race implements Parcelable{
         place = in.readString();
         date_time_init=in.readString();
         web = in.readString();
-        num_reviews = in.readInt();
-        total_scores = in.readInt();
-        rating = in.readDouble();
         isFavorite=in.readByte() != 0;
     }
 
@@ -155,29 +149,7 @@ public class Race implements Parcelable{
         this.web = web;
     }
 
-    public int getNum_reviews() {
-        return num_reviews;
-    }
 
-    public void setNum_reviews(int num_reviews) {
-        this.num_reviews = num_reviews;
-    }
-
-    public int getTotal_scores() {
-        return total_scores;
-    }
-
-    public void setTotal_scores(int total_scores) {
-        this.total_scores = total_scores;
-    }
-
-    public double getRating() {
-        return rating;
-    }
-
-    public void setRating(double rating) {
-        this.rating = rating;
-    }
 
     public boolean isFavorite() {
         return isFavorite;
@@ -206,9 +178,6 @@ public class Race implements Parcelable{
         dest.writeString(place);
         dest.writeString(date_time_init);
         dest.writeString(web);
-        dest.writeInt(num_reviews);
-        dest.writeInt(total_scores);
-        dest.writeDouble(rating);
         dest.writeByte((byte) (isFavorite ? 1 : 0));
     }
 
@@ -223,9 +192,6 @@ public class Race implements Parcelable{
         place = in.readString();
         date_time_init = in.readString();
         web = in.readString();
-        num_reviews = in.readInt();
-        total_scores = in.readInt();
-        rating = in.readDouble();
         isFavorite = in.readByte() != 0;
     }
 }

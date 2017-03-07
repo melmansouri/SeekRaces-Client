@@ -13,6 +13,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.text.Editable;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,8 +24,10 @@ import android.widget.ProgressBar;
 import android.widget.ScrollView;
 
 import com.mel.seekraces.R;
+import com.mel.seekraces.adapters.AutoCompleteAdapter;
 import com.mel.seekraces.commons.Utils;
 import com.mel.seekraces.commons.UtilsViews;
+import com.mel.seekraces.entities.PlacePredictions;
 import com.mel.seekraces.entities.User;
 import com.mel.seekraces.interfaces.signin.ISignInPresenter;
 import com.mel.seekraces.interfaces.signin.ISignInView;
@@ -64,9 +67,14 @@ public class SignInActivity extends AppCompatActivity implements ISignInView {
     ScrollView lnDataUser;
     @BindView(R.id.fab)
     FloatingActionButton fab;
+    @BindView(R.id.text_input_layout_place)
+    TextInputLayout textInputLayoutPlace;
+    @BindView(R.id.edtPlace)
+    AppCompatAutoCompleteTextView edtPlace;
     private Intent intentOnActivityResult;
     private ISignInPresenter presenter;
     private Bitmap imageBitmap;
+    private AutoCompleteAdapter autoCompleteAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +112,7 @@ public class SignInActivity extends AppCompatActivity implements ISignInView {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        presenter.onRequestPermissionsResult(requestCode,grantResults);
+        presenter.onRequestPermissionsResult(requestCode, grantResults);
     }
 
     @Override
@@ -134,6 +142,31 @@ public class SignInActivity extends AppCompatActivity implements ISignInView {
         progressBar.setVisibility(View.GONE);
         showComponents();
         UtilsViews.enableSreen(this);
+    }
+
+    @Override
+    @OnTextChanged(R.id.edtPlace)
+    public void onTextChangedPlaces() {
+        presenter.onTextChangedPlaces(edtPlace.getText().toString());
+    }
+
+    @Override
+    public AutoCompleteAdapter getAdapterAutoComplete() {
+        return autoCompleteAdapter;
+    }
+
+    @Override
+    public void initAdapterAutoComplete(PlacePredictions placePredictions) {
+        autoCompleteAdapter = new AutoCompleteAdapter(this, placePredictions.getPlaces());
+        edtPlace.setAdapter(autoCompleteAdapter);
+    }
+
+    @Override
+    public void resetAdapterAutoComplete(PlacePredictions placePredictions) {
+        autoCompleteAdapter.clear();
+        autoCompleteAdapter.addAll(placePredictions.getPlaces());
+        autoCompleteAdapter.notifyDataSetChanged();
+        edtPlace.invalidate();
     }
 
     @Override
@@ -237,8 +270,8 @@ public class SignInActivity extends AppCompatActivity implements ISignInView {
         //imgProfileUser.setImageBitmap(imageBitmap);
         Bitmap bitmaptmp = Utils.getBitmapFromUriImage(this, uriImage);
         //imageBitmap = Bitmap.createScaledBitmap(bitmaptmp, (int) (bitmaptmp.getWidth() * 0.5), (int) (bitmaptmp.getHeight() * 0.5), true);
-        if (bitmaptmp!=null){
-            imageBitmap= bitmaptmp;
+        if (bitmaptmp != null) {
+            imageBitmap = bitmaptmp;
             imgProfileUser.setImageBitmap(imageBitmap);
         }
     }

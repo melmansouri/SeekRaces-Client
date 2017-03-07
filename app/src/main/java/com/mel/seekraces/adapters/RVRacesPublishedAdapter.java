@@ -16,6 +16,7 @@ import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.SharedPreferencesSingleton;
 import com.mel.seekraces.entities.Favorite;
 import com.mel.seekraces.entities.Race;
+import com.mel.seekraces.fragments.racesFinished.ListRacesFinishedFragment;
 import com.mel.seekraces.interfaces.IGenericInterface;
 
 import java.text.ParseException;
@@ -89,7 +90,6 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
         }else{
             publicadoPor="Publicado por mi";
             holder.imgBtnLikeRace.setVisibility(View.GONE);
-            holder.imgBtnEdit.setVisibility(View.VISIBLE);
             holder.imgBtnDelete.setVisibility(View.VISIBLE);
             holder.imgBtnEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -114,6 +114,11 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
                     return true;
                 }
             });*/
+        }
+        if (mListenerListInteracion instanceof ListRacesFinishedFragment){
+            holder.imgBtnEdit.setVisibility(View.GONE);
+            holder.imgBtnDelete.setVisibility(View.GONE);
+            holder.imgBtnLikeRace.setVisibility(View.GONE);
         }
 
         holder.txtPublicadoPor.setText(publicadoPor);

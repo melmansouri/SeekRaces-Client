@@ -3,7 +3,6 @@ package com.mel.seekraces.activities.login;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.google.gson.Gson;
 import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.RMapped;
 import com.mel.seekraces.commons.SharedPreferencesSingleton;
@@ -15,6 +14,7 @@ import com.mel.seekraces.interfaces.INetworkConnectionApi;
 import com.mel.seekraces.interfaces.login.ILoginInteractor;
 import com.mel.seekraces.interfaces.login.ILoginPresenter;
 import com.mel.seekraces.interfaces.login.ILoginView;
+import com.mel.seekraces.tasks.SaveUserLoginTask;
 
 /**
  * Created by moha on 10/01/17.
@@ -164,16 +164,28 @@ public class LoginPresenterImpl implements ILoginPresenter, IListennerCallBack {
                 view.showMessage((String)object);
                 return;
             }
-            try {
+            new SaveUserLoginTask(((Response) object).getContent(),sharedPreferencesSingleton){
+                @Override
+                protected void onPostExecute(Void aVoid) {
+                    super.onPostExecute(aVoid);
+                    if (sharedPreferencesSingleton.containValue(Constantes.KEY_USER)){
+                        view.hideProgress();
+                        view.goToMainScreen();
+                    }else{
+                        view.showComponentScreen();
+                        view.showMessage("Error al iniciar sesión");
+                    }
+                }
+            }.execute();
+            /*try {
                 User user = new Gson().fromJson(((Response) object).getContent(), User.class);
                 sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USER, user.getEmail());
                 sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USER_NAME_PICTURE, user.getPhoto_url());
                 sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USERNAME, user.getUsername());
             }catch (Exception e){
                 e.printStackTrace();
-            }
-            view.hideProgress();
-            view.goToMainScreen();
+            }*/
+
         }
     }
 

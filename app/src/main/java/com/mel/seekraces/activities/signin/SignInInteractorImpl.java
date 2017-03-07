@@ -1,8 +1,7 @@
 package com.mel.seekraces.activities.signin;
 
-import android.util.Log;
-
 import com.mel.seekraces.connection.RetrofitSingleton;
+import com.mel.seekraces.entities.PlacePredictions;
 import com.mel.seekraces.entities.Response;
 import com.mel.seekraces.entities.User;
 import com.mel.seekraces.interfaces.IListennerCallBack;
@@ -65,4 +64,37 @@ public class SignInInteractorImpl implements ISignInInteractor{
             }
         }
     }
+    @Override
+    public void getAutoCompletePlaces(String url) {
+        Call<PlacePredictions> getPlacesCall = null;
+        if (url != null) {
+            Retrofit retrofit = RetrofitSingleton.getInstance().getRetrofit();
+            networkConnectionApi = retrofit.create(INetworkConnectionApi.class);
+
+            getPlacesCall = networkConnectionApi.getAutoCompletePlaces(url);
+            getPlacesCall.enqueue(new Callback<PlacePredictions>() {
+                @Override
+                public void onResponse(Call<PlacePredictions> call, retrofit2.Response<PlacePredictions> response) {
+                    PlacePredictions responsetmp;
+                    if (!response.isSuccessful()) {
+                        responsetmp = new PlacePredictions();
+
+                    } else {
+                        responsetmp = response.body();
+                    }
+
+                    listennerCallBack.onSuccess(responsetmp);
+                }
+
+                @Override
+                public void onFailure(Call<PlacePredictions> call, Throwable t) {
+                }
+            });
+        } else {
+            if (getPlacesCall != null) {
+                getPlacesCall.cancel();
+            }
+        }
+    }
+
 }

@@ -8,4 +8,6 @@ import com.mel.seekraces.entities.User;
 
 public interface ISignInInteractor {
     void signIn(User user);
+
+    void getAutoCompletePlaces(String url);
 }

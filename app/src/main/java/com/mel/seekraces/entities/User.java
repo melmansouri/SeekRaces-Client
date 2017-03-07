@@ -18,7 +18,7 @@ public class User implements Parcelable {
     private String photo_url;
     private String photoBase64;
     private Bitmap photo;
-    private String country;
+    private String place;
     private String token_push;
     private String idTokenGoogle;
 
@@ -28,7 +28,7 @@ public class User implements Parcelable {
         this.username = "";
         this.photoBase64 = "";
         this.photo = null;
-        this.country = "";
+        this.place = "";
         this.token_push = "";
         this.idTokenGoogle="";
     }
@@ -38,7 +38,7 @@ public class User implements Parcelable {
         username = in.readString();
         photoBase64 = in.readString();
         photo = in.readParcelable(Bitmap.class.getClassLoader());
-        country = in.readString();
+        place = in.readString();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -109,12 +109,12 @@ public class User implements Parcelable {
         this.photo = photo;
     }
 
-    public String getCountry() {
-        return country;
+    public String getPlace() {
+        return place;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setPlace(String place) {
+        this.place = place;
     }
 
     public String getToken_push() {
@@ -142,8 +142,10 @@ public class User implements Parcelable {
                 ", username='" + username + '\'' +
                 ", photo_url='" + photo_url + '\'' +
                 ", photoBase64='" + photoBase64 + '\'' +
-                ", country='" + country + '\'' +
+                ", photo=" + photo +
+                ", place='" + place + '\'' +
                 ", token_push='" + token_push + '\'' +
+                ", idTokenGoogle='" + idTokenGoogle + '\'' +
                 '}';
     }
 
@@ -159,7 +161,7 @@ public class User implements Parcelable {
         parcel.writeString(username);
         parcel.writeString(photoBase64);
         parcel.writeParcelable(photo, i);
-        parcel.writeString(country);
+        parcel.writeString(place);
     }
 
     private void readFromParcel(Parcel in){
@@ -167,7 +169,7 @@ public class User implements Parcelable {
         username = in.readString();
         photoBase64 = in.readString();
         photo = in.readParcelable(Bitmap.class.getClassLoader());
-        country = in.readString();
+        place = in.readString();
     }
 
 }

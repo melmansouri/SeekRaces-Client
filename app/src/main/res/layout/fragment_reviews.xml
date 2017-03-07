@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:id="@+id/coordinatorLayout" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -56,16 +57,85 @@
 
                     </LinearLayout>
                 </LinearLayout>
-                <android.support.v7.widget.RecyclerView
+                <!--android.support.v7.widget.RecyclerView
                     android:id="@+id/recyclerViewReviews"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     tools:listitem="@layout/item_list_reviews"
-                    app:layoutManager="LinearLayoutManager"/>
+                    app:layoutManager="LinearLayoutManager"/-->
+                <com.mel.seekraces.customsViews.SwipeRefreshLayoutWithEmpty xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/swipeRefresh"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recyclerViewReviews"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="3dp"
+                            app:layoutManager="LinearLayoutManager"
+                            android:visibility="gone"
+                            tools:listitem="@layout/item_list_reviews" />
+                        <ScrollView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:visibility="gone">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center" />
+                        </ScrollView>
+
+                    </FrameLayout>
+
+                </com.mel.seekraces.customsViews.SwipeRefreshLayoutWithEmpty>
 
             </LinearLayout>
-
-
         </RelativeLayout>
+
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/menu_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="@dimen/fab_margin"
+        fab:fab_addButtonColorNormal="@color/colorAccent"
+        fab:fab_addButtonSize="normal"
+        fab:fab_labelsPosition="left">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabOpinar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="?attr/colorPrimary"
+            fab:fab_icon="@drawable/ic_send_white"
+            fab:fab_size="mini"
+            fab:fab_title="Opinar" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="?attr/colorPrimary"
+            fab:fab_icon="@drawable/ic_mode_edit_white"
+            fab:fab_size="mini"
+            fab:fab_title="Editar"
+            android:visibility="gone"/>
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="?attr/colorPrimary"
+            fab:fab_icon="@drawable/ic_delete_white"
+            fab:fab_size="mini"
+            fab:fab_title="Borrar"
+            android:visibility="gone"/>
+
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
 </android.support.design.widget.CoordinatorLayout>

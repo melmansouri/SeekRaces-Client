@@ -8,6 +8,7 @@ import com.mel.seekraces.commons.SharedPreferencesSingleton;
 import com.mel.seekraces.entities.Filter;
 import com.mel.seekraces.entities.Response;
 import com.mel.seekraces.fragments.ownRacesPublished.ListOwnRacesPublishedFragment;
+import com.mel.seekraces.fragments.racesFinished.ListRacesFinishedFragment;
 import com.mel.seekraces.fragments.racesPublished.ListRacesPublishedFragment;
 import com.mel.seekraces.fragments.racesPublishedFavorites.ListRacesPublishedFavoritesFragment;
 import com.mel.seekraces.interfaces.IListennerCallBack;
@@ -115,7 +116,7 @@ public class MainPresenterImpl implements IMainPresenter, IListennerCallBack {
                     return;
             }*/
             view.setActualFragmentActive();
-            if (view.actualFragmentActiveInstanceOf(ListOwnRacesPublishedFragment.class) || view.actualFragmentActiveInstanceOf(ListRacesPublishedFavoritesFragment.class)){
+            if (view.actualFragmentActiveInstanceOf(ListOwnRacesPublishedFragment.class) || view.actualFragmentActiveInstanceOf(ListRacesPublishedFavoritesFragment.class) || view.actualFragmentActiveInstanceOf(ListRacesFinishedFragment.class)){
                 view.backToPreviousFragmentById(0);
             }else if (view.actualFragmentActiveInstanceOf(ListRacesPublishedFragment.class)){
                 view.setResult();

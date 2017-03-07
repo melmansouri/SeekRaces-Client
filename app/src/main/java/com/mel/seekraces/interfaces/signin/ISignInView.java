@@ -1,5 +1,7 @@
 package com.mel.seekraces.interfaces.signin;
 
+import com.mel.seekraces.adapters.AutoCompleteAdapter;
+import com.mel.seekraces.entities.PlacePredictions;
 import com.mel.seekraces.entities.Response;
 
 /**
@@ -10,6 +12,16 @@ public interface ISignInView {
     void selectPictureProfile();
     void showProgress();
     void hideProgress();
+
+    //@OnTextChanged(R.id.edtLugar)
+    void onTextChangedPlaces();
+
+    AutoCompleteAdapter getAdapterAutoComplete();
+
+    void initAdapterAutoComplete(PlacePredictions placePredictions);
+
+    void resetAdapterAutoComplete(PlacePredictions placePredictions);
+
     void showMessage(String message);
     void showErrorEmail(String message);
     void hideErrorEmail();

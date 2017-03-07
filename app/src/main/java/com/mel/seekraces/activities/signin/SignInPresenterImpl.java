@@ -5,6 +5,7 @@ import android.util.Log;
 import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.RMapped;
 import com.mel.seekraces.commons.Utils;
+import com.mel.seekraces.entities.PlacePredictions;
 import com.mel.seekraces.entities.Response;
 import com.mel.seekraces.entities.User;
 import com.mel.seekraces.interfaces.IListennerCallBack;
@@ -72,6 +73,13 @@ public class SignInPresenterImpl implements ISignInPresenter, IListennerCallBack
     }
 
 
+    @Override
+    public void onTextChangedPlaces(String text) {
+        if(text.length()>1){
+            interactor.getAutoCompletePlaces(null);
+            interactor.getAutoCompletePlaces(Utils.getPlaceAutoCompleteUrl(text));
+        }
+    }
 
     @Override
     public void activityResult(int requestCode,int resultCode) {
@@ -123,6 +131,7 @@ public class SignInPresenterImpl implements ISignInPresenter, IListennerCallBack
     public void onDestroy() {
         view=null;
         interactor.signIn(null);
+        interactor.getAutoCompletePlaces(null);
         interactor=null;
     }
 
@@ -131,7 +140,19 @@ public class SignInPresenterImpl implements ISignInPresenter, IListennerCallBack
         if (view!=null){
             //view.hideProgress();
             //view.showMessage(((Response)object).getMessage());
-            view.returnToLoginScreen();
+            if (object instanceof Response){
+                //view.showMessage(((Response)object).getMessage());
+                view.returnToLoginScreen();
+            }else if (object instanceof PlacePredictions){
+                if (((PlacePredictions)object).getStatus().equals("OK")){
+                    if (view.getAdapterAutoComplete()==null){
+                        view.initAdapterAutoComplete(((PlacePredictions)object));
+                    }else{
+                        view.resetAdapterAutoComplete(((PlacePredictions)object));
+                    }
+                }
+            }
+
         }
     }
 

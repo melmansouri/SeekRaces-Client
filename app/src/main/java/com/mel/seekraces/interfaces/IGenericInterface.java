@@ -1,10 +1,9 @@
 package com.mel.seekraces.interfaces;
 
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.mel.seekraces.entities.Race;
 import com.mel.seekraces.entities.Favorite;
+import com.mel.seekraces.entities.Race;
 
 /**
  * Created by void on 26/02/2017.
@@ -43,8 +42,6 @@ public interface IGenericInterface {
         void showFloatingButton();
 
         void startScreenReviews(int idEvent);
-
-        void setActionBar(Toolbar toolbar);
     }
 
     /**

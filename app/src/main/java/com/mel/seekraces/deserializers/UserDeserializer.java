@@ -27,7 +27,7 @@ public class UserDeserializer implements JsonDeserializer<User>{
         }*/
         //user.setPhotoBase64(base64);
         if (!jsonObject.get("country").isJsonNull()){
-            user.setCountry(jsonObject.get("country").getAsString());
+            user.setPlace(jsonObject.get("country").getAsString());
         }
 
         return user;

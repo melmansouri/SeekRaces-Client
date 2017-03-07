@@ -63,7 +63,8 @@ public interface INetworkConnectionApi {
     @DELETE
     Call<Response> deleteOwnRacePublished(@Url String url);
 
-
+    @GET("event/finished")
+    Call<Response> getRacesFinished();
 
     @POST("event")
     Call<Response> addRaces(@Body Race race);
