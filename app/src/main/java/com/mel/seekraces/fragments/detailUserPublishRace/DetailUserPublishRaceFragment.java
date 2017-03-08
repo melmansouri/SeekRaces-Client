@@ -5,20 +5,23 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.crash.FirebaseCrash;
 import com.mel.seekraces.R;
+import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.SharedPreferencesSingleton;
 import com.mel.seekraces.commons.Utils;
 import com.mel.seekraces.commons.UtilsViews;
+import com.mel.seekraces.entities.Follow;
 import com.mel.seekraces.entities.User;
 import com.mel.seekraces.interfaces.IGenericInterface;
 import com.mel.seekraces.interfaces.INetworkConnectionApi;
@@ -41,7 +44,7 @@ public class DetailUserPublishRaceFragment extends Fragment implements IDetailUs
     @BindView(R.id.txtLugar)
     TextView txtLugar;
     @BindView(R.id.imgBtnFollow)
-    CircleImageView imgBtnFollow;
+    ImageButton imgBtnFollow;
     @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
     @BindView(R.id.progressBar)
@@ -50,9 +53,13 @@ public class DetailUserPublishRaceFragment extends Fragment implements IDetailUs
     CircleImageView imgProfileUser;
     @BindView(R.id.cardView)
     CardView cardView;
+    @BindView(R.id.imgBtnSentNotificacion)
+    ImageButton imgBtnSentNotificacion;
     private User user;
     private IGenericInterface.OnFragmentInteractionListener mListener;
     private IDetailUserPublishRacePresenter presenter;
+    private boolean imgBtnSentNotificacionClicked;
+    private boolean imgBtnFollowClicked;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,27 +93,101 @@ public class DetailUserPublishRaceFragment extends Fragment implements IDetailUs
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Glide.with(getContext()).load(INetworkConnectionApi.BASE_URL_PICTURES + user.getPhoto_url()).error(R.drawable.user_default).into(imgProfileUser);
-        txtEmail.setText(user.getEmail());
-        txtUserName.setText(user.getUsername());
-        if (TextUtils.isEmpty(user.getPlace())) {
-            txtLugar.setText(user.getPlace());
-        }
-        if (user.isFollowed()) {
-            imgBtnFollow.setImageResource(R.drawable.ic_follow);
-        } else {
-            imgBtnFollow.setImageResource(R.drawable.ic_unfollow);
-        }
-        imgBtnFollow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (user.isFollowed()) {
-                    presenter.follow(Utils.isOnline(getContext()), user.getEmail());
-                } else {
-                    presenter.unFollow(Utils.isOnline(getContext()), user.getEmail());
-                }
+        try{
+            Glide.with(getContext()).load(INetworkConnectionApi.BASE_URL_PICTURES + user.getPhoto_url()).error(R.drawable.user_default).into(imgProfileUser);
+            txtEmail.setText(user.getEmail());
+            txtUserName.setText(user.getUsername());
+            if (TextUtils.isEmpty(user.getPlace())) {
+                txtLugar.setText(user.getPlace());
             }
-        });
+            if (user.isFollowed()) {
+                imgBtnSentNotificacion.setVisibility(View.VISIBLE);
+                imgBtnFollow.setImageResource(R.drawable.ic_unfollow);
+            } else {
+                imgBtnSentNotificacion.setVisibility(View.GONE);
+                imgBtnFollow.setImageResource(R.drawable.ic_follow);
+            }
+            if (user.isSentNotificacion()) {
+                imgBtnSentNotificacion.setImageResource(R.drawable.ic_turn_notifications_off_button);
+            } else {
+                imgBtnSentNotificacion.setImageResource(R.drawable.ic_notifications_button);
+            }
+            imgBtnFollow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (user.isFollowed()) {
+                        presenter.unFollow(Utils.isOnline(getContext()), user.getEmail());
+                    } else {
+                        Follow follow = new Follow();
+                        follow.setUserFollower(SharedPreferencesSingleton.getInstance(getContext()).getStringSP(Constantes.KEY_USER));
+                        follow.setUserFollowed(user.getEmail());
+                        presenter.follow(Utils.isOnline(getContext()), follow);
+                    }
+                    imgBtnFollowClicked=true;
+                }
+            });
+
+            imgBtnSentNotificacion.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Follow follow = new Follow();
+                    follow.setUserFollower(SharedPreferencesSingleton.getInstance(getContext()).getStringSP(Constantes.KEY_USER));
+                    follow.setUserFollowed(user.getEmail());
+                    if (user.isSentNotificacion()) {
+
+                        follow.setSentNotificacion(0);
+
+                    } else {
+                        follow.setSentNotificacion(1);
+                    }
+                    presenter.setSentNotificacion(Utils.isOnline(getContext()), follow);
+                    imgBtnSentNotificacionClicked=true;
+                }
+            });
+        }catch (Exception e){
+            FirebaseCrash.report(e);
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public boolean isClickedbtnSetNotificacion(){
+        return imgBtnSentNotificacionClicked;
+    }
+
+    @Override
+    public boolean isClickedbtnFollow(){
+        return imgBtnFollowClicked;
+    }
+
+    @Override
+    public void setClickedbtnSetNotificacion(boolean clicked){
+        imgBtnSentNotificacionClicked=clicked;
+    }
+
+    @Override
+    public void setClickedbtnFollow(boolean clicked){
+        imgBtnFollowClicked=clicked;
+    }
+
+    @Override
+    public void changeIconButtonollow(int id) {
+        imgBtnFollow.setImageResource(id);
+    }
+
+    @Override
+    public void changeIconButtonSendNotificacion(int id) {
+        imgBtnSentNotificacion.setImageResource(id);
+    }
+
+    @Override
+    public void showButtonSendNotificacion(boolean show) {
+        imgBtnSentNotificacion.setVisibility((show)?View.VISIBLE:View.GONE);
+    }
+
+    @Override
+    public User getUser() {
+        return user;
     }
 
     @Override
@@ -129,8 +210,9 @@ public class DetailUserPublishRaceFragment extends Fragment implements IDetailUs
     public void onDestroy() {
         super.onDestroy();
         presenter.onDestroy();
-        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+        mListener.setOnClickNavigationToolbar(null);
         mListener.setDrawerEnabled(true);
+        mListener.showHamburgerIconDrawer(true);
         mListener.showFloatingButton();
     }
 
@@ -146,7 +228,7 @@ public class DetailUserPublishRaceFragment extends Fragment implements IDetailUs
 
     @Override
     public void showMessage(String message) {
-        UtilsViews.showSnackBar(coordinatorLayout,message);
+        UtilsViews.showSnackBar(coordinatorLayout, message);
     }
 
     @Override

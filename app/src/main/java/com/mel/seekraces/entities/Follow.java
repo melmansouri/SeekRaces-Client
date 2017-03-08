@@ -7,7 +7,7 @@ package com.mel.seekraces.entities;
 public class Follow {
     private String userFollower;
     private String userFollowed;
-    private int sentNotificaciom;
+    private int sentNotificacion;
 
     public String getUserFollower() {
         return userFollower;
@@ -25,11 +25,11 @@ public class Follow {
         this.userFollowed = userFollowed;
     }
 
-    public int getSentNotificaciom() {
-        return sentNotificaciom;
+    public int getSentNotificacion() {
+        return sentNotificacion;
     }
 
-    public void setSentNotificaciom(int sentNotificaciom) {
-        this.sentNotificaciom = sentNotificaciom;
+    public void setSentNotificacion(int sentNotificacion) {
+        this.sentNotificacion = sentNotificacion;
     }
 }

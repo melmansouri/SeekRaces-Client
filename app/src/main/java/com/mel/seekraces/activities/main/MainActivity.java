@@ -30,6 +30,7 @@ import com.mel.seekraces.entities.Filter;
 import com.mel.seekraces.entities.Race;
 import com.mel.seekraces.entities.User;
 import com.mel.seekraces.fragments.detailRace.DetailRaceFragment;
+import com.mel.seekraces.fragments.detailUserPublishRace.DetailUserPublishRaceFragment;
 import com.mel.seekraces.fragments.editRace.EditRaceFragment;
 import com.mel.seekraces.fragments.ownRacesPublished.ListOwnRacesPublishedFragment;
 import com.mel.seekraces.fragments.racesPublished.ListRacesPublishedFragment;
@@ -255,7 +256,12 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void showDetailUserHowPublishRace(User user) {
-
+        DetailUserPublishRaceFragment fragment;
+        fragment = new DetailUserPublishRaceFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("user", user);
+        fragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment,Constantes.TAG_REVIEWS_FRAGMENT).addToBackStack(null).commit();
     }
 
     @Override

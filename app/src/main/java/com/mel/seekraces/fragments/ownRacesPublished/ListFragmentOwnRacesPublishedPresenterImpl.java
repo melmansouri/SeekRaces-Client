@@ -71,7 +71,7 @@ public class ListFragmentOwnRacesPublishedPresenterImpl implements IListFragment
                 return;
             }
 
-            interactor.deleteEvent(((Race)object).getUser(),((Race)object).getId());
+            interactor.deleteEvent(((Race)object).getUser().getEmail(),((Race)object).getId());
         }
     }
 

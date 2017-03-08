@@ -70,7 +70,7 @@ public class ListFragmentRacesFinishedPresenterImpl implements IListFragmentRace
                 return;
             }
 
-            interactor.deleteEvent(((Race)object).getUser(),((Race)object).getId());
+            interactor.deleteEvent(((Race)object).getUser().getEmail(),((Race)object).getId());
         }
     }
 

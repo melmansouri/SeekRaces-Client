@@ -10,7 +10,7 @@ import android.os.Parcelable;
 
 public class Race implements Parcelable {
     private int id;
-    //private String user;
+    private String userEmail;
     private String userName;
     private String name;
     private String description;
@@ -30,7 +30,7 @@ public class Race implements Parcelable {
 
     protected Race(Parcel in) {
         id = in.readInt();
-        //user = in.readString();
+        userEmail = in.readString();
         name = in.readString();
         description = in.readString();
         bitmap = in.readParcelable(Bitmap.class.getClassLoader());
@@ -65,13 +65,13 @@ public class Race implements Parcelable {
         this.id = id;
     }
 
-    /*public String getUser() {
-        return user;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public void setUser(String user) {
-        this.user = user;
-    }*/
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
 
     public String getUserName() {
         return userName;
@@ -186,7 +186,7 @@ public class Race implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
-        //dest.writeString(user);
+        dest.writeString(userEmail);
         dest.writeString(userName);
         dest.writeString(name);
         dest.writeString(description);
@@ -204,7 +204,7 @@ public class Race implements Parcelable {
 
     private void readFromParcel(Parcel in) {
         id = in.readInt();
-        //user = in.readString();
+        userEmail = in.readString();
         description = in.readString();
         bitmap = in.readParcelable(Bitmap.class.getClassLoader());
         imageBase64 = in.readString();

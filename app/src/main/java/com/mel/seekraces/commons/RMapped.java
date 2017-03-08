@@ -31,7 +31,6 @@ public enum RMapped {
     ITEM_DELETE_REVIEW(R.id.group_delete),
     ITEM_GROUP_FILTER(R.id.group_filter),
     ITEM_GROUP_RESTART(R.id.group_restart),
-
     //Strings
     TITLE_CARRERAS_PUBLICADAS(R.string.title_carreras_publicadas),
     TITLE_MIS_CARRERAS_PUBLICADAS(R.string.title_mis_carreras_publicadas),
@@ -42,7 +41,13 @@ public enum RMapped {
     RESULT_OK(Activity.RESULT_OK),
 
     //Permissions_package_manager
-    PERMISSION_GRANTED(PackageManager.PERMISSION_GRANTED);
+    PERMISSION_GRANTED(PackageManager.PERMISSION_GRANTED),
+
+    //Icons
+    DRAWABLE_FOLLOW(R.drawable.ic_follow),
+    DRAWABLE_UNFOLLOW(R.drawable.ic_unfollow),
+    DRAWABLE_NOTIFICATION(R.drawable.ic_notifications_button),
+    DRAWABLE_OFF_NOTIFICACION(R.drawable.ic_turn_notifications_off_button);
 
     private int resource_id;
 

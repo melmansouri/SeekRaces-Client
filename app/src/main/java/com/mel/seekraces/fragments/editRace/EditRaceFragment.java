@@ -33,6 +33,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.crash.FirebaseCrash;
 import com.mel.seekraces.R;
 import com.mel.seekraces.adapters.AutoCompleteAdapter;
@@ -43,6 +44,7 @@ import com.mel.seekraces.entities.Race;
 import com.mel.seekraces.fragments.DatePickerFragment;
 import com.mel.seekraces.fragments.TimePickerFragment;
 import com.mel.seekraces.interfaces.IGenericInterface;
+import com.mel.seekraces.interfaces.INetworkConnectionApi;
 import com.mel.seekraces.interfaces.fragmentEditRace.IEditRacePresenter;
 import com.mel.seekraces.interfaces.fragmentEditRace.IEditRaceView;
 import com.mel.seekraces.tasks.EncodeImageTask;
@@ -139,8 +141,12 @@ public class EditRaceFragment extends Fragment implements IEditRaceView {
         super.onViewCreated(view, savedInstanceState);
         try {
             spDistancia.setAdapter(UtilsViews.getSpinnerDistanceAdapter(getContext(), R.layout.support_simple_spinner_dropdown_item, true));
-            imgRace.setImageBitmap(raceFromList.getBitmap());
-            imageBitmap = raceFromList.getBitmap();
+            imageBitmap=Glide.with(getContext()).load(INetworkConnectionApi.BASE_URL_PICTURES+raceFromList.getImageName()).asBitmap().into(250,250).get();
+            //imgRace.setImageBitmap(raceFromList.getBitmap());
+            if (imageBitmap!=null){
+                imgRace.setImageBitmap(imageBitmap);
+            }
+            //imageBitmap = raceFromList.getBitmap();
             edtNameRace.setText(raceFromList.getName());
             edtLugar.setText(raceFromList.getPlace());
             edtWeb.setText(raceFromList.getWeb());
@@ -393,7 +399,7 @@ public class EditRaceFragment extends Fragment implements IEditRaceView {
                 race.setImageBase64(s);
                 race.setWeb(edtWeb.getText().toString().trim());
                 race.setDescription(edtDescription.getText().toString());
-                race.setUser(raceFromList.getUser());
+                race.setUserEmail(raceFromList.getUser().getEmail());
                 presenter.editRace(Utils.isOnline(getContext()), race);
             }
         }.execute();

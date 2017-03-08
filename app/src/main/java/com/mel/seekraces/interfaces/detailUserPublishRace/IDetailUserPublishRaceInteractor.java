@@ -9,5 +9,8 @@ import com.mel.seekraces.entities.Follow;
 public interface IDetailUserPublishRaceInteractor {
     void follow(Follow follow);
     void unFollow(String url);
+
+    void setSentNotificacion(Follow follow);
+
     void getRacesPublishedByUser(String url);
 }

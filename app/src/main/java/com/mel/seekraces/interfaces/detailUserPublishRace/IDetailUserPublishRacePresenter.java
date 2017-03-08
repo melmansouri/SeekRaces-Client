@@ -9,6 +9,9 @@ import com.mel.seekraces.entities.Follow;
 public interface IDetailUserPublishRacePresenter {
     void follow(boolean isOnline,Follow follow);
     void unFollow(boolean isOnline,String userFollowed);
-    void getRacesPublishedByUser(boolean isOnline,String userFollowed);
+
+    void setSentNotificacion(boolean isOnline, Follow follow);
+
+    void getRacesPublishedByUser(boolean isOnline, String userFollowed);
     void onDestroy();
 }

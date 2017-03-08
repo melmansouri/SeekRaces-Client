@@ -22,6 +22,7 @@ public class User implements Parcelable {
     private String token_push;
     private String idTokenGoogle;
     private boolean followed;
+    private boolean sentNotificacion;
 
     public User() {
         this.email = "";
@@ -41,6 +42,7 @@ public class User implements Parcelable {
         photo = in.readParcelable(Bitmap.class.getClassLoader());
         place = in.readString();
         followed = in.readByte() != 0;
+        sentNotificacion = in.readByte() != 0;
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -143,6 +145,14 @@ public class User implements Parcelable {
         this.followed = followed;
     }
 
+    public boolean isSentNotificacion() {
+        return sentNotificacion;
+    }
+
+    public void setSentNotificacion(boolean sentNotificacion) {
+        this.sentNotificacion = sentNotificacion;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -157,6 +167,7 @@ public class User implements Parcelable {
                 ", token_push='" + token_push + '\'' +
                 ", idTokenGoogle='" + idTokenGoogle + '\'' +
                 ", followed=" + followed +
+                ", sentNotificacion=" + sentNotificacion +
                 '}';
     }
 
@@ -174,6 +185,7 @@ public class User implements Parcelable {
         parcel.writeParcelable(photo, i);
         parcel.writeString(place);
         parcel.writeByte((byte) (followed ? 1 : 0));
+        parcel.writeByte((byte) (sentNotificacion ? 1 : 0));
     }
 
     private void readFromParcel(Parcel in){
@@ -183,6 +195,7 @@ public class User implements Parcelable {
         photo = in.readParcelable(Bitmap.class.getClassLoader());
         place = in.readString();
         followed = in.readByte() != 0;
+        sentNotificacion = in.readByte() != 0;
     }
 
 }

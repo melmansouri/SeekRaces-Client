@@ -325,7 +325,7 @@ public class AddNewRaceActivity extends AppCompatActivity implements IAddNewRace
                 race.setImageBase64(s);
                 race.setWeb(edtWeb.getText().toString().trim());
                 race.setDescription(edtDescription.getText().toString());
-                race.setUser(sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER));
+                race.setUserEmail(sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER));
                 presenter.addRace(Utils.isOnline(AddNewRaceActivity.this), race);
             }
         }.execute();

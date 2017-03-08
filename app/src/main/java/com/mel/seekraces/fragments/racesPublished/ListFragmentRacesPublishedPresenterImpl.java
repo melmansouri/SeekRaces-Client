@@ -125,7 +125,7 @@ public class ListFragmentRacesPublishedPresenterImpl implements IListFragmentRac
                 view.showMessage("Comprueba tu conexión");
                 return;
             }
-            interactor.deleteEvent(((Race)object).getUser(),((Race)object).getId());
+            interactor.deleteEvent(((Race)object).getUser().getEmail(),((Race)object).getId());
         }
     }
 

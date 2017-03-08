@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.mel.seekraces.R;
 import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.SharedPreferencesSingleton;
@@ -20,6 +21,7 @@ import com.mel.seekraces.entities.Favorite;
 import com.mel.seekraces.entities.Race;
 import com.mel.seekraces.fragments.racesFinished.ListRacesFinishedFragment;
 import com.mel.seekraces.interfaces.IGenericInterface;
+import com.mel.seekraces.interfaces.INetworkConnectionApi;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -58,12 +60,12 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
         holder.mItem = list.get(position);
 
        // if (holder.mItem.getBitmap()!=null){
-            holder.imgRace.setImageBitmap(holder.mItem.getBitmap());
+            //holder.imgRace.setImageBitmap(holder.mItem.getBitmap());
         /*}else{
             holder.imgRace.setImageBitmap(bitmap);
 
         }*/
-
+        Glide.with(c).load(INetworkConnectionApi.BASE_URL_PICTURES+holder.mItem.getImageName()).error(R.drawable.default_race).into(holder.imgRace);
         holder.txtNameRace.setText(holder.mItem.getName());
         holder.txtCountryCity.setText(holder.mItem.getPlace());
         SimpleDateFormat formato =
@@ -78,10 +80,10 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
         }
         String fecha = formato.format(date);
         holder.txtDate.setText(fecha);
-        String publicadoPor = "<h3>Publicado por " + holder.mItem.getUserName()+"</h3>";
+        String publicadoPor = "Publicado por " + holder.mItem.getUserName();
         holder.txtDistance.setText(holder.mItem.getDistance() + "KM");
 
-        if (!SharedPreferencesSingleton.getInstance(c).getStringSP(Constantes.KEY_USER).toLowerCase().equals(holder.mItem.getUser().getUsername().toLowerCase())) {
+        if (!SharedPreferencesSingleton.getInstance(c).getStringSP(Constantes.KEY_USER).toLowerCase().equals(holder.mItem.getUser().getEmail().toLowerCase())) {
             holder.imgBtnLikeRace.setVisibility(View.VISIBLE);
             holder.imgBtnEdit.setVisibility(View.GONE);
             holder.imgBtnDelete.setVisibility(View.GONE);
@@ -137,7 +139,7 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
             holder.txtFinished.setVisibility(View.GONE);
         }
 
-        holder.txtPublicadoPor.setText(TextUtils.htmlEncode(publicadoPor));
+        holder.txtPublicadoPor.setText(publicadoPor);
 
         holder.imgBtnLikeRace.setOnClickListener(new View.OnClickListener() {
             @Override

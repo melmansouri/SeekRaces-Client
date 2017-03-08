@@ -76,6 +76,7 @@
     <string name="breve_opinion">Breve opinión</string>
     <string name="restart">Reiniciar</string>
     <string name="title_perfil">Perfil</string>
+    <string name="title_usuarios_seguidos">Usuarios que sigues</string>
     <!--Reviews-->
 
 </resources>

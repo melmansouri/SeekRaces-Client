@@ -1,8 +1,9 @@
 package com.mel.seekraces.interfaces;
 
-import com.mel.seekraces.entities.Race;
 import com.mel.seekraces.entities.Favorite;
+import com.mel.seekraces.entities.Follow;
 import com.mel.seekraces.entities.PlacePredictions;
+import com.mel.seekraces.entities.Race;
 import com.mel.seekraces.entities.Response;
 import com.mel.seekraces.entities.Review;
 import com.mel.seekraces.entities.User;
@@ -41,6 +42,15 @@ public interface INetworkConnectionApi {
 
     @POST("user/login")
     Call<Response> login(@Body User user);
+
+    @POST("user/follow")
+    Call<Response> follow(@Body Follow follow);
+
+    @DELETE
+    Call<Response> unfollow(@Url String url);
+
+    @PUT("user/follow")
+    Call<Response> updateFollowToSentNotificacion(@Body Follow follow);
 
     @GET
     Call<Response> forgotPwd(@Url String url);

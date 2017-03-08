@@ -15,9 +15,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.mel.seekraces.R;
 import com.mel.seekraces.entities.Race;
 import com.mel.seekraces.interfaces.IGenericInterface;
+import com.mel.seekraces.interfaces.INetworkConnectionApi;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -82,7 +84,8 @@ public class DetailRaceFragment extends Fragment {
             }
         });
         //mListener.setActionBar(toolbar);
-        imgRace.setImageBitmap(race.getBitmap());
+        //imgRace.setImageBitmap(race.getBitmap());
+        Glide.with(getContext()).load(INetworkConnectionApi.BASE_URL_PICTURES+race.getImageName()).error(R.drawable.default_race).into(imgRace);
 
         //toolbar.setTitle(race.getName());
         collapsingToolbar.setTitle(race.getName());
