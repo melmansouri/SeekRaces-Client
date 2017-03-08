@@ -6,11 +6,12 @@ import com.mel.seekraces.commons.Constantes;
 import com.mel.seekraces.commons.RMapped;
 import com.mel.seekraces.commons.SharedPreferencesSingleton;
 import com.mel.seekraces.entities.Filter;
+import com.mel.seekraces.entities.Race;
 import com.mel.seekraces.entities.Response;
 import com.mel.seekraces.fragments.ownRacesPublished.ListOwnRacesPublishedFragment;
-import com.mel.seekraces.fragments.racesFinished.ListRacesFinishedFragment;
 import com.mel.seekraces.fragments.racesPublished.ListRacesPublishedFragment;
 import com.mel.seekraces.fragments.racesPublishedFavorites.ListRacesPublishedFavoritesFragment;
+import com.mel.seekraces.fragments.usersFollowed.ListFragmentUsersFollowed;
 import com.mel.seekraces.interfaces.IListennerCallBack;
 import com.mel.seekraces.interfaces.main.IMainPresenter;
 import com.mel.seekraces.interfaces.main.IMainView;
@@ -57,6 +58,8 @@ public class MainPresenterImpl implements IMainPresenter, IListennerCallBack {
                 view.chargeFragmentRacesFavorites();
             } else if (itemSelectd == RMapped.ITEM_RACES_PREVIOUS.getValue()) {
                 view.chargeFragmentRacesPrevious();
+            }else if (itemSelectd == RMapped.ITEM_USERS_FOLLOWED.getValue()) {
+                view.chargeFragmentListUsersFollowed();
             } else if (itemSelectd == RMapped.ITEM_EXIT.getValue()) {
                 sharedPreferencesSingleton.clearAllUserSharedPreferences();
                 view.exitSession();
@@ -117,7 +120,7 @@ public class MainPresenterImpl implements IMainPresenter, IListennerCallBack {
                     return;
             }*/
             view.setActualFragmentActive();
-            if (view.actualFragmentActiveInstanceOf(ListOwnRacesPublishedFragment.class) || view.actualFragmentActiveInstanceOf(ListRacesPublishedFavoritesFragment.class) || view.actualFragmentActiveInstanceOf(ListRacesFinishedFragment.class)){
+            if (view.actualFragmentActiveInstanceOf(ListOwnRacesPublishedFragment.class) || view.actualFragmentActiveInstanceOf(ListRacesPublishedFavoritesFragment.class) || view.actualFragmentActiveInstanceOf(ListFragmentUsersFollowed.class)){
                 view.backToPreviousFragmentById(0);
             }else if (view.actualFragmentActiveInstanceOf(ListRacesPublishedFragment.class)){
                 view.setResult();
@@ -131,6 +134,17 @@ public class MainPresenterImpl implements IMainPresenter, IListennerCallBack {
     @Override
     public void onDestroy() {
         view = null;
+    }
+
+    @Override
+    public void startDetailRaceFromNotification(Race race) {
+        if (view != null) {
+            if (race!=null){
+                view.chargeDetailRaceFragment(race);
+            }else{
+                view.setupNavigationDrawer();
+            }
+        }
     }
 
 

@@ -21,7 +21,6 @@ import com.mel.seekraces.entities.Race;
 import com.mel.seekraces.interfaces.IGenericInterface;
 import com.mel.seekraces.interfaces.INetworkConnectionApi;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -96,17 +95,21 @@ public class DetailRaceFragment extends Fragment {
         SimpleDateFormat sdf =
                 new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = null;
+        String fecha="";
         try {
             date = sdf.parse(race.getDate_time_init());
-        } catch (ParseException e) {
+            fecha = formato.format(date);
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        String fecha = formato.format(date);
+
         txtFecha.setText(fecha);
         txtLugar.setText(race.getPlace());
         txtWeb.setText(race.getWeb());
         txtDescripcion.setText(race.getDescription());
         toolbar.inflateMenu(R.menu.menu_fragment_detail);
+        toolbar.getMenu().setGroupVisible(R.id.group_reviews,(race.getId()==0)?false:true);
+
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {

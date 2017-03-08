@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.crash.FirebaseCrash;
 import com.mel.seekraces.R;
 import com.mel.seekraces.activities.editProfile.EditProfileActivity;
 import com.mel.seekraces.activities.filters.FiltersActivity;
@@ -36,6 +37,7 @@ import com.mel.seekraces.fragments.ownRacesPublished.ListOwnRacesPublishedFragme
 import com.mel.seekraces.fragments.racesPublished.ListRacesPublishedFragment;
 import com.mel.seekraces.fragments.racesPublishedFavorites.ListRacesPublishedFavoritesFragment;
 import com.mel.seekraces.fragments.reviews.ReviewsFragment;
+import com.mel.seekraces.fragments.usersFollowed.ListFragmentUsersFollowed;
 import com.mel.seekraces.interfaces.IGenericInterface;
 import com.mel.seekraces.interfaces.INetworkConnectionApi;
 import com.mel.seekraces.interfaces.main.IMainPresenter;
@@ -78,10 +80,19 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         sharedPreferencesSingleton = SharedPreferencesSingleton.getInstance(this);
         presenter = new MainPresenterImpl(this, sharedPreferencesSingleton);
-        setupNavigationDrawer();
+        try{
+            Race race=getIntent().getParcelableExtra("race");
+            presenter.startDetailRaceFromNotification(race);
+        }catch (Exception e){
+            FirebaseCrash.report(e);
+            e.printStackTrace();
+            setupNavigationDrawer();
+        }
+        //setupNavigationDrawer();
     }
 
-    private void setupNavigationDrawer() {
+    @Override
+    public void setupNavigationDrawer() {
         toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
@@ -335,13 +346,24 @@ public class MainActivity extends AppCompatActivity
         intentActivityResult=null;
     }
 
+    @Override
+    public void chargeFragmentListUsersFollowed() {
+        ListFragmentUsersFollowed fragmentUsersFollowed=new ListFragmentUsersFollowed();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragmentUsersFollowed).addToBackStack("followed").commit();
+    }
+
 
     @Override
     public void onListFragmentInteraction(Race item) {
+        chargeDetailRaceFragment(item);
+    }
+
+    @Override
+    public void chargeDetailRaceFragment(Race race){
         DetailRaceFragment fragment;
         fragment = new DetailRaceFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelable("race", item);
+        bundle.putParcelable("race", race);
         fragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment,Constantes.TAG_DETAIL_RACES_FRAGMENT).addToBackStack("detail").commit();
     }

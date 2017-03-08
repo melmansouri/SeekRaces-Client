@@ -15,6 +15,7 @@ public enum RMapped {
     ITEM_RACES_MY_PUBLISHED(R.id.itemListMyEventsPublished),
     ITEM_RACES_FAVORITES(R.id.itemListEventsFavorites),
     ITEM_RACES_PREVIOUS(R.id.itemListPreviousEvents),
+    ITEM_USERS_FOLLOWED(R.id.itemListUsersFollowed),
     ITEM_EXIT(R.id.exit),
 
     //Menus
@@ -31,6 +32,7 @@ public enum RMapped {
     ITEM_DELETE_REVIEW(R.id.group_delete),
     ITEM_GROUP_FILTER(R.id.group_filter),
     ITEM_GROUP_RESTART(R.id.group_restart),
+
     //Strings
     TITLE_CARRERAS_PUBLICADAS(R.string.title_carreras_publicadas),
     TITLE_MIS_CARRERAS_PUBLICADAS(R.string.title_mis_carreras_publicadas),

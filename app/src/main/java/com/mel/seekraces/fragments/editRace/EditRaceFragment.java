@@ -33,7 +33,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.bumptech.glide.Glide;
 import com.google.firebase.crash.FirebaseCrash;
 import com.mel.seekraces.R;
 import com.mel.seekraces.adapters.AutoCompleteAdapter;
@@ -48,6 +47,7 @@ import com.mel.seekraces.interfaces.INetworkConnectionApi;
 import com.mel.seekraces.interfaces.fragmentEditRace.IEditRacePresenter;
 import com.mel.seekraces.interfaces.fragmentEditRace.IEditRaceView;
 import com.mel.seekraces.tasks.EncodeImageTask;
+import com.mel.seekraces.tasks.GetBitmapWithGlideTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -141,11 +141,19 @@ public class EditRaceFragment extends Fragment implements IEditRaceView {
         super.onViewCreated(view, savedInstanceState);
         try {
             spDistancia.setAdapter(UtilsViews.getSpinnerDistanceAdapter(getContext(), R.layout.support_simple_spinner_dropdown_item, true));
-            imageBitmap=Glide.with(getContext()).load(INetworkConnectionApi.BASE_URL_PICTURES+raceFromList.getImageName()).asBitmap().into(250,250).get();
+
+            new GetBitmapWithGlideTask(getContext(),INetworkConnectionApi.BASE_URL_PICTURES+raceFromList.getImageName()){
+                @Override
+                protected void onPostExecute(Bitmap bitmap) {
+                    super.onPostExecute(bitmap);
+                    if (imageBitmap!=null){
+                        imageBitmap= bitmap;
+                        imgRace.setImageBitmap(imageBitmap);
+                    }
+                }
+            }.execute();
             //imgRace.setImageBitmap(raceFromList.getBitmap());
-            if (imageBitmap!=null){
-                imgRace.setImageBitmap(imageBitmap);
-            }
+
             //imageBitmap = raceFromList.getBitmap();
             edtNameRace.setText(raceFromList.getName());
             edtLugar.setText(raceFromList.getPlace());

@@ -99,4 +99,7 @@ public interface INetworkConnectionApi {
 
     @DELETE
     Call<Response> deleteEventOpinion(@Url String url);
+
+    @GET
+    Call<Response> getListFollowed(@Url String url);
 }

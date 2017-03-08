@@ -3,12 +3,15 @@ package com.mel.seekraces.interfaces.main;
 import android.content.Intent;
 
 import com.mel.seekraces.entities.Filter;
+import com.mel.seekraces.entities.Race;
 
 /**
  * Created by moha on 18/01/17.
  */
 
 public interface IMainView {
+
+    void setupNavigationDrawer();
 
     void backToPreviousFragmentById(int id);
 
@@ -54,4 +57,8 @@ public interface IMainView {
 
 
     void setIntentActivityResultToNull();
+
+    void chargeFragmentListUsersFollowed();
+
+    void chargeDetailRaceFragment(Race race);
 }

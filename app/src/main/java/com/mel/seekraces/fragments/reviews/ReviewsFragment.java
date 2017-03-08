@@ -294,7 +294,21 @@ public class ReviewsFragment extends Fragment implements IFragmentReviewsView {
     @Override
     @OnClick(R.id.fabDelete)
     public void deleteOwnReview() {
-        presenter.deleteReview(Utils.isOnline(getContext()), sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER), idEvent);
+        AlertDialog.Builder builder = UtilsViews.createAlertDialog(getContext(), "Importante");
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                presenter.deleteReview(Utils.isOnline(getContext()), sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER), idEvent);
+            }
+        });
+
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        builder.setMessage("¿Está seguro de eliminar tu comentario?");
+        builder.show();
     }
 
     @Override
