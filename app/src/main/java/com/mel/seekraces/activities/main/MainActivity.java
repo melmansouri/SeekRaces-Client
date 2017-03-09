@@ -13,13 +13,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.google.firebase.crash.FirebaseCrash;
 import com.mel.seekraces.R;
 import com.mel.seekraces.activities.editProfile.EditProfileActivity;
 import com.mel.seekraces.activities.filters.FiltersActivity;
@@ -73,6 +73,37 @@ public class MainActivity extends AppCompatActivity
     private Fragment actualFragmentActive;
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        //registerReceiver(mMessageReceiver, new IntentFilter("BroadcastReceiver"));
+        /*setSupportActionBar(toolbar);
+        if (sharedPreferencesSingleton==null){
+            sharedPreferencesSingleton = SharedPreferencesSingleton.getInstance(this);
+        }
+        if (presenter==null){
+            presenter = new MainPresenterImpl(this, sharedPreferencesSingleton);
+        }
+        try{
+            String raceJson=getIntent().getStringExtra("race");
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.registerTypeAdapter(User.class, new UserDeserializer());
+            Gson gson = gsonBuilder.create();
+            Race race = gson.fromJson(raceJson, Race.class);
+            if (race!=null){
+                presenter.startDetailRaceFromNotification(race);
+            }else{
+                throw new Exception();
+            }
+
+        }catch (Exception e){
+            FirebaseCrash.report(e);
+            e.printStackTrace();
+            setupNavigationDrawer();
+        }*/
+        //setupNavigationDrawer();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -80,16 +111,47 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         sharedPreferencesSingleton = SharedPreferencesSingleton.getInstance(this);
         presenter = new MainPresenterImpl(this, sharedPreferencesSingleton);
-        try{
-            Race race=getIntent().getParcelableExtra("race");
-            presenter.startDetailRaceFromNotification(race);
+        /*try{
+            String raceJson=getIntent().getStringExtra("race");
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.registerTypeAdapter(User.class, new UserDeserializer());
+            Gson gson = gsonBuilder.create();
+            Race race = gson.fromJson(raceJson, Race.class);
+            if (race!=null){
+                presenter.startDetailRaceFromNotification(race);
+            }else{
+                throw new Exception();
+            }
+
         }catch (Exception e){
             FirebaseCrash.report(e);
             e.printStackTrace();
             setupNavigationDrawer();
-        }
-        //setupNavigationDrawer();
+        }*/
+        setupNavigationDrawer();
     }
+
+    /*private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            try{
+                String raceJson=intent.getStringExtra("race");
+                GsonBuilder gsonBuilder = new GsonBuilder();
+                gsonBuilder.registerTypeAdapter(User.class, new UserDeserializer());
+                Gson gson = gsonBuilder.create();
+                Race race = gson.fromJson(raceJson, Race.class);
+                if (race!=null){
+                    presenter.startDetailRaceFromNotification(race);
+                }else{
+                    throw new Exception();
+                }
+
+            }catch (Exception e){
+                FirebaseCrash.report(e);
+                e.printStackTrace();
+            }
+        }
+    };*/
 
     @Override
     public void setupNavigationDrawer() {
@@ -378,6 +440,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.e("MainActivity","onDestroy");
         presenter.onDestroy();
+        //unregisterReceiver(mMessageReceiver);
     }
 }

@@ -21,6 +21,7 @@ import com.mel.seekraces.entities.Race;
 import com.mel.seekraces.interfaces.IGenericInterface;
 import com.mel.seekraces.interfaces.INetworkConnectionApi;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -100,6 +101,12 @@ public class DetailRaceFragment extends Fragment {
             date = sdf.parse(race.getDate_time_init());
             fecha = formato.format(date);
         } catch (Exception e) {
+            try {
+                date = sdf.parse(race.getDate_time_init()+":00");
+            } catch (ParseException e1) {
+                e1.printStackTrace();
+            }
+            fecha = formato.format(date);
             e.printStackTrace();
         }
 

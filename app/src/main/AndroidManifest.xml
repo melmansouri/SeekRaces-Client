@@ -88,6 +88,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mel.seekraces.activities.main.MainActivity" />
         </activity>
+
+        <activity
+            android:name=".activities.detailRace.DetailRaceActivity"
+            android:parentActivityName=".activities.main.MainActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mel.seekraces.activities.main.MainActivity" />
+        </activity>
+
     </application>
 
 </manifest>

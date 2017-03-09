@@ -3,6 +3,7 @@ package com.mel.seekraces.adapters;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
@@ -99,10 +100,12 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
                     mListenerFragmentInteracion.showDetailUserHowPublishRace(holder.mItem.getUser());
                 }
             });
+            holder.txtPublicadoPor.setTextColor(ContextCompat.getColor(c,R.color.colorPrimaryDark));
         } else {
             publicadoPor = "Publicado por mi";
             holder.imgBtnLikeRace.setVisibility(View.GONE);
             holder.imgBtnDelete.setVisibility(View.VISIBLE);
+            holder.imgBtnEdit.setVisibility(View.VISIBLE);
             holder.imgBtnEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -126,6 +129,7 @@ public class RVRacesPublishedAdapter extends RecyclerView.Adapter<RVRacesPublish
                     return true;
                 }
             });*/
+            holder.txtPublicadoPor.setTextColor(ContextCompat.getColor(c,R.color.colorPrimaryText));
         }
         if (mListenerListInteracion instanceof ListRacesFinishedFragment) {
             holder.imgBtnEdit.setVisibility(View.GONE);

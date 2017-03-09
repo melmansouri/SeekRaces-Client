@@ -20,7 +20,7 @@ public class UserDeserializer implements JsonDeserializer<User> {
         User user = new User();
         user.setEmail(jsonObject.get("email").getAsString());
         user.setUsername(jsonObject.get("username").getAsString());
-        if (!jsonObject.get("photo_url").isJsonNull()) {
+        if (jsonObject.get("photo_url")!=null &&!jsonObject.get("photo_url").isJsonNull()) {
             user.setPhoto_url(jsonObject.get("photo_url").getAsString());
         }
         //String base64=jsonObject.get("photoBase64").getAsString();
@@ -32,8 +32,8 @@ public class UserDeserializer implements JsonDeserializer<User> {
             user.setPlace(jsonObject.get("place").getAsString());
         }
 
-        user.setFollowed(!jsonObject.get("isFollowed").isJsonNull());
-        if(!jsonObject.get("isSentNotificacion").isJsonNull()){
+        user.setFollowed(jsonObject.get("isFollowed")!=null&&!jsonObject.get("isFollowed").isJsonNull());
+        if(jsonObject.get("isSentNotificacion")!=null &&!jsonObject.get("isSentNotificacion").isJsonNull()){
             user.setSentNotificacion(jsonObject.get("isSentNotificacion").getAsInt() == 1 ?true:false);
         }
 
