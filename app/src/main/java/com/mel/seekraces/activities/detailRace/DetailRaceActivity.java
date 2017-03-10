@@ -31,6 +31,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
+ * Activity que inicia cuando pluso en la notificacion para ver los
+ * detalles de la carrera
  * Created by moha on 9/03/17.
  */
 
@@ -74,7 +76,6 @@ public class DetailRaceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_detail_race);
         ButterKnife.bind(this);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         try{
             String raceJson=getIntent().getStringExtra("race");
             GsonBuilder gsonBuilder = new GsonBuilder();
@@ -90,13 +91,9 @@ public class DetailRaceActivity extends AppCompatActivity {
                         DetailRaceActivity.super.onBackPressed();
                     }
                 });
-                //mListener.setActionBar(toolbar);
-                //imgRace.setImageBitmap(race.getBitmap());
                 Glide.with(this).load(INetworkConnectionApi.BASE_URL_PICTURES+race.getImageName()).error(R.drawable.default_race).into(imgRace);
 
-                //toolbar.setTitle(race.getName());
                 collapsingToolbar.setTitle(race.getName());
-                //collapsingToolbar.setExpandedTitleColor(getActivity().getColor(android.R.color.transparent));
                 txtDistance.setText(race.getDistance() + "KM");
                 SimpleDateFormat formato =
                         new SimpleDateFormat("EEEE d 'de' MMMM 'de' yyyy 'a las' HH:mm", Locale.getDefault());

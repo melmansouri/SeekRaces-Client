@@ -108,9 +108,9 @@ public class DetailUserPublishRaceFragment extends Fragment implements IDetailUs
                 imgBtnFollow.setImageResource(R.drawable.ic_follow);
             }
             if (user.isSentNotificacion()) {
-                imgBtnSentNotificacion.setImageResource(R.drawable.ic_turn_notifications_off_button);
-            } else {
                 imgBtnSentNotificacion.setImageResource(R.drawable.ic_notifications_button);
+            } else {
+                imgBtnSentNotificacion.setImageResource(R.drawable.ic_turn_notifications_off_button);
             }
             imgBtnFollow.setOnClickListener(new View.OnClickListener() {
                 @Override

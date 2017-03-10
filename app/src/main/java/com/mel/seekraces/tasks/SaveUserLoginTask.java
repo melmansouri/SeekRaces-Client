@@ -29,12 +29,6 @@ public class SaveUserLoginTask extends AsyncTask<Void,Void,Void> {
             gsonBuilder.registerTypeAdapter(User.class,new UserDeserializer());
             Gson gson =gsonBuilder.create();
             User user=gson.fromJson(userJson,User.class);
-        /*if ((user.getPhotoBase64()!=null && !user.getPhotoBase64().isEmpty()) && (user.getPhoto_url() !=null&&!user.getPhoto_url().isEmpty())){
-            if (Utils.mkdir(Constantes.RUTA_IMAGENES)){
-                Utils.saveImage(user.getPhotoBase64(),Constantes.RUTA_IMAGENES+user.getPhoto_url());
-                user.setPhotoBase64("");
-            }
-        }*/
             sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USER,user.getEmail());
             sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USER_NAME_PICTURE,user.getPhoto_url());
             sharedPreferencesSingleton.saveStringSP(Constantes.KEY_USERNAME,user.getUsername());

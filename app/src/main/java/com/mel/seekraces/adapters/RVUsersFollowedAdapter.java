@@ -52,9 +52,9 @@ public class RVUsersFollowedAdapter extends RecyclerView.Adapter<RVUsersFollowed
         holder.txtLugar.setText(holder.user.getPlace());
 
         if (holder.user.isSentNotificacion()){
-            holder.imgBtnSentNotificacion.setImageResource(R.drawable.ic_turn_notifications_off_button);
-        } else {
             holder.imgBtnSentNotificacion.setImageResource(R.drawable.ic_notifications_button);
+        } else {
+            holder.imgBtnSentNotificacion.setImageResource(R.drawable.ic_turn_notifications_off_button);
         }
 
         holder.imgBtnFollow.setOnClickListener(new View.OnClickListener() {

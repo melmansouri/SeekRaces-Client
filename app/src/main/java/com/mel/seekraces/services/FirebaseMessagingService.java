@@ -51,25 +51,17 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     private void showNotification(Race race) {
 
         Intent i = new Intent(this, DetailRaceActivity.class);
-        //Intent i = new Intent("BroadcastReceiver");
-        /*Bundle bundle=new Bundle();
-        bundle.putString("race",new Gson().toJson(race));*/
         i.putExtra("race", new Gson().toJson(race));
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         TaskStackBuilder taskStackBuilder=TaskStackBuilder.create(this);
         taskStackBuilder.addParentStack(DetailRaceActivity.class);
         taskStackBuilder.addNextIntent(i);
 
-        //i.putExtra("broadcasting", true);
-        //i.putExtra("bundle",bundle);
-
-        //PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int) System.currentTimeMillis(),i , PendingIntent.FLAG_UPDATE_CURRENT);
-        //PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,i , PendingIntent.FLAG_UPDATE_CURRENT);
         PendingIntent pendingIntent =taskStackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setAutoCancel(true)
-                .setContentTitle(race.getName())
-                .setContentText(race.getUser().getUsername().concat(" ha publicado la carrera "+race.getName()))
+                .setContentTitle(race.getUser().getUsername().concat(" ha publicado una carrera"))
+                .setContentText("Toca para ver más detalles")
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentIntent(pendingIntent);
 
