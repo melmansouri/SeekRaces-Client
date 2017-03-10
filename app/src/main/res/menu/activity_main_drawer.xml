@@ -21,7 +21,7 @@
             android:visible="false"/>
         <item
             android:id="@+id/itemListUsersFollowed"
-            android:icon="@drawable/ic_finished"
+            android:icon="@drawable/ic_follow"
             android:title="@string/title_usuarios_seguidos"/>
     </group>
 
