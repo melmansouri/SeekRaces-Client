@@ -1,13 +1,82 @@
 <resources>
     <string name="app_name">SeekRaces</string>
+    <string name="facebook_app_id">1836417983299341</string>
+    <string name="fb_login_protocol_scheme">fb1836417983299341</string>
 
     <!--Login-->
     <string name="email">Email</string>
     <string name="password">Contraseña</string>
     <string name="login">Iniciar Sesión</string>
+    <string name="login_facebook">Iniciar sesión con Facebook</string>
     <string name="signin">Registrarse</string>
     <!--Login-->
     <!--SignIn-->
-    <string name="username">Nombre de usuario</string>
+    <string name="username">Nombre</string>
+    <string name="repeat_password">Repita la contraseña</string>
+    <string-array name="option_dialog_picture">
+        <item>Tomar foto</item>
+        <item>Elegir de galeria</item>
+        <item>Cancelar</item>
+    </string-array>
+    <string name="elige_opcion">Elige una opción</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
     <!--SignIn-->
+    <!--Navigation Drawer elements-->
+    <string name="title_carreras_publicadas">Carreras Pubicadas</string>
+    <string name="title_mis_carreras_publicadas">Mis Carreras Publicadas</string>
+    <string name="title_carreras_favoritas">Carreras Favoritas</string>
+    <string name="title_carreras_anteriores">Carreras Finalizadas</string>
+    <!--string name="item_carreras">Carreras</string-->
+    <!--Navigation Drawer elements-->
+
+    <!--Filter-->
+    <string name="title_filtros">Filtros</string>
+    <string name="pais">País</string>
+    <string name="lugar">Lugar</string>
+    <string name="ciudad">Ciudad</string>
+    <string name="distancia">Distancia</string>
+    <string name="fecha_desde">Desde</string>
+    <string name="fecha_hasta">Hasta</string>
+    <string name="fecha_hasta_default">No especificado</string>
+    <!--Filter-->
+
+    <!--Edit Race-->
+    <string name="title_edit_race">Editar Carrera</string>
+    <!--Edit Race-->
+
+    <!--New Race-->
+    <string name="name_race">Nombre</string>
+    <string name="web">Web</string>
+    <string name="descripcion">Descripción</string>
+    <!--New Race-->
+
+    <!--Menus-->
+    <string name="filter">Filtrar</string>
+    <string name="addRace">Añadir Carrera</string>
+    <string name="hora">Hora</string>
+    <string name="fecha">Fecha</string>
+    <string name="edit">Editar</string>
+    <string name="forgotPwd">¿Olvidaste tu contraseña?</string>
+    <string name="title_opiniones">Opiniones</string>
+    <string name="opinar">Opinar</string>
+    <string name="editar_opinion">Editar</string>
+    <string name="delete_opinion">Eliminar</string>
+    <!--Menus-->
+
+    <!--Long Click Race-->
+    <string-array name="option_long_click_event">
+        <item>Editar</item>
+        <item>Eliminar</item>
+    </string-array>
+    <!--Long Click Race-->
+
+    <!--Reviews-->
+    <string name="breve_opinion">Breve opinión</string>
+    <string name="restart">Reiniciar</string>
+    <string name="title_perfil">Perfil</string>
+    <string name="title_usuarios_seguidos">Usuarios que sigues</string>
+    <!--Reviews-->
+
 </resources>

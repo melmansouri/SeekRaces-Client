@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/itemListEventsPublished"
+            android:icon="@drawable/ic_run"
+            android:title="@string/title_carreras_publicadas"/>
+        <item
+            android:id="@+id/itemListMyEventsPublished"
+            android:icon="@drawable/ic_send"
+            android:title="@string/title_mis_carreras_publicadas"/>
+        <item
+            android:id="@+id/itemListEventsFavorites"
+            android:icon="@drawable/ic_favorite"
+            android:title="@string/title_carreras_favoritas"/>
+        <item
+            android:id="@+id/itemListPreviousEvents"
+            android:icon="@drawable/ic_finished"
+            android:title="@string/title_carreras_anteriores"
+            android:visible="false"/>
+        <item
+            android:id="@+id/itemListUsersFollowed"
+            android:icon="@drawable/ic_follow"
+            android:title="@string/title_usuarios_seguidos"/>
+    </group>
+
+    <item
+        android:id="@+id/exit"
+        android:icon="@drawable/ic_exit"
+        android:title="Salir"/>
+
+    <!--item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Share" />
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Send" />
+        </menu>
+    </item-->
+
+</menu>
