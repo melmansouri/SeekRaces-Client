@@ -17,6 +17,7 @@ import com.mel.seekraces.interfaces.login.ILoginView;
 import com.mel.seekraces.tasks.SaveUserLoginTask;
 
 /**
+ * Esta clase actua de intermediario entre la vista y la clase que proprciona los datos que en este caso es el interactor
  * Created by moha on 10/01/17.
  */
 

@@ -2,7 +2,6 @@ package com.mel.seekraces.activities.login;
 
 import android.util.Log;
 
-import com.google.gson.Gson;
 import com.mel.seekraces.connection.RetrofitSingleton;
 import com.mel.seekraces.entities.Response;
 import com.mel.seekraces.entities.User;
@@ -15,6 +14,7 @@ import retrofit2.Callback;
 import retrofit2.Retrofit;
 
 /**
+ * Clase que proporciona los datos a las demás capas atacando al servidor usando Retrofit2
  * Created by moha on 10/01/17.
  */
 
@@ -30,6 +30,10 @@ public class LoginInteractorImpl implements ILoginInteractor{
         networkConnectionApi=retrofit.create(INetworkConnectionApi.class);
     }
 
+    /**
+     * Metodo para iniciar
+     * @param user
+     */
     @Override
     public void login(User user) {
         if (user!=null){

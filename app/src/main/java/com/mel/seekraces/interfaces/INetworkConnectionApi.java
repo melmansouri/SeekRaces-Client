@@ -18,6 +18,7 @@ import retrofit2.http.Query;
 import retrofit2.http.Url;
 
 /**
+ * Interfaz que tiene todas las peticiones al servidor
  * Created by void on 15/01/2017.
  */
 

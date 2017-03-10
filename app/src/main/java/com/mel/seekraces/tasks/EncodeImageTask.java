@@ -11,6 +11,7 @@ import com.mel.seekraces.commons.Utils;
 import java.util.concurrent.ExecutionException;
 
 /**
+ * Tarea asincrona para obtener el base64 de una imagen apartir del bitmap o la uri
  * Created by void on 15/01/2017.
  */
 
@@ -31,6 +32,7 @@ public class EncodeImageTask extends AsyncTask<Void,Void,String> {
 
     @Override
     protected String doInBackground(Void... params) {
+        //si uso la uri para obtener el base64 uso glide para obtener el bitmap
         if (fileUri!=null){
             try {
                 bitmap= Glide.

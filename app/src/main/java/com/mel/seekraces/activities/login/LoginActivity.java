@@ -98,9 +98,11 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, Goog
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        getSupportActionBar().hide();
         sharedPreferencesSingleton = SharedPreferencesSingleton.getInstance(this);
         loginPresenter = new LoginPresenterImpl(this, sharedPreferencesSingleton);
 
+        //Inicializo los objetos necesarios para poder iniciar sesión con google
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -109,7 +111,9 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, Goog
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+
         try{
+            //Cambio la fuente del titulo principal en la pantalla de login
             Typeface custom_font = Typeface.createFromAsset(getAssets(), "android_insomnia_regular.ttf");
             txtAppName.setTypeface(custom_font);
         }catch(Exception e){
@@ -117,6 +121,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, Goog
             FirebaseCrash.report(e);
         }
 
+        //Método que comprueba si ya hay una sesion activa
         loginPresenter.checkSession();
     }
 
@@ -127,6 +132,9 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, Goog
         loginPresenter.activityResult(requestCode, resultCode);
     }
 
+    /**
+     * Métdo que lanaza la activity de SignIn
+     */
     @Override
     @OnClick(R.id.btnSignIn)
     public void goToSignIn() {
@@ -139,6 +147,9 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, Goog
         startActivityForResult(i, Constantes.REQUEST_START_SIGNIN_FOR_RESULT);
     }
 
+    /**
+     * Método para iniciar sesión
+     */
     @Override
     @OnClick(R.id.btnLogin)
     public void login() {
@@ -219,6 +230,9 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, Goog
         txtAppName.setVisibility(View.GONE);
     }
 
+    /**
+     * Método para ir a la activity principal
+     */
     @Override
     public void goToMainScreen() {
         Intent intent = new Intent(this, MainActivity.class);
@@ -231,6 +245,9 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, Goog
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
     }
 
+    /**
+     * Método para iniciar sesion con la cuenta de google
+     */
     @Override
     @OnClick(R.id.btnSignInGoogle)
     public void signInGoogle() {
@@ -248,12 +265,17 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, Goog
         loginPresenter.checkSignInGoogle(resultSignInGoogle.isSuccess());
     }
 
+    /**
+     * Método para loguearse en el servidor propio despues
+     * del éxito al hacer login con la cuenta de google
+     */
     @Override
     public void loginGoogle() {
         showProgress();
         try {
             final GoogleSignInAccount acct = resultSignInGoogle.getSignInAccount();
             final User user = new User();
+            //Tarea para convertir imagen en base64
             new EncodeImageTask(this, acct.getPhotoUrl()) {
                 @Override
                 protected void onPostExecute(String s) {
