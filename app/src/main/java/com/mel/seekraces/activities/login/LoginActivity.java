@@ -234,8 +234,12 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, Goog
     @Override
     @OnClick(R.id.btnSignInGoogle)
     public void signInGoogle() {
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, Constantes.REQUEST_START_SIGNIN_GOOGLE_FOR_RESULT);
+        if (Utils.isOnline(this)){
+            Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+            startActivityForResult(signInIntent, Constantes.REQUEST_START_SIGNIN_GOOGLE_FOR_RESULT);
+        }else{
+            showMessage("Comprueba tu conexión");
+        }
     }
 
     @Override

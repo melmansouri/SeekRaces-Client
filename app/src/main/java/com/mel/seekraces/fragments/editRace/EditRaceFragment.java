@@ -146,7 +146,7 @@ public class EditRaceFragment extends Fragment implements IEditRaceView {
                 @Override
                 protected void onPostExecute(Bitmap bitmap) {
                     super.onPostExecute(bitmap);
-                    if (imageBitmap!=null){
+                    if (bitmap!=null){
                         imageBitmap= bitmap;
                         imgRace.setImageBitmap(imageBitmap);
                     }
