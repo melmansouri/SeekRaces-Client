@@ -159,6 +159,7 @@ public class LoginPresenterImpl implements ILoginPresenter, IListennerCallBack {
     public void onSuccess(Object object) {
         if (view!=null){
             if (object instanceof String){
+                view.hideProgress();
                 view.showComponentScreen();
                 view.showMessage((String)object);
                 return;
