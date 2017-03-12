@@ -112,10 +112,10 @@ public class DetailUserPublishRacePresenterImpl implements IDetailUserPublishRac
                 if(view.isClickedbtnSetNotificacion() && user.isFollowed()) {
                     if (user.isSentNotificacion()){
                         user.setSentNotificacion(false);
-                        view.changeIconButtonSendNotificacion(RMapped.DRAWABLE_NOTIFICATION.getValue());
+                        view.changeIconButtonSendNotificacion(RMapped.DRAWABLE_OFF_NOTIFICACION.getValue());
                     }else{
                         user.setSentNotificacion(true);
-                        view.changeIconButtonSendNotificacion(RMapped.DRAWABLE_OFF_NOTIFICACION.getValue());
+                        view.changeIconButtonSendNotificacion(RMapped.DRAWABLE_NOTIFICATION.getValue());
                     }
                     view.setClickedbtnSetNotificacion(false);
                 }

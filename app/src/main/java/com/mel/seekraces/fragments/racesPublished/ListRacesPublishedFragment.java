@@ -51,6 +51,7 @@ public class ListRacesPublishedFragment extends Fragment implements IListFragmen
     public void onResume() {
         super.onResume();
         mListener.changeTitleActionBar(RMapped.TITLE_CARRERAS_PUBLICADAS.getValue());
+        mListener.showFloatingButton();
         mListener.setCheckedItemNavView(0);
     }
 
