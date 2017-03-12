@@ -170,7 +170,11 @@ public class LoginPresenterImpl implements ILoginPresenter, IListennerCallBack {
                 protected void onPostExecute(Void aVoid) {
                     super.onPostExecute(aVoid);
                     view.hideProgress();
-                    if (sharedPreferencesSingleton.containValue(Constantes.KEY_USER)){
+                    if (sharedPreferencesSingleton.containValue(Constantes.KEY_USER)
+                            &&
+                            sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER)!=null
+                            &&
+                            !sharedPreferencesSingleton.getStringSP(Constantes.KEY_USER).isEmpty()){
                         view.goToMainScreen();
                     }else{
                         view.showComponentScreen();
