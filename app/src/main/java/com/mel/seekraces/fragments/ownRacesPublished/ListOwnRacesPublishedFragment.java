@@ -78,6 +78,7 @@ public class ListOwnRacesPublishedFragment extends Fragment implements IListFrag
     public void onResume() {
         super.onResume();
         mListener.changeTitleActionBar(RMapped.TITLE_MIS_CARRERAS_PUBLICADAS.getValue());
+        mListener.showFloatingButton();
     }
 
     @Override
